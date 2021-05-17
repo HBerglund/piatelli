@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: "Piatelli-Sans";
+  src: local("Piatelli-Sans"),
+    url(./font/texgyreadventor-regular.otf) format("truetype");
+}
+
+* {
+  /* border: 1px solid red; */
+  font-family: Piatelli-Sans !important;
+  cursor: url(../src/assets/alternativeCursor.png) 9 7, pointer;
+  cursor: url(../src/assets/alternativeCursorBlack.png) 9 7, default;
+}
+
+.MuiButton-root {
+  cursor: url(../src/assets/alternativeCursor.png) 9 7, pointer;
+  border-radius: 0 !important;
+  text-transform: none !important;
+  letter-spacing: 0.05rem !important;
+  line-height: 26px !important;
+}
+
+.makeStyles-moreInfoStyle-69 {
+  transition: color 0.2s ease-in-out !important;
+}
+
+.makeStyles-moreInfoStyle-69:hover {
+  color: #7a8790;
+}
+
+.makeStyles-moreInfoStyle-17:hover {
+  color: #7a8790;
+}
+
+.MuiTypography-body2 {
+  transition: color 0.2s ease-in-out !important;
+}
+
+.MuiTypography-body2:hover {
+  color: #7a8790;
+}
+
+.MuiTypography-body2 {
+  font-size: 1.2rem !important;
+}
+
+h1:hover {
+  margin-bottom: 0.5rem !important;
+  text-shadow: -1px 11px 11px rgba(0, 0, 0, 0.22) !important;
+  background: transparent !important;
+
+  transition: all 0.5s ease-in-out !important;
+}
+
+h1 {
+  transition: all 0.1s ease-in-out !important;
+}
+
+.MuiButton-label {
+  cursor: url(../src/assets/alternativeCursor.png) 9 7, pointer;
+}
+
+.MuiButton-root:hover {
+  cursor: url(../src/assets/alternativeCursor.png) 9 7, pointer;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.MuiTypography-h1 {
+  font-size: 3rem !important;
+}
+
+.alice-carousel__next-btn-wrapper {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+}
+
+.alice-carousel__prev-btn-wrapper {
+  position: absolute;
+  top: -2rem;
+  right: 1rem;
+}
+
+.MuiTypography-body1 {
+  letter-spacing: 0.05rem !important;
+  line-height: 26px !important;
+}
+
+.MuiTypography-h4 {
+  letter-spacing: 0.05rem !important;
+  font-weight: 400;
+}
+
+.MuiTypography-h2 {
+  letter-spacing: 0.05rem !important;
+  font-weight: 400 !important;
+}
+
+.MuiTypography-h3 {
+  letter-spacing: 0.05rem !important;
+  font-weight: 400 !important;
+  line-height: 65px !important;
+  font-size: 2.8rem !important;
+}
+
+.MuiTypography-h6 {
+  letter-spacing: 0.07rem !important;
+  font-weight: 400 !important;
+  line-height: 35px !important;
+  font-size: 1.5rem !important;
+}
+
+.MuiTypography-subtitle2 {
+  font-size: 1.125rem !important;
+  line-height: 40px !important;
+  letter-spacing: 0.05em !important;
+  text-decoration: none !important;
+}
+
+.MuiLink-underlineHover:hover {
+  text-decoration: none !important;
+  color: #fafafa;
+}
