@@ -2,14 +2,14 @@
   "name": "piatelli-v2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "npm-run-all --parallel start-client start-server",
-    "start-client": "cd client && npm start",
     "start-server": "cd server && npm start",
+    "start-client": "cd client && npm start",
     "init": "npm-run-all --parallel init-client init-server",
-    "init-client": "cd client && npm i",
-    "init-server": "cd server && npm i"
+    "init-server": "cd server && npm i",
+    "init-client": "cd client && npm i"
   },
   "repository": {
     "type": "git",
