@@ -1,55 +1,28 @@
 {
-  "name": "context",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "@material-ui/styles": "^4.11.3",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.1",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^12.20.4",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.1",
-    "animate.css": "^4.1.1",
-    "moment": "^2.29.1",
-    "react": "^17.0.1",
-    "react-alice-carousel": "^2.4.0",
-    "react-dom": "^17.0.1",
-    "react-image": "^4.0.3",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.2.3",
-    "web-vitals": "^1.1.0"
-  },
+  "name": "piatelli-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm-run-all --parallel start-client start-server",
+    "start-client": "cd client && npm start",
+    "start-server": "cd server && npm start",
+    "init": "npm-run-all --parallel init-client init-server",
+    "init-client": "cd client && npm i",
+    "init-server": "cd server && npm i"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HBerglund/piatelli.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HBerglund/piatelli/issues"
   },
-  "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+  "homepage": "https://github.com/HBerglund/piatelli#readme",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }
