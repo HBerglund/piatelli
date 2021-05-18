@@ -1,0 +1,4 @@
+
+
+// get all 
+GET http://localhost:4000/products
