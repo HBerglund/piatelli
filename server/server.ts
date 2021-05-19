@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 import { Request, Response } from "express";
-const mongoose = require("mongoose");
-const productRouter = require("./product/product.router");
+import mongoose from "mongoose";
+import productRouter from "./product/product.router";
 
 const app = express();
 const PORT = 4000;
