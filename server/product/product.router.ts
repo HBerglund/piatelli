@@ -1,5 +1,6 @@
-import express, { Request, Response } from "express";
-import ResponseError from "../error/ResError";
+const express = require("express");
+import { Request, Response } from "express";
+const ResponseError = require("../error/ResError");
 import ProductModel from "./product.model";
 
 const productRouter = express.Router();
@@ -14,6 +15,18 @@ const getAll = async (req: Request, res: Response) => {
   }
 };
 
-productRouter.get("/products", getAll);
+const createProduct = async (req: Request, res: Response) => {
+  try {
+    const product = await ProductModel.create({
+      ...req.body,
+    });
+    res.status(201).json(product);
+  } catch (error) {
+    throw new ResponseError(404, "Something went wrong...");
+  }
+};
 
-export default productRouter;
+productRouter.get("/products", getAll);
+productRouter.post("/products", createProduct);
+
+module.exports = productRouter;

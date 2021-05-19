@@ -1,4 +1,5 @@
 const express = require("express");
+import { Request, Response } from "express";
 const mongoose = require("mongoose");
 const productRouter = require("./product/product.router");
 
@@ -10,7 +11,7 @@ const url =
 app.use(express.json());
 app.use(productRouter);
 
-app.use((err: any, req: any, res: any, next: any) => {
+app.use((err, req: Request, res: Response, next) => {
   console.log(err);
   res.status(500).json(err.message);
 });
