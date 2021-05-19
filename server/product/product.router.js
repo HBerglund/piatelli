@@ -1,11 +1,10 @@
-import express from "express";
-import { Request, Response } from "express";
-import ResponseError from "../error/ResError";
-import ProductModel from "./product.model";
+const express = require("express");
+const ResponseError = require("../error/ResError");
+const ProductModel = require("./product.model");
 
 const productRouter = express.Router();
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async (req, res) => {
   try {
     const products = await ProductModel.find({});
     res.status(200).json(products);
@@ -14,7 +13,7 @@ const getAll = async (req: Request, res: Response) => {
   }
 };
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (req, res) => {
   try {
     const product = await ProductModel.create({
       ...req.body,
@@ -28,4 +27,4 @@ const createProduct = async (req: Request, res: Response) => {
 productRouter.get("/products", getAll);
 productRouter.post("/products", createProduct);
 
-export default productRouter;
+module.exports = productRouter;
