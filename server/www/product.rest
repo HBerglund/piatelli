@@ -1,0 +1,31 @@
+### GET ALL 
+GET http://localhost:4000/products
+
+### GET ONE BY ID
+GET http://localhost:4000/products/60a4f4fc4f046e87c7265ffe
+
+### DELETE BY ID
+DELETE http://localhost:4000/products/60a5016f5503828d59579da8
+
+### POST ONE
+POST http://localhost:4000/products
+Content-Type: application/json
+
+{
+    "category": "Sport Bag",
+    "name": "Ugly bag",
+    "price": 10000,
+    "img": "uglyImg",
+    "description": "Baggy wear his ugly bag",
+    "details": "bhaggy is ugly with his bag",
+    "care": "never wash",
+    "stock": 300
+}
+
+### UPDATE ONE BY ID
+PUT http://localhost:4000/products/60a5016f5503828d59579da8
+Content-Type: application/json
+
+{
+    "price": 300
+}

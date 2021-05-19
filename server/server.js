@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const ResponseError = require("./error/ResError");
 const productRouter = require("./routers/product.router");
+require("express-async-errors");
 
 const app = express();
 const PORT = 4000;
@@ -20,6 +21,7 @@ const connectionParams = {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 };
 
 (async function run() {
