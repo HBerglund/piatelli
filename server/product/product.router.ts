@@ -1,10 +1,9 @@
-const express = require("express");
+import express from "express";
 import { Request, Response } from "express";
-const ResponseError = require("../error/ResError");
+import ResponseError from "../error/ResError";
 import ProductModel from "./product.model";
 
 const productRouter = express.Router();
-// const productHandler = express.Router();
 
 const getAll = async (req: Request, res: Response) => {
   try {
@@ -29,4 +28,4 @@ const createProduct = async (req: Request, res: Response) => {
 productRouter.get("/products", getAll);
 productRouter.post("/products", createProduct);
 
-module.exports = productRouter;
+export default productRouter;
