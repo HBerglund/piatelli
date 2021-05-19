@@ -1,7 +1,7 @@
-import express from "express";
-import { Request, Response } from "express";
-import mongoose from "mongoose";
-import productRouter from "./product/product.router";
+const express = require("express");
+const mongoose = require("mongoose");
+const ResponseError = require("./error/ResError");
+const productRouter = require("./routers/product.router");
 
 const app = express();
 const PORT = 4000;
@@ -11,9 +11,9 @@ const url =
 app.use(express.json());
 app.use(productRouter);
 
-app.use((err, req: Request, res: Response, next) => {
-  console.log(err);
-  res.status(500).json(err.message);
+app.use((err, req, res) => {
+  const statusCode = err.status || err.statusCode || 500;
+  res.status(statusCode).json({ errorCode: statusCode, message: err.message });
 });
 
 const connectionParams = {

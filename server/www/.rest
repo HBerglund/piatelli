@@ -1,16 +1,13 @@
 
 
-// get all 
+### GET ALL 
 GET http://localhost:4000/products
 
-###
-
-// post one
+### POST ONE
 POST http://localhost:4000/products
 Content-Type: application/json
 
 {
-    "productID": "2222",
     "category": "Sport Bag",
     "name": "Sporty Bhaggy",
     "price": "20392",
