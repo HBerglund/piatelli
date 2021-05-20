@@ -1,5 +1,7 @@
 const ResponseError = require("../error/ResError");
 const UserModel = require("../models/user.model");
+const bcrypt = require("bcrypt");
+const { isBreakOrContinueStatement } = require("typescript");
 
 const getAll = async (req, res) => {
   try {
@@ -46,8 +48,11 @@ const updateOneById = async (req, res) => {
 
 const register = async (req, res) => {
   try {
+    const { password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await UserModel.create({
       ...req.body,
+      password: hashedPassword,
     });
     res.status(201).json(user);
   } catch (err) {
@@ -62,7 +67,7 @@ const login = async (req, res) => {
 
   const user = users.find((user) => user.email === email);
 
-  if (!user || password !== user.password) {
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     res.status(203).json({
       status: res.statusCode,
       message: "Wrong username or password",
