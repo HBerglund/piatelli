@@ -1,14 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const ResponseError = require("./error/ResError");
 const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");
 require("express-async-errors");
+const cookieSession = require("cookie-session");
 
 const app = express();
 const PORT = 4000;
 const url =
   "mongodb+srv://HermanBerglund:3BUH3K@vE6cu*eVAAk@Ti7wx@piattelli.ze7uc.mongodb.net/Piattelli?retryWrites=true&w=majority";
+
+app.use(
+  cookieSession({
+    name: "session",
+    secret: "sdg7df7gdiufgdg",
+    secure: false,
+    maxAge: 1000 * 1800,
+    httpOnly: true,
+  })
+);
 
 app.use(express.json());
 app.use(productRouter);

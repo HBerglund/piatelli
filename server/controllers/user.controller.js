@@ -55,7 +55,26 @@ const register = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const users = await UserModel.find({}).select("+password");
+
+  const user = users.find((user) => user.email === email);
+
+  if (!user || password !== user.password) {
+    res.status(203).json({
+      status: res.statusCode,
+      message: "Wrong username or password",
+    });
+    return;
+  }
+
+  req.session.user = user;
+
+  res.status(201).json(`Successfully logged in ${user.fullName}`);
+};
+
 const authenticate = async (req, res) => {};
 const logOut = async (req, res) => {};
 
