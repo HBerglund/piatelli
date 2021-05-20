@@ -48,8 +48,18 @@ const updateOneById = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { password } = req.body;
+    const { password, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Check if email is already registered
+    const users = await UserModel.find({});
+    const existingUser = users.find((user) => user.email === email);
+    if (existingUser) {
+      res
+        .status(500)
+        .json({ message: "User already exist", status: res.statusCode });
+    }
+
     const user = await UserModel.create({
       ...req.body,
       password: hashedPassword,
