@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { productsMocked } from "./mockedProducts";
 
+// TODO - Update product type to match product schema
 export interface Product {
   name: string;
   price: number;
@@ -41,6 +42,7 @@ function ProductProvider(props: IProps) {
     }
     let productsLS = JSON.parse(localStorage.getItem("products") || "[]");
     setProducts(productsLS);
+
     // eslint-disable-next-line
   }, []);
 

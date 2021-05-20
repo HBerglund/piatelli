@@ -12,7 +12,7 @@ const url =
 app.use(express.json());
 app.use(productRouter);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const statusCode = err.status || err.statusCode || 500;
   res.status(statusCode).json({ errorCode: statusCode, message: err.message });
 });
