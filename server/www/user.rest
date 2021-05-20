@@ -1,0 +1,32 @@
+### GET ALL 
+GET http://localhost:4000/users
+
+### GET ONE BY ID
+GET http://localhost:4000/users/60a61e190c6cacb773b30530
+
+### DELETE BY ID
+DELETE http://localhost:4000/users/60a61c3190b1eeb6c2f2f675
+
+### POST ONE
+POST http://localhost:4000/users/register
+Content-Type: application/json
+
+{
+    "role": "member",
+    "approvedAdmin": false,
+    "fullName": "Herman Berglund",
+    "email": "her@gmail.com",
+    "phone": "293832",
+    "street": "min gata 3",
+    "zipcode": "23244",
+    "city": "Gbg",
+    "country": "Swe"
+}
+
+### UPDATE ONE BY ID
+PUT http://localhost:4000/users/60a61e190c6cacb773b30530
+Content-Type: application/json
+
+{
+    "fullName": "Victor Wikström"
+}
