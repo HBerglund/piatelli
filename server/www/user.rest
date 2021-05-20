@@ -33,7 +33,6 @@ Content-Type: application/json
 }
 
 ### LOGIN 
-
 POST http://localhost:4000/users/login
 Content-Type: application/json
 
@@ -41,3 +40,9 @@ Content-Type: application/json
     "email": "victor@gmail.com",
     "password": "123"
 }
+
+### AUTHENTICATE / CHECK COOKIE
+GET http://localhost:4000/users/authenticate
+
+### LOGOUT
+DELETE http://localhost:4000/users/logout

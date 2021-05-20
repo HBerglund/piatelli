@@ -75,8 +75,21 @@ const login = async (req, res) => {
   res.status(201).json(`Successfully logged in ${user.fullName}`);
 };
 
-const authenticate = async (req, res) => {};
-const logOut = async (req, res) => {};
+const authenticate = async (req, res) => {
+  if (req.session.user) {
+    res.status(200).json({
+      authenticated: true,
+      user: req.session.user,
+    });
+    return;
+  }
+  res.status(400).json({ authenticated: false });
+};
+
+const logOut = async (req, res) => {
+  req.session = null;
+  res.status(200).json("You're logged out!");
+};
 
 module.exports = {
   getAll,
