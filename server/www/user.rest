@@ -5,7 +5,7 @@ GET http://localhost:4000/users
 GET http://localhost:4000/users/60a61e190c6cacb773b30530
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60a61c3190b1eeb6c2f2f675
+DELETE http://localhost:4000/users/60a7ad7d9832aae360c12589
 
 ### POST ONE
 POST http://localhost:4000/users/register
@@ -14,13 +14,13 @@ Content-Type: application/json
 {
     "role": "member",
     "approvedAdmin": false,
-    "fullName": "Herman Berglund",
-    "email": "her@gmail.com",
-    "phone": "293832",
-    "street": "min gata 3",
-    "zipcode": "23244",
-    "city": "Gbg",
-    "country": "Swe"
+    "fullName": "Oscar Andersson",
+    "email": "oa@gmail.com",
+    "phone": "1231231231",
+    "street": "Folkungagatan 5",
+    "zipcode": "411 02",
+    "city": "Gothenburg",
+    "country": "Sweden"
 }
 
 ### UPDATE ONE BY ID
