@@ -5,7 +5,8 @@ const orderSchema = new mongoose.Schema({
   items: [String],
   date: "Date",
   payment: "String",
-  delivery: { type: mongoose.Schema.ObjectId, ref: "address", require: true },
+  delivery: "String",
+  address: { type: mongoose.Schema.ObjectId, ref: "address", require: true },
   sum: "Number",
 });
 

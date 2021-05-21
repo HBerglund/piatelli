@@ -3,7 +3,7 @@ const AddressModel = require("../models/address.model");
 
 const getAll = async (req, res, next) => {
   try {
-    const address = await AddressModel.find({});
+    const address = await AddressModel.find({}).populate("orders");
     res.status(200).json(address);
   } catch (error) {
     throw new ResponseError(404, "something went wrong...");

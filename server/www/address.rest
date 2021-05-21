@@ -6,8 +6,8 @@ POST http://localhost:4000/address
 Content-Type: application/json
 
 {
-    "street": "Drottninggatan",
-    "zip": "35229",
-    "city": "Växjö",
+    "street": "Stensturgatan",
+    "zip": "41102",
+    "city": "Göteborg",
     "country": "Sweden"
 }

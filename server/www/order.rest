@@ -12,11 +12,12 @@ POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "Hebbe Berglund",
-    "items": ["Shoes", "Bag", "Shades"],
+    "customer": "Herman Berglund",
+    "items": ["Sneakers", "Bag", "Hat"],
     "date": "2021-05-21",
-    "payment": "Visa",
-    "delivery": "60a77e4fe016c0d82b0f7dc6", 
+    "payment": "PayPal",
+    "delivery": "DHL", 
+    "address": "60a79fce7a7c6fdf894d6da2", 
     "sum": 1599
 }
 
