@@ -8,6 +8,7 @@ import Products from "./Products";
 import NewCollection from "./NewCollection";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import LoginPage from "./LoginPage";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/new-collection" component={NewCollection} />
         <Route path="/checkout" component={Checkout} />
         <Route path="/admin" component={AdminPage} />
+        <Route path="/login" component={LoginPage} />
       </Switch>
       <Footer />
     </BrowserRouter>

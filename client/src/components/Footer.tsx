@@ -16,8 +16,8 @@ function Footer() {
           </Hidden>
         </Box>
       </Hidden>
-      <Link href="/admin">
-        <Typography>Secret</Typography>
+      <Link href="/login">
+        <Typography>Log in</Typography>
       </Link>
       <Box>
         <Box className={classes.footerLogo}>
