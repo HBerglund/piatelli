@@ -5,16 +5,9 @@ const orderSchema = new mongoose.Schema({
   items: [String],
   date: "Date",
   payment: "String",
-  delivery: "String", // addressSchema?
+  delivery: { type: mongoose.Schema.ObjectId, ref: "address", require: true },
   sum: "Number",
 });
-
-// const addressSchema = new mongoose.Schema({
-//   street: "String",
-//   zip: "String",
-//   city: "String",
-//   country: "String",
-// });
 
 const OrderModel = mongoose.model("order", orderSchema);
 

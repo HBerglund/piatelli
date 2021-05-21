@@ -3,7 +3,7 @@ const OrderModel = require("../models/order.model");
 
 const getAll = async (req, res, next) => {
   try {
-    const orders = await OrderModel.find({});
+    const orders = await OrderModel.find({}).populate("delivery");
     res.status(200).json(orders);
   } catch (error) {
     throw new ResponseError(404, "something went wrong...");

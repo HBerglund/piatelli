@@ -2,28 +2,28 @@
 GET http://localhost:4000/orders
 
 ### GET ONE BY ID
-GET http://localhost:4000/orders/60a75f96cb083cca3d16ab6e
+GET http://localhost:4000/orders/60a76e9911323ed1e9e7233a
 
 ### DELETE BY ID
-DELETE http://localhost:4000/orders/60a76052e58942cae3df2c36
+DELETE http://localhost:4000/orders/60a7779f5d7ad2d5327b29e8
 
 ### POST ONE
 POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "Herman Wikström",
+    "customer": "Hebbe Berglund",
     "items": ["Shoes", "Bag", "Shades"],
     "date": "2021-05-21",
-    "payment": "Mastercard",
-    "delivery": "DHL", 
+    "payment": "Visa",
+    "delivery": "60a77e4fe016c0d82b0f7dc6", 
     "sum": 1599
 }
 
 ### UPDATE ONE BY ID
-PUT http://localhost:4000/orders/60a763338148fcccbe4e8347
+PUT http://localhost:4000/orders/60a76e9911323ed1e9e7233a
 Content-Type: application/json
 
 {
-    "customer": "Herman Berglund"
+    "customer": "Oscar Andersson"
 }
