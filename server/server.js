@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ResponseError = require("./error/ResError");
+const orderRouter = require("./routers/order.router");
 const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");
 require("express-async-errors");
@@ -13,6 +14,7 @@ const url =
 app.use(express.json());
 app.use(productRouter);
 app.use(userRouter);
+app.use(orderRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.status || err.statusCode || 500;
