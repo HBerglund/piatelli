@@ -30,15 +30,9 @@ const deleteOneById = async (req, res) => {
   }
 };
 
-const createProduct = async (req, res) => {
-  try {
-    const product = await ProductModel.create({
-      ...req.body,
-    });
-    res.status(201).json(product);
-  } catch (err) {
-    throw new ResponseError(404, "Something went wrong...");
-  }
+const createProduct = async (req, res, next) => {
+  const newProduct = await ProductModel.create(req.body);
+  res.status(201).json(newProduct);
 };
 
 const updateOneById = async (req, res) => {

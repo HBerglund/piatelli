@@ -13,13 +13,13 @@ Content-Type: application/json
 
 {
     "category": "Sport Bag",
-    "name": "Ugly bag",
-    "price": 10000,
-    "img": "uglyImg",
+    "name": "a cool bag",
+    "price": 200,
+    "img": "asdasd",
     "description": "Baggy wear his ugly bag",
     "details": "bhaggy is ugly with his bag",
-    "care": "never wash",
-    "stock": 300
+    "care": "Take care of this bag",
+    "stock": 100
 }
 
 ### UPDATE ONE BY ID
