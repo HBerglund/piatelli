@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(productRouter);
 app.use(userRouter);
 app.use(orderRouter);
-app.use(addressRouter);
+// app.use(addressRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.status || err.statusCode || 500;

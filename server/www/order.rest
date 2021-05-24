@@ -5,19 +5,24 @@ GET http://localhost:4000/orders
 GET http://localhost:4000/orders/60a76e9911323ed1e9e7233a
 
 ### DELETE BY ID
-DELETE http://localhost:4000/orders/60a7779f5d7ad2d5327b29e8
+DELETE http://localhost:4000/orders/60a79f8b7a7c6fdf894d6da1
 
 ### POST ONE
 POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "Herman Berglund",
-    "items": ["Sneakers", "Bag", "Hat"],
+    "customer": "Caroline Meyer",
+    "items": ["Bag", "Hat"],
     "date": "2021-05-21",
     "payment": "PayPal",
     "delivery": "DHL", 
-    "address": "60a79fce7a7c6fdf894d6da2", 
+    "address": {
+        "street": "Hälsingevägen",
+        "zipcode": "72231",
+        "city": "Västerås",
+        "country": "Sweden"
+    }, 
     "sum": 1599
 }
 

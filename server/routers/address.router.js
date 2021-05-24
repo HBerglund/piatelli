@@ -1,9 +1,9 @@
-const express = require("express");
-const { getAll, createAddress } = require("../controllers/address.controller");
+// const express = require("express");
+// const { getAll, createAddress } = require("../controllers/address.controller");
 
-const addressRouter = express.Router();
+// const addressRouter = express.Router();
 
-addressRouter.get("/address", getAll);
-addressRouter.post("/address", createAddress);
+// addressRouter.get("/address", getAll);
+// addressRouter.post("/address", createAddress);
 
-module.exports = addressRouter;
+// module.exports = addressRouter;
