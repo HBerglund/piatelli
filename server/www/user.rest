@@ -20,7 +20,7 @@ Content-Type: application/json
     "phone": "0705552233",
     "address": {
         "street": "Folkungagatan 5",
-        "zip": "411 02",
+        "zipcode": "411 02",
         "city": "Gothenburg",
         "country": "Sweden"
     }

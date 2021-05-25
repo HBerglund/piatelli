@@ -9,7 +9,7 @@ const deliverySchema = new mongoose.Schema({
 const addressSchema = new mongoose.Schema(
   {
     street: "String",
-    zip: "String",
+    zipcode: "String",
     city: "String",
     country: "String",
   },
