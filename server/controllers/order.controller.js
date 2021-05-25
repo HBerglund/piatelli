@@ -3,7 +3,7 @@ const OrderModel = require("../models/order.model");
 
 const getAll = async (req, res, next) => {
   try {
-    const orders = await OrderModel.find({}).populate("address");
+    const orders = await OrderModel.find({}).populate("customer");
     res.status(200).json(orders);
   } catch (error) {
     throw new ResponseError(404, "something went wrong...");
@@ -13,7 +13,7 @@ const getAll = async (req, res, next) => {
 const getOneById = async (req, res) => {
   try {
     const id = req.params.id;
-    const order = await OrderModel.findById(id);
+    const order = await OrderModel.findById(id).populate("customer");
     res.status(200).json(order);
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");

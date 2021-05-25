@@ -1,15 +1,23 @@
 const mongoose = require("mongoose");
 
+const addressSchema = new mongoose.Schema(
+  {
+    street: "String",
+    zip: "String",
+    city: "String",
+    country: "String",
+  },
+  { _id: false }
+);
+
 const userSchema = new mongoose.Schema({
-  role: "String",
-  approvedAdmin: "Boolean",
-  fullName: "String",
   email: "String",
+  password: "String",
+  role: "String",
+  authorized: "Boolean",
+  fullName: "String",
   phone: "String",
-  street: "String",
-  zipcode: "String",
-  city: "String",
-  country: "String",
+  address: addressSchema,
 });
 
 const UserModel = mongoose.model("user", userSchema);

@@ -2,26 +2,30 @@
 GET http://localhost:4000/orders
 
 ### GET ONE BY ID
-GET http://localhost:4000/orders/60a76e9911323ed1e9e7233a
+GET http://localhost:4000/orders/60ab9cbcae0f471f176af423
 
 ### DELETE BY ID
-DELETE http://localhost:4000/orders/60a79f8b7a7c6fdf894d6da1
+DELETE http://localhost:4000/orders/60ac945b4e89702fff493053
 
 ### POST ONE
 POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "Caroline Meyer",
-    "items": ["Bag", "Hat"],
-    "date": "2021-05-21",
-    "payment": "PayPal",
-    "delivery": "DHL", 
+    "customer": "60ac94a94e89702fff493059",
     "address": {
-        "street": "Hälsingevägen",
-        "zipcode": "72231",
-        "city": "Västerås",
+        "street": "Folkungagatan 5",
+        "zipcode": "41102",
+        "city": "Gothenburg",
         "country": "Sweden"
+    }, 
+    "items": ["Shades", "Umbrella", "Watch"],
+    "date": "2021-05-25",
+    "payment": "PayPal",
+    "delivery": {
+        "name": "DHL",
+        "price": 20,
+        "deliveryTime": "1-3 days"
     }, 
     "sum": 1599
 }

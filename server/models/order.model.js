@@ -1,30 +1,44 @@
 const mongoose = require("mongoose");
 
+const deliverySchema = new mongoose.Schema({
+  name: "String",
+  price: "Number",
+  deliveryTime: "String",
+});
+
 const addressSchema = new mongoose.Schema(
   {
     street: "String",
     zip: "String",
     city: "String",
     country: "String",
-  }
-  // { toJSON: { virtuals: true } }
+  },
+  { _id: false }
 );
 
-// addressSchema.virtual("orders", {
-//   ref: "order",
-//   foreignField: "address",
-//   localField: "_id",
-// });
-
 const orderSchema = new mongoose.Schema({
-  customer: "String",
+  customer: {
+    type: mongoose.Schema.ObjectId,
+    ref: "user",
+    require: true,
+  },
+  address: addressSchema,
   items: [String],
   date: "Date",
   payment: "String",
-  delivery: "String",
-  address: [addressSchema],
+  delivery: deliverySchema,
   sum: "Number",
 });
+
+// orderSchema.virtual(
+//   "users",
+//   {
+//     ref: "user",
+//     foreignField: "fullName",
+//     localField: "customer",
+//   },
+//   { toJSON: { virtuals: true } }
+// );
 
 const OrderModel = mongoose.model("order", orderSchema);
 

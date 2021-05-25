@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ResponseError = require("./error/ResError");
-const addressRouter = require("./routers/address.router");
+// const addressRouter = require("./routers/address.router");
 const orderRouter = require("./routers/order.router");
 const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");

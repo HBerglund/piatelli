@@ -2,25 +2,28 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-GET http://localhost:4000/users/60a61e190c6cacb773b30530
+GET http://localhost:4000/users/60ab9cbcae0f471f176af423
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60a7ad7d9832aae360c12589
+DELETE http://localhost:4000/users/60ac93ce27a0012ec21cb9c7
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "role": "member",
-    "approvedAdmin": false,
+    "email": "crushcake@gmail.com",
+    "password": "123",
+    "role": "customer",
+    "authorized": false,
     "fullName": "Oscar Andersson",
-    "email": "oa@gmail.com",
-    "phone": "1231231231",
-    "street": "Folkungagatan 5",
-    "zipcode": "411 02",
-    "city": "Gothenburg",
-    "country": "Sweden"
+    "phone": "0705552233",
+    "address": {
+        "street": "Folkungagatan 5",
+        "zip": "411 02",
+        "city": "Gothenburg",
+        "country": "Sweden"
+    }
 }
 
 ### UPDATE ONE BY ID
