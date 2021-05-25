@@ -78,9 +78,8 @@ const login = async (req, res) => {
   const users = await UserModel.find({}).select("+password");
 
   const user = users.find((user) => user.email === email);
-
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    res.status(203).json({
+    res.status(401).json({
       status: res.statusCode,
       message: "Wrong username or password",
     });

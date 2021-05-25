@@ -1,9 +1,14 @@
 import { Box, Container, Typography, Link, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useContext, useEffect } from "react";
+import { LoggedInContext } from "./context/LoginContext";
 import FooterSection from "./FooterSection";
 
 function Footer() {
   const classes = useStyles();
+
+  const loggedInContext = useContext(LoggedInContext);
+
   return (
     <Container className={classes.containerStyle} maxWidth={false}>
       <Hidden only={"xs"}>
@@ -16,12 +21,17 @@ function Footer() {
           </Hidden>
         </Box>
       </Hidden>
-      <Link href="/login">
-        <Typography>Log in</Typography>
-      </Link>
-      <Link href="/registration">
-        <Typography>or Register here</Typography>
-      </Link>
+      {loggedInContext.authenticated ? null : (
+        <>
+          <Link href="/login">
+            <Typography>Log in</Typography>
+          </Link>
+
+          <Link href="/registration">
+            <Typography>or Register here</Typography>
+          </Link>
+        </>
+      )}
       <Box>
         <Box className={classes.footerLogo}>
           <Typography variant="h4">PIATTELLI</Typography>
