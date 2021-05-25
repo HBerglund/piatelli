@@ -1,4 +1,3 @@
-const ResponseError = require("../error/ResError");
 const {
   loggedInUser,
   userHaveAccess,

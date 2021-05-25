@@ -1,4 +1,3 @@
-const ResponseError = require("../error/ResError");
 const UserModel = require("../models/user.model");
 const {
   loggedInUser,
@@ -6,7 +5,6 @@ const {
   userIsAdmin,
 } = require("../helpers/authHelper");
 const bcrypt = require("bcrypt");
-const { isBreakOrContinueStatement } = require("typescript");
 
 const getAll = async (req, res) => {
   if (userIsAdmin(req)) {
