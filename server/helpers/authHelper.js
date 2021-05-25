@@ -1,18 +1,11 @@
 function loggedInUser(req) {
-  if (req.session) {
+  if (req.session.user) {
     return true;
   } else {
     return false;
   }
 }
 
-function userIsCustomer(req) {
-  if (loggedInUser(req) && req.session.user.role === "customer") {
-    return true;
-  } else {
-    return false;
-  }
-}
 function userIsAdmin(req) {
   if (loggedInUser(req) && req.session.user.role === "admin") {
     return true;
@@ -22,11 +15,11 @@ function userIsAdmin(req) {
 }
 
 async function userHaveAccess(req, userID) {
-  if (loggedInUser(req) && req.session.user._id === userID) {
+  if (loggedInUser(req) && req.session.user._id == userID) {
     return true;
   } else {
     return false;
   }
 }
 
-module.exports = { loggedInUser, userIsCustomer, userIsAdmin, userHaveAccess };
+module.exports = { loggedInUser, userIsAdmin, userHaveAccess };

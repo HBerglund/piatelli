@@ -1,7 +1,6 @@
 const ResponseError = require("../error/ResError");
 const {
   loggedInUser,
-  userIsCustomer,
   userHaveAccess,
   userIsAdmin,
 } = require("../helpers/authHelper");
@@ -12,53 +11,58 @@ const getAll = async (req, res, next) => {
     const orders = await OrderModel.find({}).populate("customer");
     res.status(200).json(orders);
   } else {
-    res.status(403).json("You need to have admin rights for this request...");
+    res
+      .status(403)
+      .json(
+        "You need to be logged in and have admin rights for this request..."
+      );
   }
 };
 
 const getOneById = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const id = req.params.id;
+  const orderToCheck = await OrderModel.findById(id);
+  if (userIsAdmin(req) || (await userHaveAccess(req, orderToCheck.customer))) {
     const order = await OrderModel.findById(id).populate("customer");
     res.status(200).json(order);
-  } catch (error) {
-    throw new ResponseError(404, "Something went wrong...");
+  } else {
+    res.status(403).json("You need to have admin rights to look at this order");
   }
 };
 
 const deleteOneByid = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const id = req.params.id;
+  if (userIsAdmin(req)) {
     const order = await OrderModel.findByIdAndDelete(id);
     res.status(200).json(order);
-  } catch (error) {
-    throw new ResponseError(404, "Something went wrong...");
+  } else {
+    res.status(403).json("You don't have permission to delete this order");
   }
 };
 
 const createOrder = async (req, res) => {
-  try {
-    if (loggedInUser(req)) {
-      const order = await OrderModel.create({
-        ...req.body,
-      });
-      res.status(201).json(order);
-    }
-  } catch (err) {
-    throw new ResponseError(404, "Something went wrong...");
+  if (loggedInUser(req)) {
+    const order = await OrderModel.create({
+      ...req.body,
+    });
+    res.status(201).json(order);
+  } else {
+    res.status(403).json("You need to be logged in to place an order");
   }
 };
 
 const updateOneById = async (req, res) => {
   const id = req.params.id;
-  const selectedOrder = await OrderModel.findById(id);
-  if (userHaveAccess(req, selectedOrder.customer)) {
+  const orderToCheck = await OrderModel.findById(id);
+  if (userIsAdmin(req) || (await userHaveAccess(req, orderToCheck.customer))) {
     const order = await OrderModel.findByIdAndUpdate(
       id,
       { ...req.body },
       { new: true }
     );
     res.status(200).json(order);
+  } else {
+    res.status(403).json("You don't have permission to update this order");
   }
 };
 

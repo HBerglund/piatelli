@@ -1,49 +1,56 @@
 const ResponseError = require("../error/ResError");
 const UserModel = require("../models/user.model");
+const {
+  loggedInUser,
+  userHaveAccess,
+  userIsAdmin,
+} = require("../helpers/authHelper");
 const bcrypt = require("bcrypt");
 const { isBreakOrContinueStatement } = require("typescript");
 
 const getAll = async (req, res) => {
-  try {
+  if (userIsAdmin(req)) {
     const users = await UserModel.find({});
     res.status(200).json(users);
-  } catch (error) {
-    throw new ResponseError(404, "something went wrong...");
+  } else {
+    res.status(403).json("You don't have permission to perform this request");
   }
 };
 
 const getOneById = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const id = req.params.id;
+  const userToCheck = await UserModel.findById(id);
+  if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findById(id);
     res.status(200).json(user);
-  } catch (error) {
-    throw new ResponseError(404, "Something went wrong...");
+  } else {
+    res.status(403).json("You don't have permission to perform this request");
   }
 };
 
 const deleteOneById = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const id = req.params.id;
+  const userToCheck = await UserModel.findById(id);
+  if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findByIdAndDelete(id);
     res.status(200).json(user);
-  } catch (error) {
-    throw new ResponseError(404, "Something went wrong...");
+  } else {
+    res.status(403).json("You don't have permission to delete this user");
   }
 };
 
 const updateOneById = async (req, res) => {
-  try {
-    const id = req.params.id;
+  const id = req.params.id;
+  const userToCheck = await UserModel.findById(id);
+  if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findByIdAndUpdate(
       id,
       { ...req.body },
       { new: true }
     );
     res.status(200).json(user);
-    a;
-  } catch (error) {
-    throw new ResponseError(404, "Something went wrong...");
+  } else {
+    res.status(403).json("You don't have permission to perform this request");
   }
 };
 
@@ -83,12 +90,11 @@ const login = async (req, res) => {
   }
 
   req.session.user = user;
-
   res.status(201).json(`Successfully logged in ${user.fullName}`);
 };
 
 const authenticate = async (req, res) => {
-  if (req.session.user) {
+  if (loggedInUser(req)) {
     res.status(200).json({
       authenticated: true,
       user: req.session.user,

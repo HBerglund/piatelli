@@ -2,38 +2,37 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-GET http://localhost:4000/users/60ab9cbcae0f471f176af423
+GET http://localhost:4000/users/60acccf5f6bb064989f05e5c
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60ac93ce27a0012ec21cb9c7
+DELETE http://localhost:4000/users/60acb3080925fd4101a26cca
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "crushcake@gmail.com",
+    "email": "oscar@oscar.se",
     "password": "123",
     "role": "customer",
-    "authorized": false,
+    "authorizedAdmin": false,
     "fullName": "Oscar Andersson",
     "phone": "0705552233",
     "address": {
-        "street": "Folkungagatan 5",
-        "zipcode": "411 02",
+        "street": "stampgatan 38",
+        "zipcode": "41102",
         "city": "Gothenburg",
         "country": "Sweden"
     }
 }
 
-### LOGIN
 
 ### UPDATE ONE BY ID
-PUT http://localhost:4000/users/60a61e190c6cacb773b30530
+PUT http://localhost:4000/users/60acb3080925fd4101a26cca
 Content-Type: application/json
 
 {
-    "fullName": "Victor Wikström"
+    "fullName": "Oscar Andersson"
 }
 
 ### LOGIN 
@@ -41,7 +40,15 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-    "email": "oscar@gmail.com",
+    "email": "oscar@oscar.se",
+    "password": "123"
+}
+### LOGIN ADMIN
+POST http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+    "email": "herman@herman.se",
     "password": "123"
 }
 
