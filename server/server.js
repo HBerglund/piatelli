@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ResponseError = require("./error/ResError");
-// const addressRouter = require("./routers/address.router");
+const deliveryRouter = require("./routers/delivery.router");
 const orderRouter = require("./routers/order.router");
 const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(productRouter);
 app.use(userRouter);
 app.use(orderRouter);
-// app.use(addressRouter);
+app.use(deliveryRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.status || err.statusCode || 500;

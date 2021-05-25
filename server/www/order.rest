@@ -5,7 +5,7 @@ GET http://localhost:4000/orders
 GET http://localhost:4000/orders/60ab9cbcae0f471f176af423
 
 ### DELETE BY ID
-DELETE http://localhost:4000/orders/60ac945b4e89702fff493053
+DELETE http://localhost:4000/orders/60ac96ae79fbf03332fddfe1
 
 ### POST ONE
 POST http://localhost:4000/orders
@@ -20,7 +20,6 @@ Content-Type: application/json
         "country": "Sweden"
     }, 
     "items": ["Shades", "Umbrella", "Watch"],
-    "date": "2021-05-25",
     "payment": "PayPal",
     "delivery": {
         "name": "DHL",

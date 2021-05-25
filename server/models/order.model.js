@@ -16,29 +16,21 @@ const addressSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const orderSchema = new mongoose.Schema({
-  customer: {
-    type: mongoose.Schema.ObjectId,
-    ref: "user",
-    require: true,
+const orderSchema = new mongoose.Schema(
+  {
+    customer: {
+      type: mongoose.Schema.ObjectId,
+      ref: "user",
+      require: true,
+    },
+    address: addressSchema,
+    items: [String],
+    payment: "String",
+    delivery: deliverySchema,
+    sum: "Number",
   },
-  address: addressSchema,
-  items: [String],
-  date: "Date",
-  payment: "String",
-  delivery: deliverySchema,
-  sum: "Number",
-});
-
-// orderSchema.virtual(
-//   "users",
-//   {
-//     ref: "user",
-//     foreignField: "fullName",
-//     localField: "customer",
-//   },
-//   { toJSON: { virtuals: true } }
-// );
+  { timestamps: true }
+);
 
 const OrderModel = mongoose.model("order", orderSchema);
 
