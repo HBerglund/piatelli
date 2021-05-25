@@ -12,9 +12,12 @@ import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 //icons
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useHistory } from "react-router";
 
 function LoginPage() {
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [logInProgress, setLogInProgress] = useState("default");
   const [loginInput, setLoginInput] = useState({
@@ -26,13 +29,10 @@ function LoginPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    console.log(logInProgress);
-  }, [logInProgress]);
+  console.log(logInProgress);
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(e.target.value);
     setLoginInput({
       ...loginInput,
       [e.target.name]: value,
@@ -55,21 +55,12 @@ function LoginPage() {
       if (res.status === 201) {
         res.json().then((result) => console.log(result));
         setLogInProgress("success");
+        history.replace("/");
       } else {
         setLogInProgress("failure");
       }
     });
   };
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      if (logInProgress === "success") {
-        // run login fetch
-      } else {
-        setLogInProgress("failure");
-      }
-    }
-  });
 
   return (
     <Box className={classes.catalogueStyles}>

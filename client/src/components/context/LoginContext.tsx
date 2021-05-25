@@ -1,4 +1,4 @@
-import React, { createContext, FC, useState } from "react";
+import React, { createContext, FC, useEffect, useState } from "react";
 import { User } from "../../helpers/typings";
 
 interface LoggedInValue {
@@ -7,7 +7,7 @@ interface LoggedInValue {
   authenticateUser: () => void;
 }
 
-export const loggedInContext = createContext<LoggedInValue>({
+export const LoggedInContext = createContext<LoggedInValue>({
   user: undefined,
   authenticated: false,
   authenticateUser: () => {},
@@ -17,10 +17,27 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
   const [user, setUser] = useState<User>();
   const [authenticated, setAuthenticated] = useState(false);
 
-  const authenticateUser = () => {};
+  const authenticateUser = () => {
+    fetch("/users/authenticate", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result) {
+          setAuthenticated(result.authenticated);
+          setUser(result.user);
+        }
+      });
+  };
+
+  useEffect(() => {
+    authenticateUser();
+  }, []);
+
+  console.log(authenticated);
 
   return (
-    <loggedInContext.Provider
+    <LoggedInContext.Provider
       value={{
         user,
         authenticated,
@@ -28,7 +45,7 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
       }}
     >
       {children}
-    </loggedInContext.Provider>
+    </LoggedInContext.Provider>
   );
 };
 
