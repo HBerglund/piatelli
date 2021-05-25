@@ -1,10 +1,10 @@
 const ResponseError = require("../error/ResError");
-const ProductModel = require("../models/product.model");
+const OrderModel = require("../models/order.model");
 
 const getAll = async (req, res, next) => {
   try {
-    const products = await ProductModel.find({});
-    res.status(200).json(products);
+    const orders = await OrderModel.find({}).populate("customer");
+    res.status(200).json(orders);
   } catch (error) {
     throw new ResponseError(404, "something went wrong...");
   }
@@ -13,37 +13,43 @@ const getAll = async (req, res, next) => {
 const getOneById = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await ProductModel.findById(id);
-    res.status(200).json(product);
+    const order = await OrderModel.findById(id).populate("customer");
+    res.status(200).json(order);
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");
   }
 };
 
-const deleteOneById = async (req, res) => {
+const deleteOneByid = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await ProductModel.findByIdAndDelete(id);
-    res.status(200).json(product);
+    const order = await OrderModel.findByIdAndDelete(id);
+    res.status(200).json(order);
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");
   }
 };
 
-const createProduct = async (req, res, next) => {
-  const newProduct = await ProductModel.create(req.body);
-  res.status(201).json(newProduct);
+const createOrder = async (req, res) => {
+  try {
+    const order = await OrderModel.create({
+      ...req.body,
+    });
+    res.status(201).json(order);
+  } catch (err) {
+    throw new ResponseError(404, "Something went wrong...");
+  }
 };
 
 const updateOneById = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await ProductModel.findByIdAndUpdate(
+    const order = await OrderModel.findByIdAndUpdate(
       id,
       { ...req.body },
       { new: true }
     );
-    res.status(200).json(product);
+    res.status(200).json(order);
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");
   }
@@ -52,7 +58,7 @@ const updateOneById = async (req, res) => {
 module.exports = {
   getAll,
   getOneById,
-  deleteOneById,
-  createProduct,
+  deleteOneByid,
+  createOrder,
   updateOneById,
 };

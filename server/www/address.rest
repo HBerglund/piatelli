@@ -1,0 +1,13 @@
+### GET ALL 
+GET http://localhost:4000/address
+
+### POST ONE
+POST http://localhost:4000/address
+Content-Type: application/json
+
+{
+    "street": "Stensturgatan",
+    "zip": "41102",
+    "city": "Göteborg",
+    "country": "Sweden"
+}

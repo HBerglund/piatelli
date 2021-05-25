@@ -41,33 +41,30 @@ const updateOneById = async (req, res) => {
       { new: true }
     );
     res.status(200).json(user);
+    a;
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");
   }
 };
 
 const register = async (req, res) => {
-  try {
-    const { password, email } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const { password, email } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Check if email is already registered
-    const users = await UserModel.find({});
-    const existingUser = users.find((user) => user.email === email);
-    if (existingUser) {
-      res
-        .status(500)
-        .json({ message: "User already exist", status: res.statusCode });
-    }
-
-    const user = await UserModel.create({
-      ...req.body,
-      password: hashedPassword,
-    });
-    res.status(201).json(user);
-  } catch (err) {
-    throw new ResponseError(404, "Something went wrong...");
+  // Check if email is already registered
+  const users = await UserModel.find({});
+  const existingUser = users.find((user) => user.email === email);
+  if (existingUser) {
+    res
+      .status(500)
+      .json({ message: "User already exist", status: res.statusCode });
   }
+
+  const user = await UserModel.create({
+    ...req.body,
+    password: hashedPassword,
+  });
+  res.status(201).json(user);
 };
 
 const login = async (req, res) => {
