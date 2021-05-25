@@ -17,8 +17,8 @@ function LoginPage() {
   const classes = useStyles();
 
   const [logInProgress, setLogInProgress] = useState("default");
-  const [userInputs, setUserInputs] = useState({
-    username: "",
+  const [loginInput, setLoginInput] = useState({
+    email: "",
     password: "",
   });
 
@@ -26,20 +26,39 @@ function LoginPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    console.log(logInProgress);
+  }, [logInProgress]);
+
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUserInputs({
-      ...userInputs,
+    console.log(e.target.value);
+    setLoginInput({
+      ...loginInput,
       [e.target.name]: value,
     });
   };
 
+  const handleLoginClick = () => {
+    validateLogin();
+  };
+
   const validateLogin = () => {
-    if (logInProgress === "success") {
-      // run login fetch
-    } else {
-      setLogInProgress("failure");
-    }
+    fetch("/users/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInput),
+    }).then((res) => {
+      if (res.status === 201) {
+        res.json().then((result) => console.log(result));
+        setLogInProgress("success");
+      } else {
+        setLogInProgress("failure");
+      }
+    });
   };
 
   window.addEventListener("keydown", (e) => {
@@ -67,13 +86,13 @@ function LoginPage() {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
             autoFocus
             onChange={handleUserInputs}
-            value={userInputs.username}
+            value={loginInput.email}
           />
           <TextField
             variant="outlined"
@@ -85,7 +104,7 @@ function LoginPage() {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={userInputs.password}
+            value={loginInput.password}
             onChange={handleUserInputs}
           />
           {logInProgress === "failure" ? (
@@ -97,7 +116,7 @@ function LoginPage() {
           )}
 
           <Button
-            onClick={validateLogin}
+            onClick={handleLoginClick}
             fullWidth
             variant="contained"
             color="primary"

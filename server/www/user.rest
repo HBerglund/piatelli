@@ -2,25 +2,25 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-GET http://localhost:4000/users/60ab9cbcae0f471f176af423
+GET http://localhost:4000/users/60acdae5cb6fda47e46d6368
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60ac93ce27a0012ec21cb9c7
+DELETE http://localhost:4000/users/60acd7d1354b8445fcfdeec0
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "crushcake@gmail.com",
+    "email": "caroline@gmail.com",
     "password": "123",
     "role": "customer",
     "authorized": false,
-    "fullName": "Oscar Andersson",
+    "fullName": "Caroline Meyer",
     "phone": "0705552233",
     "address": {
         "street": "Folkungagatan 5",
-        "zipcode": "411 02",
+        "zipcode": "41102",
         "city": "Gothenburg",
         "country": "Sweden"
     }
@@ -39,7 +39,7 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-    "email": "oscar@gmail.com",
+    "email": "caroline@gmail.com",
     "password": "123"
 }
 
