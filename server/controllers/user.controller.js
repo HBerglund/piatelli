@@ -1,5 +1,7 @@
 const ResponseError = require("../error/ResError");
 const UserModel = require("../models/user.model");
+const bcrypt = require("bcrypt");
+const { isBreakOrContinueStatement } = require("typescript");
 
 const getAll = async (req, res) => {
   try {
@@ -46,25 +48,60 @@ const updateOneById = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  // CHECK FOR VALIDATION ERRORS
-  const user = new UserModel({ ...req.body });
-  let valErr = user.validateSync();
-  if (valErr) {
-    const errMsgs = [];
-    for (const err of Object.values(valErr.errors)) {
-      errMsgs.push(err.message);
-    }
-    res.status(400).json(errMsgs);
-    return;
+  const { password, email } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Check if email is already registered
+  const users = await UserModel.find({});
+  const existingUser = users.find((user) => user.email === email);
+  if (existingUser) {
+    res
+      .status(500)
+      .json({ message: "User already exist", status: res.statusCode });
   }
-  // OTHERWISE CREATE DOCUMENT
-  const newUser = await UserModel.create({ ...req.body });
-  res.status(201).json(newUser);
+
+  const user = await UserModel.create({
+    ...req.body,
+    password: hashedPassword,
+  });
+  res.status(201).json(user);
 };
 
-const login = async (req, res) => {};
-const authenticate = async (req, res) => {};
-const logOut = async (req, res) => {};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const users = await UserModel.find({}).select("+password");
+
+  const user = users.find((user) => user.email === email);
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    res.status(203).json({
+      status: res.statusCode,
+      message: "Wrong username or password",
+    });
+    return;
+  }
+
+  req.session.user = user;
+
+  res.status(201).json(`Successfully logged in ${user.fullName}`);
+};
+
+const authenticate = async (req, res) => {
+  if (req.session.user) {
+    res.status(200).json({
+      authenticated: true,
+      user: req.session.user,
+    });
+    return;
+  }
+  res.status(400).json({ authenticated: false });
+};
+
+const logOut = async (req, res) => {
+  req.session = null;
+  res.status(200).json("You're logged out!");
+};
 
 module.exports = {
   getAll,
