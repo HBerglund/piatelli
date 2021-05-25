@@ -39,20 +39,27 @@ const updateOneById = async (req, res) => {
       { new: true }
     );
     res.status(200).json(user);
+    a;
   } catch (error) {
     throw new ResponseError(404, "Something went wrong...");
   }
 };
 
 const register = async (req, res) => {
-  try {
-    const user = await UserModel.create({
-      ...req.body,
-    });
-    res.status(201).json(user);
-  } catch (err) {
-    throw new ResponseError(404, "Something went wrong...");
+  // CHECK FOR VALIDATION ERRORS
+  const user = new UserModel({ ...req.body });
+  let valErr = user.validateSync();
+  if (valErr) {
+    const errMsgs = [];
+    for (const err of Object.values(valErr.errors)) {
+      errMsgs.push(err.message);
+    }
+    res.status(400).json(errMsgs);
+    return;
   }
+  // OTHERWISE CREATE DOCUMENT
+  const newUser = await UserModel.create({ ...req.body });
+  res.status(201).json(newUser);
 };
 
 const login = async (req, res) => {};
