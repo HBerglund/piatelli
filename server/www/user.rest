@@ -26,6 +26,8 @@ Content-Type: application/json
     }
 }
 
+### LOGIN
+
 ### UPDATE ONE BY ID
 PUT http://localhost:4000/users/60a61e190c6cacb773b30530
 Content-Type: application/json
