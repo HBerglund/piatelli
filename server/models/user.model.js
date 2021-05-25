@@ -1,6 +1,20 @@
 const mongoose = require("mongoose");
 const { validateEmail, validatePhone } = require("./model.helpers");
 
+const addressSchema = new mongoose.Schema(
+  {
+    street: { type: "String", required: true },
+    zipcode: {
+      type: "String",
+      minLength: [5, "invalid zipcode"],
+      maxLength: [5, "invalid zipcode"],
+    },
+    city: { type: "String", required: true },
+    country: "String",
+  },
+  { _id: false }
+);
+
 const userSchema = new mongoose.Schema({
   role: {
     type: "String",
@@ -26,14 +40,7 @@ const userSchema = new mongoose.Schema({
     maxLength: [12, "invalid phone number"],
     validate: [validatePhone, "invalid phone number"],
   },
-  street: { type: "String", required: true },
-  zipcode: {
-    type: "String",
-    minLength: [5, "invalid zipcode"],
-    maxLength: [5, "invalid zipcode"],
-  },
-  city: { type: "String", required: true },
-  country: "String",
+  address: addressSchema,
 });
 
 const UserModel = mongoose.model("user", userSchema);

@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 require("express-async-errors");
 const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");
+const orderRouter = require("./routers/order.router");
+const deliveryRouter = require("./routers/delivery.router");
 
 const app = express();
 const PORT = 4000;
@@ -12,6 +14,8 @@ const url =
 app.use(express.json());
 app.use(productRouter);
 app.use(userRouter);
+app.use(orderRouter);
+app.use(deliveryRouter);
 
 app.use((err, req, res, next) => {
   if (err.message.includes("validation failed")) {
@@ -27,12 +31,10 @@ app.use((err, req, res, next) => {
     return;
   }
   const statusCode = err.status || err.statusCode || 500;
-  res
-    .status(statusCode)
-    .json({
-      errorCode: statusCode,
-      messsage: err.message || "Something went wrong...",
-    });
+  res.status(statusCode).json({
+    errorCode: statusCode,
+    messsage: err.message || "Something went wrong...",
+  });
 });
 
 const connectionParams = {
