@@ -19,6 +19,9 @@ function Footer() {
       <Link href="/login">
         <Typography>Log in</Typography>
       </Link>
+      <Link href="/registration">
+        <Typography>or Register here</Typography>
+      </Link>
       <Box>
         <Box className={classes.footerLogo}>
           <Typography variant="h4">PIATTELLI</Typography>
@@ -69,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     display: "flex",
     justifyContent: "space-around",
-    padding: "5rem",
+    padding: "2rem 1rem 1rem 1rem",
   },
   footerLogo: {
     paddingBottom: "2rem",

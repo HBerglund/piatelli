@@ -9,6 +9,7 @@ import NewCollection from "./NewCollection";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import LoginPage from "./LoginPage";
+import Registration from "./Registration";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
         <Route path="/checkout" component={Checkout} />
         <Route path="/admin" component={AdminPage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/registration" component={Registration} />
       </Switch>
       <Footer />
     </BrowserRouter>
