@@ -37,11 +37,7 @@ function ProductProvider(props: IProps) {
   const [products, setProducts] = useState(productsMocked);
 
   useEffect(() => {
-    if (!localStorage.hasOwnProperty("products")) {
-      localStorage.setItem("products", JSON.stringify(products));
-    }
-    let productsLS = JSON.parse(localStorage.getItem("products") || "[]");
-    setProducts(productsLS);
+    fetch("/products", { method: "GET" });
 
     // eslint-disable-next-line
   }, []);
@@ -67,7 +63,6 @@ function ProductProvider(props: IProps) {
       }
       return item;
     });
-
     setProducts(updatedProducts);
   }
 

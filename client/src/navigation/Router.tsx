@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
-import AdminPage from "./AdminPage";
+import AdminProducts from "./AdminProducts";
 import Checkout from "./Checkout";
 import Home from "./Home";
 import ProductDetails from "./ProductDetails";
@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import LoginPage from "./LoginPage";
 import Registration from "./Registration";
+import Admin from "./Admin";
 
 function Router() {
   return (
@@ -21,7 +22,7 @@ function Router() {
         <Route path="/products/:name" component={ProductDetails} />
         <Route path="/new-collection" component={NewCollection} />
         <Route path="/checkout" component={Checkout} />
-        <Route path="/admin" component={AdminPage} />
+        <Route path="/admin" component={Admin} />
         <Route path="/login" component={LoginPage} />
         <Route path="/registration" component={Registration} />
       </Switch>
