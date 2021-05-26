@@ -12,9 +12,11 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 //images
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
+import { useHistory } from "react-router";
 
 function RegistrationForm() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [registrationProgress, setRegistrationProgress] =
     useState<"default" | "failure" | "success">("default");
@@ -26,7 +28,7 @@ function RegistrationForm() {
     fullName: "",
     address: {
       street: "",
-      zipCode: "",
+      zipcode: "",
       city: "",
       country: "",
     },
@@ -47,11 +49,23 @@ function RegistrationForm() {
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    //this doesn't work anymore when we have nested object in state
-    setUserInputs({
-      ...userInputs,
-      [e.target.name]: value,
-    });
+
+    if (
+      e.target.name === "street" ||
+      e.target.name === "zipcode" ||
+      e.target.name === "city" ||
+      e.target.name === "country"
+    ) {
+      setUserInputs({
+        ...userInputs,
+        address: { ...userInputs.address, [e.target.name]: value },
+      });
+    } else {
+      setUserInputs({
+        ...userInputs,
+        [e.target.name]: value,
+      });
+    }
   };
 
   const handlePasswordInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +103,7 @@ function RegistrationForm() {
       if (res.status === 201) {
         res.json().then((result) => console.log(result));
         setRegistrationProgress("success");
+        history.replace("/login");
       } else {
         setRegistrationProgress("failure");
       }
@@ -143,13 +158,13 @@ function RegistrationForm() {
         margin="normal"
         required
         fullWidth
-        id="zipCode"
+        id="zipcode"
         label="Zip Code"
-        name="zipCode"
-        autoComplete="zipCode"
+        name="zipcode"
+        autoComplete="zipcode"
         autoFocus
         onChange={handleUserInputs}
-        value={userInputs.address.zipCode}
+        value={userInputs.address.zipcode}
       />
       <TextField
         variant="outlined"
@@ -246,7 +261,8 @@ function RegistrationForm() {
 
       {registrationProgress === "failure" ? (
         <Typography className={classes.errorText}>
-          some error message
+          Something went wrong with your registration... Please try again and
+          make sure you've filled out all fields correctly.
         </Typography>
       ) : (
         <div></div>
