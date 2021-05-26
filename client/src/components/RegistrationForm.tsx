@@ -23,6 +23,7 @@ function RegistrationForm() {
 
   const [passwordMatch, setPasswordMatch] = useState(true);
 
+  // const stringArr = ["email", "fullName","street","zipcode","city","email","email","email","email","email",]
   const [userInputs, setUserInputs] = useState({
     email: "",
     fullName: "",
@@ -91,6 +92,8 @@ function RegistrationForm() {
     validateRegistration();
   };
 
+  const [errMessage, setErrMessage] = useState();
+
   const validateRegistration = () => {
     fetch("/users/register", {
       method: "POST",
@@ -99,15 +102,19 @@ function RegistrationForm() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userInputs),
-    }).then((res) => {
-      if (res.status === 201) {
-        res.json().then((result) => console.log(result));
-        setRegistrationProgress("success");
-        history.replace("/login");
-      } else {
-        setRegistrationProgress("failure");
-      }
-    });
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result._id) {
+          setRegistrationProgress("success");
+          history.replace("/login");
+        } else {
+          setErrMessage(result.message);
+          setRegistrationProgress("failure");
+          console.log(result);
+        }
+      });
   };
 
   return (
@@ -260,13 +267,8 @@ function RegistrationForm() {
       ) : null}
 
       {registrationProgress === "failure" ? (
-        <Typography className={classes.errorText}>
-          Something went wrong with your registration... Please try again and
-          make sure you've filled out all fields correctly.
-        </Typography>
-      ) : (
-        <div></div>
-      )}
+        <Typography className={classes.errorText}>{errMessage}</Typography>
+      ) : null}
 
       <Button
         onClick={handleRegistrationClick}

@@ -93,12 +93,11 @@ const login = async (req, res) => {
 const authenticate = async (req, res) => {
   if (loggedInUser(req)) {
     res.status(200).json({
-      authenticated: true,
       user: req.session.user,
     });
     return;
   }
-  res.status(400).json({ authenticated: false });
+  res.status(400).json("No user is logged in");
 };
 
 const logOut = async (req, res) => {

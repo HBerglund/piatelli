@@ -1,11 +1,4 @@
-import {
-  Box,
-  Link,
-  TextField,
-  Typography,
-  Badge,
-  Hidden,
-} from "@material-ui/core";
+import { Box, TextField, Typography, Badge, Hidden } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
@@ -17,6 +10,7 @@ import { CartContext } from "./context/CartContext";
 import { useContext } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import { LoggedInContext } from "./context/LoginContext";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [searchClicked, setSearchClicked] = useState(false);
@@ -38,15 +32,15 @@ function Header() {
   return (
     <Box className={classes.rootStyle}>
       <Hidden only={"xs"}>
-        <Link href="/" color="inherit" underline="none">
+        <Link to="/" color="inherit">
           <Typography variant="h1">PIATTELLI</Typography>
         </Link>
       </Hidden>
       <Hidden smDown>
-        <Link href="/new-collection" color="inherit" underline="none">
+        <Link to="/new-collection" color="inherit">
           <Typography variant="body2">New Collection </Typography>
         </Link>
-        <Link href="/products" color="inherit" underline="none">
+        <Link to="/products" color="inherit">
           <Typography variant="body2">All Bags </Typography>{" "}
         </Link>
       </Hidden>
@@ -54,7 +48,7 @@ function Header() {
       <Hidden smUp>
         {!searchClicked ? (
           <Box className="animate__animated animate__fadeIn">
-            <Link href="/" color="inherit" underline="none">
+            <Link to="/" color="inherit">
               <Typography variant="h1">PIATTELLI</Typography>
             </Link>
           </Box>
@@ -62,69 +56,68 @@ function Header() {
       </Hidden>
 
       <Hidden smDown>
-        <Link href="/products" color="inherit" underline="none">
+        <Link to="/products" color="inherit">
           <Typography variant="body2">Timless Favorites</Typography>{" "}
         </Link>
       </Hidden>
-      {loggedInContext.authenticated ? (
-        <Box className={classes.iconWrapper}>
+      <Box className={classes.iconWrapper}>
+        {loggedInContext.user ? (
           <Typography>Logged in as {loggedInContext.user?.fullName}</Typography>
-
-          <Box onClick={() => setSearchClicked(true)} m="1rem">
-            {!searchClicked ? (
-              <SearchIcon />
-            ) : (
-              <form className="animate__animated animate__fadeIn">
-                <Autocomplete
-                  freeSolo
-                  disableClearable
-                  options={products}
-                  getOptionLabel={(option) => option.name}
-                  renderOption={(option) => (
-                    <React.Fragment>
-                      <span
-                        onClick={() => {
-                          window.location.href = `/products/${option.name}`;
-                        }}
-                      >
-                        {option.name}
-                      </span>
-                    </React.Fragment>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className={classes.width}
-                      autoFocus
-                      id="search-basic"
-                      label="Search"
-                      margin="normal"
-                      InputProps={{ ...params.InputProps, type: "search" }}
-                      onBlur={() => setSearchClicked(false)}
-                    />
-                  )}
-                />
-              </form>
-            )}
-          </Box>
-          <Box m="1rem">
-            <CartIcon
-              onClick={() => {
-                setIsCartVisible(!isCartVisible);
-              }}
-            />
-            <Badge
-              badgeContent={amountOfItemsInCart}
-              color="primary"
-              className="animate__animated animate__bounceIn"
-              onClick={() => {
-                setIsCartVisible(!isCartVisible);
-              }}
-            ></Badge>
-            <Cart onHide={hideCart} isVisible={isCartVisible} />
-          </Box>
+        ) : null}
+        <Box onClick={() => setSearchClicked(true)} m="1rem">
+          {!searchClicked ? (
+            <SearchIcon />
+          ) : (
+            <form className="animate__animated animate__fadeIn">
+              <Autocomplete
+                freeSolo
+                disableClearable
+                options={products}
+                getOptionLabel={(option) => option.name}
+                renderOption={(option) => (
+                  <React.Fragment>
+                    <span
+                      onClick={() => {
+                        window.location.href = `/products/${option.name}`;
+                      }}
+                    >
+                      {option.name}
+                    </span>
+                  </React.Fragment>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    className={classes.width}
+                    autoFocus
+                    id="search-basic"
+                    label="Search"
+                    margin="normal"
+                    InputProps={{ ...params.InputProps, type: "search" }}
+                    onBlur={() => setSearchClicked(false)}
+                  />
+                )}
+              />
+            </form>
+          )}
         </Box>
-      ) : null}
+        <Box m="1rem">
+          <CartIcon
+            onClick={() => {
+              setIsCartVisible(!isCartVisible);
+            }}
+          />
+          <Badge
+            badgeContent={amountOfItemsInCart}
+            color="primary"
+            className="animate__animated animate__bounceIn"
+            onClick={() => {
+              setIsCartVisible(!isCartVisible);
+            }}
+          ></Badge>
+          <Cart onHide={hideCart} isVisible={isCartVisible} />
+        </Box>
+      </Box>
     </Box>
   );
 }

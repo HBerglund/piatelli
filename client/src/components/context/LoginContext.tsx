@@ -1,21 +1,26 @@
 import React, { createContext, FC, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { User } from "../../helpers/typings";
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
 
 interface LoggedInValue {
   user: User | undefined;
-  authenticated: boolean;
   authenticateUser: () => void;
+  validateLogin: (data: LoginInput) => void;
 }
 
 export const LoggedInContext = createContext<LoggedInValue>({
   user: undefined,
-  authenticated: false,
   authenticateUser: () => {},
+  validateLogin: () => false,
 });
 
 const LoggedInProvider: FC<{}> = ({ children }) => {
   const [user, setUser] = useState<User>();
-  const [authenticated, setAuthenticated] = useState(false);
 
   const authenticateUser = () => {
     fetch("/users/authenticate", {
@@ -24,8 +29,9 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
       .then((res) => res.json())
       .then((result) => {
         if (result) {
-          setAuthenticated(result.authenticated);
           setUser(result.user);
+        } else {
+          setUser(undefined);
         }
       });
   };
@@ -34,14 +40,33 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
     authenticateUser();
   }, []);
 
-  console.log(authenticated);
+  const validateLogin = (data: LoginInput) => {
+    fetch("/users/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result._id) {
+          setUser(result);
+        } else {
+          setUser(undefined);
+        }
+      });
+  };
+
+  console.log(user);
 
   return (
     <LoggedInContext.Provider
       value={{
         user,
-        authenticated,
         authenticateUser,
+        validateLogin,
       }}
     >
       {children}

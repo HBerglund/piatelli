@@ -18,6 +18,8 @@ import OrderComfirmation from "../components/OrderComfirmation";
 import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
+import { useHistory } from "react-router";
+import { LoggedInContext } from "../components/context/LoginContext";
 
 function getSteps() {
   return [
@@ -29,9 +31,21 @@ function getSteps() {
 }
 
 function Checkout() {
-
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  const history = useHistory();
+  const loggedInContext = useContext(LoggedInContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    //THIS DOESN'T WORK
+    if (!loggedInContext.user) {
+      history.replace("/login");
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   //Step counter
@@ -246,6 +260,9 @@ function Checkout() {
     }
   }
 
+  if (loading) {
+    return <div>loading</div>;
+  }
   return (
     <Box mb={10}>
       <Box className={classes.root}>

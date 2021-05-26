@@ -34,7 +34,7 @@ function Footer() {
           </Hidden>
         </Box>
       </Hidden>
-      {loggedInContext.authenticated ? (
+      {loggedInContext.user ? (
         <Link>
           <Typography onClick={handleLogOutClick}>Log out</Typography>
         </Link>
