@@ -74,10 +74,8 @@ function OrderComfirmation(props: IProps) {
           </Box>
           <Box mb={5}>
             <Typography>
-              Total price: {props.total}kr + shipping cost: (
-              {props.deliveryOption?.name === "Post Nord" ? "0kr" : null}
-              {props.deliveryOption?.name === "Budbee" ? "69kr" : null}
-              {props.deliveryOption?.name === "Instabox" ? "39kr" : null})
+              Price: {props.total} kr + {props.deliveryOption?.name} shipping
+              cost: ({props.deliveryOption?.price} kr)
             </Typography>
           </Box>
         </Box>

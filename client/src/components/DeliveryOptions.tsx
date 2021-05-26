@@ -36,15 +36,13 @@ function DeliveryOptions(props: IProps) {
     setChosenDeliveryOption(deliveryOption);
   };
 
-  console.log(props.deliveryOption);
-
   return (
     <>
       <h5 className={classes.centerFlex}>Delivery Options</h5>
       <Box className={classes.marginBottom}>
         <Box className={`${classes.centerFlex}`}>
           {deliveryOptions.map((option) => (
-            <Box className={classes.flexColumn}>
+            <Box className={classes.flexColumn} key={option._id}>
               <Button
                 onClick={() => handleDeliveryClick(option)}
                 className={classes.deliveryBox}
