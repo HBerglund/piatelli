@@ -15,7 +15,7 @@ export interface Address {
   country: string;
 }
 
-export interface DeliveryOpt {
+export interface Delivery {
   _id: string;
   name: string;
   price: number;

@@ -7,8 +7,9 @@ import {
 } from "@material-ui/core";
 import swishLogo from "../assets/swish.png";
 import cardLogo from "../assets/card.png";
+import { Delivery } from "../helpers/typings";
 interface IProps {
-  deliveryOption: string | undefined;
+  deliveryOption: Delivery | undefined;
   setPaymentOption: (value: string) => void;
   setSwishNumber: (value: string) => void;
   setNameOnCard: (value: string) => void;
@@ -32,17 +33,17 @@ function PaymentMethod(props: IProps) {
         <Typography variant="h5" className={classes.centerFlex}>
           Choose Payment Method
         </Typography>
-        {props.deliveryOption === "pn" ? (
+        {props.deliveryOption?.name === "Post Nord" ? (
           <Typography className={classes.centerFlex}>
             Total price with shipping: {props.total}kr
           </Typography>
         ) : null}
-        {props.deliveryOption === "budbee" ? (
+        {props.deliveryOption?.name === "Budbee" ? (
           <Typography className={classes.centerFlex}>
             Total price with shipping: {props.total + 69}kr
           </Typography>
         ) : null}
-        {props.deliveryOption === "instabox" ? (
+        {props.deliveryOption?.name === "Instabox" ? (
           <Typography className={classes.centerFlex}>
             Total price with shipping: {props.total + 39}kr
           </Typography>

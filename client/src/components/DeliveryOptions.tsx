@@ -1,19 +1,19 @@
 import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { DeliveryOpt } from "../helpers/typings";
+import { Delivery } from "../helpers/typings";
 
 interface IProps {
-  deliveryOption: string | undefined;
-  setDeliveryOption: (value: string) => void;
+  deliveryOption: Delivery | undefined;
+  setDeliveryOption: (value: any) => void;
 }
 
 function DeliveryOptions(props: IProps) {
   const classes = useStyles();
 
-  const [deliveryOptionsArr, setDeliveryOptionsArr] = useState<DeliveryOpt[]>(
-    []
-  );
+  const [deliveryOptions, setDeliveryOptions] = useState<Delivery[]>([]);
+  const [chosenDeliveryOption, setChosenDeliveryOption] =
+    useState<Delivery | undefined>(undefined);
 
   //vars for delivery dates
   let today = moment();
@@ -27,78 +27,50 @@ function DeliveryOptions(props: IProps) {
     fetch("/delivery")
       .then((res) => res.json())
       .then((result) => {
-        setDeliveryOptionsArr(result);
+        setDeliveryOptions(result);
       });
   }, []);
 
+  const handleDeliveryClick = (deliveryOption: Delivery) => {
+    props.setDeliveryOption(deliveryOption);
+    setChosenDeliveryOption(deliveryOption);
+  };
+
+  console.log(props.deliveryOption);
+
   return (
-    <Box className={classes.centerFlex}>
-      <Typography>Delivery options</Typography>
-      <Box>
-        <Box className={classes.flexRow}>
-          {deliveryOptionsArr.map((deliveryOpt) => (
+    <>
+      <h5 className={classes.centerFlex}>Delivery Options</h5>
+      <Box className={classes.marginBottom}>
+        <Box className={`${classes.centerFlex}`}>
+          {deliveryOptions.map((option) => (
             <Box className={classes.flexColumn}>
-              <Button>{deliveryOpt.name}</Button>
-              <Typography className={classes.centerFlex}>
-                {deliveryOpt.price} kr
-              </Typography>
-              <Typography className={classes.centerFlex}>
-                {deliveryOpt.deliveryTime}
-              </Typography>
+              <Button
+                onClick={() => handleDeliveryClick(option)}
+                className={classes.deliveryBox}
+              >
+                {option.name}
+              </Button>
             </Box>
           ))}
         </Box>
+        {chosenDeliveryOption ? (
+          <Box
+            className={`${classes.centerFlex} ${classes.deliveryInformation}`}
+          >
+            <Box>
+              <Typography>
+                Delivery cost: {chosenDeliveryOption.price} kr
+              </Typography>
+              {/* <Typography>Estimated delivery time: {String(pnDel)}</Typography> */}
+              <Typography>
+                Delivery time: {chosenDeliveryOption.deliveryTime}
+              </Typography>
+            </Box>
+          </Box>
+        ) : null}
       </Box>
-    </Box>
-    // <>
-    //   <h5 className={classes.centerFlex}>Delivery Options</h5>
-    //   <Box className={classes.marginBottom}>
-    //     <Box className={`${classes.centerFlex}`}>
-    //       <Box
-    //         onClick={() => props.setDeliveryOption("pn")}
-    //         className={classes.deliveryBox}
-    //       >
-    //         Post Nord: 2-5 days
-    //       </Box>
-    //       <Box
-    //         onClick={() => props.setDeliveryOption("budbee")}
-    //         className={classes.deliveryBox}
-    //       >
-    //         Budbee home delivery: 1-3 days
-    //       </Box>
-    //       <Box
-    //         onClick={() => props.setDeliveryOption("instabox")}
-    //         className={classes.deliveryBox}
-    //       >
-    //         Instabox: 1-3 days
-    //       </Box>
-    //     </Box>
-    //     <Box className={`${classes.centerFlex} ${classes.deliveryInformation}`}>
-    //       {props.deliveryOption === "pn" ? (
-    //         <Box>
-    //           <Typography>Delivery cost: free</Typography>
-    //           <Typography>Estimated delivery time: {String(pnDel)}</Typography>
-    //         </Box>
-    //       ) : null}
-    //       {props.deliveryOption === "budbee" ? (
-    //         <Box>
-    //           <Typography>Delivery cost: 69kr</Typography>
-    //           <Typography>
-    //             Estimated delivery time: {String(budbeeDel)}
-    //           </Typography>
-    //         </Box>
-    //       ) : null}
-    //       {props.deliveryOption === "instabox" ? (
-    //         <Box>
-    //           <Typography>Delivery cost: 39kr</Typography>
-    //           <Typography>
-    //             Estimated delivery time: {String(instaDel)}
-    //           </Typography>
-    //         </Box>
-    //       ) : null}
-    //     </Box>
-    //   </Box>
-    // </>
+    </>
   );
 }
 
