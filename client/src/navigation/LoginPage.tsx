@@ -12,13 +12,16 @@ import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 //icons
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useHistory } from "react-router";
 
 function LoginPage() {
   const classes = useStyles();
 
+  const history = useHistory();
+
   const [logInProgress, setLogInProgress] = useState("default");
-  const [userInputs, setUserInputs] = useState({
-    username: "",
+  const [loginInput, setLoginInput] = useState({
+    email: "",
     password: "",
   });
 
@@ -26,31 +29,38 @@ function LoginPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  console.log(logInProgress);
+
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUserInputs({
-      ...userInputs,
+    setLoginInput({
+      ...loginInput,
       [e.target.name]: value,
     });
   };
 
-  const validateLogin = () => {
-    if (logInProgress === "success") {
-      // run login fetch
-    } else {
-      setLogInProgress("failure");
-    }
+  const handleLoginClick = () => {
+    validateLogin();
   };
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      if (logInProgress === "success") {
-        // run login fetch
+  const validateLogin = () => {
+    fetch("/users/login", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInput),
+    }).then((res) => {
+      if (res.status === 201) {
+        res.json().then((result) => console.log(result));
+        setLogInProgress("success");
+        history.replace("/");
       } else {
         setLogInProgress("failure");
       }
-    }
-  });
+    });
+  };
 
   return (
     <Box className={classes.catalogueStyles}>
@@ -67,13 +77,13 @@ function LoginPage() {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
             autoFocus
             onChange={handleUserInputs}
-            value={userInputs.username}
+            value={loginInput.email}
           />
           <TextField
             variant="outlined"
@@ -85,7 +95,7 @@ function LoginPage() {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={userInputs.password}
+            value={loginInput.password}
             onChange={handleUserInputs}
           />
           {logInProgress === "failure" ? (
@@ -97,7 +107,7 @@ function LoginPage() {
           )}
 
           <Button
-            onClick={validateLogin}
+            onClick={handleLoginClick}
             fullWidth
             variant="contained"
             color="primary"

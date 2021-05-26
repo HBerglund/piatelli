@@ -17,7 +17,7 @@ app.use(
     name: "session",
     secret: "sdg7df7gdiufgdg",
     secure: false,
-    maxAge: 1000 * 10,
+    maxAge: 1000 * 1000,
     httpOnly: true,
   })
 );
@@ -29,6 +29,7 @@ app.use(orderRouter);
 app.use(deliveryRouter);
 
 app.use((err, req, res, next) => {
+  console.log(err);
   if (err.message.includes("validation failed")) {
     let errFields = {};
     for (const [key, value] of Object.entries(err.errors)) {

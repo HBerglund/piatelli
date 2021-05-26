@@ -16,6 +16,17 @@ const addressSchema = new mongoose.Schema(
 );
 
 const userSchema = new mongoose.Schema({
+  email: {
+    type: "String",
+    required: true,
+    lowercase: true,
+    validate: [validateEmail, "invalid email"],
+    trim: true,
+  },
+  password: {
+    type: "String",
+    required: true,
+  },
   role: {
     type: "String",
     required: [true, "role is required"],
@@ -25,22 +36,15 @@ const userSchema = new mongoose.Schema({
       message: "'{VALUE}' is not a valid role",
     },
   },
-  approvedAdmin: { type: "Boolean", default: false },
+  authorizedAdmin: { type: "Boolean", default: false },
   fullName: { type: "String", required: true },
-  email: {
-    type: "String",
-    required: true,
-    lowercase: true,
-    validate: [validateEmail, "invalid email"],
-    trim: true,
-  },
+  address: addressSchema,
   phone: {
     type: "String",
     minLength: [10, "invalid phone number"],
     maxLength: [12, "invalid phone number"],
     validate: [validatePhone, "invalid phone number"],
   },
-  address: addressSchema,
 });
 
 const UserModel = mongoose.model("user", userSchema);

@@ -2,7 +2,7 @@
 GET http://localhost:4000/orders
 
 ### GET ONE BY ID
-GET http://localhost:4000/orders/60ab9cbcae0f471f176af423
+GET http://localhost:4000/orders/60acb57933c12941ea7cbeae
 
 ### DELETE BY ID
 DELETE http://localhost:4000/orders/60ac96ae79fbf03332fddfe1
@@ -12,7 +12,7 @@ POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "60ac94a94e89702fff493059",
+    "customer": "60acb52f33c12941ea7cbead",
     "address": {
         "street": "Folkungagatan 5",
         "zipcode": "41102",
