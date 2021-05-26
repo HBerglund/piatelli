@@ -1,0 +1,12 @@
+### GET ALL 
+GET http://localhost:4000/delivery
+
+### POST ONE
+POST http://localhost:4000/delivery
+Content-Type: application/json
+
+{
+    "name": "Instabox",
+    "price": 39,
+    "deliveryTime": "1-3 days"
+}

@@ -14,3 +14,10 @@ export interface Address {
   city: string;
   country: string;
 }
+
+export interface DeliveryOpt {
+  _id: string;
+  name: string;
+  price: number;
+  deliveryTime: string;
+}
