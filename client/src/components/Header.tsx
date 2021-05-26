@@ -16,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CartContext } from "./context/CartContext";
 import { useContext } from "react";
 import { ProductsContext } from "./context/ProductsContext";
+import { LoggedInContext } from "./context/LoginContext";
 
 function Header() {
   const [searchClicked, setSearchClicked] = useState(false);
@@ -23,6 +24,7 @@ function Header() {
   const { products } = useContext(ProductsContext);
   const { cart } = useContext(CartContext);
   const classes = useStyles();
+  const loggedInContext = useContext(LoggedInContext);
 
   const amountOfItemsInCart = cart.reduce(
     (ack: number, item) => ack + item.quantity,
@@ -35,6 +37,11 @@ function Header() {
 
   return (
     <Box className={classes.rootStyle}>
+      <Hidden only={"xs"}>
+        <Link href="/" color="inherit" underline="none">
+          <Typography variant="h1">PIATTELLI</Typography>
+        </Link>
+      </Hidden>
       <Hidden smDown>
         <Link href="/new-collection" color="inherit" underline="none">
           <Typography variant="body2">New Collection </Typography>
@@ -54,72 +61,70 @@ function Header() {
         ) : null}
       </Hidden>
 
-      <Hidden only={"xs"}>
-        <Link href="/" color="inherit" underline="none">
-          <Typography variant="h1">PIATTELLI</Typography>
-        </Link>
-      </Hidden>
-
       <Hidden smDown>
         <Link href="/products" color="inherit" underline="none">
           <Typography variant="body2">Timless Favorites</Typography>{" "}
         </Link>
       </Hidden>
-      <Box className={classes.iconWrapper}>
-        <Box onClick={() => setSearchClicked(true)} m="1rem">
-          {!searchClicked ? (
-            <SearchIcon />
-          ) : (
-            <form className="animate__animated animate__fadeIn">
-              <Autocomplete
-                freeSolo
-                disableClearable
-                options={products}
-                getOptionLabel={(option) => option.name}
-                renderOption={(option) => (
-                  <React.Fragment>
-                    <span
-                      onClick={() => {
-                        window.location.href = `/products/${option.name}`;
-                      }}
-                    >
-                      {option.name}
-                    </span>
-                  </React.Fragment>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    className={classes.width}
-                    autoFocus
-                    id="search-basic"
-                    label="Search"
-                    margin="normal"
-                    InputProps={{ ...params.InputProps, type: "search" }}
-                    onBlur={() => setSearchClicked(false)}
-                  />
-                )}
-              />
-            </form>
-          )}
+      {loggedInContext.authenticated ? (
+        <Box className={classes.iconWrapper}>
+          <Typography>Logged in as {loggedInContext.user?.fullName}</Typography>
+
+          <Box onClick={() => setSearchClicked(true)} m="1rem">
+            {!searchClicked ? (
+              <SearchIcon />
+            ) : (
+              <form className="animate__animated animate__fadeIn">
+                <Autocomplete
+                  freeSolo
+                  disableClearable
+                  options={products}
+                  getOptionLabel={(option) => option.name}
+                  renderOption={(option) => (
+                    <React.Fragment>
+                      <span
+                        onClick={() => {
+                          window.location.href = `/products/${option.name}`;
+                        }}
+                      >
+                        {option.name}
+                      </span>
+                    </React.Fragment>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className={classes.width}
+                      autoFocus
+                      id="search-basic"
+                      label="Search"
+                      margin="normal"
+                      InputProps={{ ...params.InputProps, type: "search" }}
+                      onBlur={() => setSearchClicked(false)}
+                    />
+                  )}
+                />
+              </form>
+            )}
+          </Box>
+          <Box m="1rem">
+            <CartIcon
+              onClick={() => {
+                setIsCartVisible(!isCartVisible);
+              }}
+            />
+            <Badge
+              badgeContent={amountOfItemsInCart}
+              color="primary"
+              className="animate__animated animate__bounceIn"
+              onClick={() => {
+                setIsCartVisible(!isCartVisible);
+              }}
+            ></Badge>
+            <Cart onHide={hideCart} isVisible={isCartVisible} />
+          </Box>
         </Box>
-        <Box m="1rem">
-          <CartIcon
-            onClick={() => {
-              setIsCartVisible(!isCartVisible);
-            }}
-          />
-          <Badge
-            badgeContent={amountOfItemsInCart}
-            color="primary"
-            className="animate__animated animate__bounceIn"
-            onClick={() => {
-              setIsCartVisible(!isCartVisible);
-            }}
-          ></Badge>
-          <Cart onHide={hideCart} isVisible={isCartVisible} />
-        </Box>
-      </Box>
+      ) : null}
     </Box>
   );
 }

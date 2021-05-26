@@ -9,7 +9,7 @@ import {
   Stepper,
   Typography,
 } from "@material-ui/core";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PersonalDetails from "../components/PersonalDetails";
 import DeliveryOptions from "../components/DeliveryOptions";
 import PaymentMethod from "../components/PaymentMethod";
@@ -29,6 +29,11 @@ function getSteps() {
 }
 
 function Checkout() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   //Step counter
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();

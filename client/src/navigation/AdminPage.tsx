@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Product,
   ProductsContext,
@@ -27,6 +27,10 @@ function AdminPage() {
   const [newProduct, setNewProduct] = useState(false);
 
   const { removeProduct } = useContext(ProductsContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>

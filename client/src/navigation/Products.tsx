@@ -1,8 +1,12 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import ProductGrid from "../components/ProductGrid";
 
 function Products() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const useStyles = makeStyles(() => ({
     catalogueStyles: {
       marginTop: "8.5rem",
