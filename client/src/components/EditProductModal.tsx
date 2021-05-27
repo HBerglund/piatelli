@@ -249,6 +249,7 @@ function EditProductModal(props: IProps) {
         <Box mb={5} className={classes.buttonContainer}>
           <Box mr={4}>
             <Button
+              variant="contained"
               onClick={() => {
                 if (validInput && validUrlInput) {
                   window.location.href = "/admin";
@@ -265,7 +266,9 @@ function EditProductModal(props: IProps) {
             </Button>
           </Box>
           <Box>
-            <Button onClick={props.closeModal}>Cancel</Button>
+            <Button variant="contained" onClick={props.closeModal}>
+              Cancel
+            </Button>
           </Box>
         </Box>
       </Box>
@@ -279,7 +282,7 @@ const useStyles = makeStyles((theme) => ({
     height: "80%",
     width: "60%",
     margin: "auto",
-    backgroundColor: "#eaeaea",
+    backgroundColor: "#ffffff",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

@@ -2,6 +2,7 @@ import { Box, Typography, makeStyles } from "@material-ui/core";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
 import { CartItem } from "./context/CartContext";
+import { Delivery } from "../helpers/typings";
 
 interface IProps {
   email: string | undefined;
@@ -12,7 +13,7 @@ interface IProps {
   country: string | undefined;
   city: string | undefined;
   payedProducts: CartItem[] | undefined;
-  deliveryOption: string | undefined;
+  deliveryOption: Delivery | undefined;
   total: number | undefined;
 }
 
@@ -73,10 +74,8 @@ function OrderComfirmation(props: IProps) {
           </Box>
           <Box mb={5}>
             <Typography>
-              Total price: {props.total}kr + shipping cost: (
-              {props.deliveryOption === "pn" ? "0kr" : null}
-              {props.deliveryOption === "budbee" ? "69kr" : null}
-              {props.deliveryOption === "instabox" ? "39kr" : null})
+              Price: {props.total} kr + {props.deliveryOption?.name} shipping
+              cost: ({props.deliveryOption?.price} kr)
             </Typography>
           </Box>
         </Box>
@@ -91,18 +90,18 @@ function OrderComfirmation(props: IProps) {
             <Typography>Phone number: {props.phoneNumber}</Typography>
           </Box>
           <Box className={classes.margin2}>
-            {props.deliveryOption === "pn" ? (
+            {props.deliveryOption?.name === "Post Nord" ? (
               <Typography>
                 Delivery method: <br /> Delivery to closest Postombud with Post
                 Nord.
               </Typography>
             ) : null}
-            {props.deliveryOption === "budbee" ? (
+            {props.deliveryOption?.name === "Budbee home delivery" ? (
               <Typography>
                 Delivery method: <br /> Home delivery with Budbee.
               </Typography>
             ) : null}
-            {props.deliveryOption === "instabox" ? (
+            {props.deliveryOption?.name === "Instabox" ? (
               <Typography>
                 Delivery method: <br /> Delivery to closest Instabox.
               </Typography>
