@@ -87,7 +87,9 @@ const login = async (req, res) => {
   }
 
   req.session.user = user;
-  res.status(201).json(`Successfully logged in ${user.fullName}`);
+  res
+    .status(201)
+    .json({ message: `Successfully logged in ${user.fullName}`, user: user });
 };
 
 const authenticate = async (req, res) => {
@@ -101,8 +103,12 @@ const authenticate = async (req, res) => {
 };
 
 const logOut = async (req, res) => {
-  req.session = null;
-  res.status(200).json("You're logged out!");
+  if (loggedInUser(req)) {
+    req.session = null;
+    res.status(200).json("You're logged out!");
+  } else {
+    res.status(400).json("You're already logged out");
+  }
 };
 
 module.exports = {

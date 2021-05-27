@@ -9,36 +9,18 @@ interface LoginInput {
 
 interface LoggedInValue {
   user: User | undefined;
-  authenticateUser: () => void;
   validateLogin: (data: LoginInput) => void;
+  logOut: () => void;
 }
 
 export const LoggedInContext = createContext<LoggedInValue>({
   user: undefined,
-  authenticateUser: () => {},
   validateLogin: () => false,
+  logOut: () => {},
 });
 
 const LoggedInProvider: FC<{}> = ({ children }) => {
   const [user, setUser] = useState<User>();
-
-  const authenticateUser = () => {
-    fetch("/users/authenticate", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        if (result) {
-          setUser(result.user);
-        } else {
-          setUser(undefined);
-        }
-      });
-  };
-
-  useEffect(() => {
-    authenticateUser();
-  }, []);
 
   const validateLogin = (data: LoginInput) => {
     fetch("/users/login", {
@@ -51,12 +33,26 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        if (result._id) {
-          setUser(result);
+        console.log(result.message);
+        if (result.user) {
+          setUser(result.user);
         } else {
           setUser(undefined);
         }
       });
+  };
+
+  const logOut = () => {
+    fetch("/users/logout", {
+      method: "DELETE",
+      // credentials: "include",
+    }).then((res) => {
+      if (res.status === 200) {
+        setUser(undefined);
+      } else {
+        console.log(res.json());
+      }
+    });
   };
 
   console.log(user);
@@ -65,8 +61,8 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
     <LoggedInContext.Provider
       value={{
         user,
-        authenticateUser,
         validateLogin,
+        logOut,
       }}
     >
       {children}
