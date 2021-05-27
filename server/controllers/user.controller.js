@@ -99,7 +99,7 @@ const authenticate = async (req, res) => {
     });
     return;
   }
-  res.status(400).json("No user is logged in");
+  res.status(400).json({ user: undefined, message: "No user is logged in" });
 };
 
 const logOut = async (req, res) => {

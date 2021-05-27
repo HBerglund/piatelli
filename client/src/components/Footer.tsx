@@ -42,6 +42,11 @@ function Footer() {
           </Link>
         </>
       )}
+      {loggedInContext.user?.authorizedAdmin ? (
+        <Link href="/admin">
+          <Typography>Admin CMS</Typography>
+        </Link>
+      ) : null}
       <Box>
         <Box className={classes.footerLogo}>
           <Typography variant="h4">PIATTELLI</Typography>

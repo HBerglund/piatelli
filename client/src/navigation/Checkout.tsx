@@ -41,14 +41,11 @@ function Checkout() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //THIS DOESN'T WORK
     if (!loggedInContext.user) {
       history.replace("/login");
-    } else {
-      setLoading(false);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [loggedInContext.user]);
 
   //Step counter
   const [activeStep, setActiveStep] = useState(0);
