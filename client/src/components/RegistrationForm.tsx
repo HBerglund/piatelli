@@ -13,7 +13,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
-import runRegExValidation from "../helpers/validations";
+import runRegExValidation from "../helpers/helpers";
 
 function RegistrationForm() {
   const classes = useStyles();
