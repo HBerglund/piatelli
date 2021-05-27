@@ -8,7 +8,7 @@ const runRegExValidation = (type, value) => {
   let re = new RegExp();
   switch (type) {
     case "email":
-      re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      re = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
       break;
     case "password":
       re = /^[A-Za-z0-9]\w{5,}$/;
@@ -28,4 +28,4 @@ const runRegExValidation = (type, value) => {
   return re.test(value);
 };
 
-module.exports = runRegExValidation;
+module.exports = { runRegExValidation };

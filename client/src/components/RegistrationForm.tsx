@@ -13,7 +13,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
-import runRegExValidation from "../helpers/helpers";
+import { runRegExValidation } from "../helpers/helpers";
 
 function RegistrationForm() {
   const classes = useStyles();
@@ -24,7 +24,7 @@ function RegistrationForm() {
 
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  const [fieldErr, setFieldErr] = useState<string>("");
+  const [fieldErr, setFieldErr] = useState<string[]>([]);
 
   const [userInputs, setUserInputs] = useState({
     email: "",
@@ -99,6 +99,18 @@ function RegistrationForm() {
     });
   };
 
+  const removeFieldErr = (name: string) => {
+    setFieldErr((prev) =>
+      prev.reduce((ack, item) => {
+        if (item === name) {
+          return ack;
+        } else {
+          return [...ack, item];
+        }
+      }, [] as string[])
+    );
+  };
+
   const handleShowRoles = () => {
     setShowRoles((prev) => !prev);
   };
@@ -106,18 +118,6 @@ function RegistrationForm() {
   const handleRegistrationClick = () => {
     validateRegistration();
   };
-
-  const validateField = (name: string, value: string) => {
-    if (!runRegExValidation(name, value) || !value.length) {
-      setFieldErr(name);
-    } else {
-      setFieldErr("");
-    }
-  };
-
-  console.log(fieldErr);
-
-  const [errMessage, setErrMessage] = useState();
 
   const validateRegistration = () => {
     fetch("/users/register", {
@@ -142,6 +142,42 @@ function RegistrationForm() {
       });
   };
 
+  const [errMessage, setErrMessage] = useState();
+
+  const getErrorMsg = (name: string) => {
+    let errMsg = "";
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        errMsg = "Please enter a valid " + name;
+      } else {
+        errMsg = "";
+      }
+    });
+    return errMsg;
+  };
+
+  const getError = (name: string) => {
+    let err = false;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        err = true;
+      } else {
+        err = false;
+      }
+    });
+    return err;
+  };
+
+  const validateInput = (name: string, value: string) => {
+    if (!runRegExValidation(name, value) || !value.length) {
+      if (!fieldErr.includes(name)) {
+        setFieldErr([...fieldErr, name]);
+      }
+    } else {
+      removeFieldErr(name);
+    }
+  };
+
   return (
     <form className={classes.form} noValidate>
       {inputFields.map(({ name, value }) => {
@@ -160,16 +196,12 @@ function RegistrationForm() {
             }
             name={name}
             autoComplete={name}
-            autoFocus
             type={name === "password" ? "password" : "text"}
             onChange={handleUserInputs}
-            onBlur={() => validateField(name, value)}
-            error={fieldErr === name ? true : false}
-            helperText={
-              fieldErr === name ? "Please enter a valid " + name : null
-            }
+            onBlur={() => validateInput(name, value)}
+            error={getError(name)}
+            helperText={getErrorMsg(name)}
             value={value}
-            onFocus={() => setFieldErr("")}
           />
         );
       })}
