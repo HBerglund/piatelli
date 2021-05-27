@@ -19,15 +19,15 @@ POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "oscar@oscar.se",
-    "password": "123",
+    "email": "oscar@OSCAR.se",
+    "password": "asdasdd",
     "role": "customer",
     "authorizedAdmin": false,
     "fullName": "Oscar Andersson",
     "phone": "0705552233",
     "address": {
         "street": "stampgatan 38",
-        "zipcode": "41102",
+        "zipcode": "411  02",
         "city": "Gothenburg",
         "country": "Sweden"
     }
