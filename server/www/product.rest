@@ -2,7 +2,7 @@
 GET http://localhost:4000/products
 
 ### GET ONE BY ID
-GET http://localhost:4000/products/60a5146db931ca41af97a025
+GET http://localhost:4000/products/60a5146db931ca41af97a026
 
 ### DELETE BY ID
 DELETE http://localhost:4000/products/60a5016f5503828d59579da8

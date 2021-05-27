@@ -54,8 +54,6 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
     });
   };
 
-  console.log(user);
-
   return (
     <LoggedInContext.Provider
       value={{
