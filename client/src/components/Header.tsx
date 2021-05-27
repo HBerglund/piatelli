@@ -38,10 +38,10 @@ function Header() {
       </Hidden>
       <Hidden smDown>
         <Link to="/new-collection" color="inherit">
-          <Typography variant="body2">New Collection </Typography>
+          <Typography variant="body2">News </Typography>
         </Link>
         <Link to="/products" color="inherit">
-          <Typography variant="body2">All Bags </Typography>{" "}
+          <Typography variant="body2">All Products </Typography>{" "}
         </Link>
       </Hidden>
 

@@ -9,6 +9,7 @@ import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
 interface IProps {
   isLarge: boolean;
+  filterBy: string;
 }
 
 function ProductGrid(props: IProps, id: string) {
@@ -18,6 +19,17 @@ function ProductGrid(props: IProps, id: string) {
   const [isHover, setIsHover] = useState(id);
   const previewCatalogue = products.slice(1, 7);
   const classes = useStyles();
+
+  const filteredProducts = products.filter((product) => {
+    if (props.filterBy === "all") {
+      return product;
+    } else {
+      for (const category of product.category) {
+        if (category === props.filterBy) return product;
+      }
+      return;
+    }
+  });
 
   return (
     <Box>
@@ -30,7 +42,7 @@ function ProductGrid(props: IProps, id: string) {
             spacing={1}
             className={classes.innerGridStyle}
           >
-            {products.map((product, i) => (
+            {filteredProducts.map((product, i) => (
               <Box
                 key={i}
                 className={classes.boxStyle}

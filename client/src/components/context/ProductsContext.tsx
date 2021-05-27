@@ -14,6 +14,7 @@ export interface Product {
 
 interface IState {
   products: Product[];
+  categories: string[];
 }
 
 interface IProps {
@@ -27,6 +28,7 @@ interface ContextValue extends IState {
 
 export const ProductsContext = createContext<ContextValue>({
   products: [],
+  categories: [],
   addNewProduct: () => {},
   updateProduct: () => {},
   removeProduct: () => {},
@@ -34,11 +36,28 @@ export const ProductsContext = createContext<ContextValue>({
 
 function ProductProvider(props: IProps) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const getAllCategories = (products: Product[]) => {
+    const categories: string[] = [];
+    products.forEach((product) => {
+      if (product.category.length > 1) {
+        product.category.forEach((category: string) => {
+          categories.push(category);
+        });
+      } else {
+        categories.push(product.category[0] as string);
+      }
+      const setOfCategories = Array.from(new Set(categories));
+      setCategories(setOfCategories);
+    });
+  };
 
   useEffect(() => {
     fetch("/products", { method: "GET" }).then((res) =>
       res.json().then((result) => {
         setProducts(result);
+        getAllCategories(result);
       })
     );
   }, []);
@@ -83,6 +102,7 @@ function ProductProvider(props: IProps) {
     <ProductsContext.Provider
       value={{
         products,
+        categories,
         addNewProduct,
         updateProduct,
         removeProduct,
