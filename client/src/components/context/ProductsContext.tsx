@@ -48,8 +48,7 @@ function ProductProvider(props: IProps) {
       } else {
         categories.push(product.category[0] as string);
       }
-      const setOfCategories = Array.from(new Set(categories));
-      setCategories(setOfCategories);
+      setCategories(Array.from(new Set(categories)));
     });
   };
 
@@ -65,10 +64,6 @@ function ProductProvider(props: IProps) {
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
   });
-
-  function randomID() {
-    return Math.random() * (99999 - 1) + 1;
-  }
 
   function addNewProduct(product: Product) {
     // product.id = randomID();

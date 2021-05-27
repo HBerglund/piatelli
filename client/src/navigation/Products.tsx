@@ -19,14 +19,13 @@ function Products() {
       display: "flex",
       justifyContent: "center",
       padding: "2rem",
+      flexWrap: "wrap",
     },
     categoryButton: {
-      margin: "0 2rem",
+      margin: "0.5rem 2rem",
     },
   }));
   const classes = useStyles();
-
-  console.log(filter);
 
   return (
     <Section>

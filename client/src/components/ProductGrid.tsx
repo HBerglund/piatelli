@@ -27,7 +27,7 @@ function ProductGrid(props: IProps, id: string) {
       for (const category of product.category) {
         if (category === props.filterBy) return product;
       }
-      return;
+      return null;
     }
   });
 
