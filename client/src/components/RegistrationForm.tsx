@@ -13,6 +13,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
+import runRegExValidation from "../helpers/validations";
 
 function RegistrationForm() {
   const classes = useStyles();
@@ -22,6 +23,8 @@ function RegistrationForm() {
     useState<"default" | "failure" | "success">("default");
 
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const [fieldErr, setFieldErr] = useState<string>("");
 
   const [userInputs, setUserInputs] = useState({
     email: "",
@@ -104,6 +107,16 @@ function RegistrationForm() {
     validateRegistration();
   };
 
+  const validateField = (name: string, value: string) => {
+    if (!runRegExValidation(name, value) || !value.length) {
+      setFieldErr(name);
+    } else {
+      setFieldErr("");
+    }
+  };
+
+  console.log(fieldErr);
+
   const [errMessage, setErrMessage] = useState();
 
   const validateRegistration = () => {
@@ -131,22 +144,35 @@ function RegistrationForm() {
 
   return (
     <form className={classes.form} noValidate>
-      {inputFields.map(({ name, value }) => (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id={name}
-          label={name.charAt(0).toUpperCase() + name.slice(1)}
-          name={name}
-          autoComplete={name}
-          autoFocus
-          type={name === "password" ? "password" : "text"}
-          onChange={handleUserInputs}
-          value={value}
-        />
-      ))}
+      {inputFields.map(({ name, value }) => {
+        const formattedLabel = name.charAt(0).toUpperCase() + name.slice(1);
+        return (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id={name}
+            label={
+              name === "password"
+                ? formattedLabel + " (at least 6 characters)"
+                : formattedLabel
+            }
+            name={name}
+            autoComplete={name}
+            autoFocus
+            type={name === "password" ? "password" : "text"}
+            onChange={handleUserInputs}
+            onBlur={() => validateField(name, value)}
+            error={fieldErr === name ? true : false}
+            helperText={
+              fieldErr === name ? "Please enter a valid " + name : null
+            }
+            value={value}
+            onFocus={() => setFieldErr("")}
+          />
+        );
+      })}
       <TextField
         variant="outlined"
         margin="normal"
