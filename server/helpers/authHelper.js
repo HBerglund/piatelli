@@ -7,7 +7,11 @@ function loggedInUser(req) {
 }
 
 function userIsAdmin(req) {
-  if (loggedInUser(req) && req.session.user.role === "admin") {
+  if (
+    loggedInUser(req) &&
+    req.session.user.role === "admin" &&
+    req.session.user.authorizedAdmin
+  ) {
     return true;
   } else {
     return false;

@@ -21,7 +21,7 @@ function LoginPage() {
   const history = useHistory();
   const loggedInContext = useContext(LoggedInContext);
 
-  const [logInProgress, setLogInProgress] = useState("default");
+  // const [logInProgress, setLogInProgress] = useState("default");
   const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
@@ -88,13 +88,13 @@ function LoginPage() {
             value={loginInput.password}
             onChange={handleUserInputs}
           />
-          {logInProgress === "failure" ? (
+          {/* {logInProgress === "failure" ? (
             <Typography className={classes.errorText}>
               Wrong username or password
             </Typography>
           ) : (
             <div></div>
-          )}
+          )} */}
 
           <Button
             onClick={handleLoginClick}
