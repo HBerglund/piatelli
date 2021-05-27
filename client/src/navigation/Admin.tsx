@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -9,6 +9,7 @@ import Section from "../components/Section";
 import AdminProducts from "./AdminProducts";
 import AdminUsers from "../components/AdminUsers";
 import AdminOrders from "../components/AdminOrders";
+import { LoggedInContext } from "../components/context/LoginContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,37 +54,48 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Admin() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const loggedInContext = useContext(LoggedInContext);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
-  return (
-    <Section>
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="simple tabs example"
-          >
-            <Tab label="Products" {...a11yProps(0)} />
-            <Tab label="Users" {...a11yProps(1)} />
-            <Tab label="Orders" {...a11yProps(2)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          <AdminProducts />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <AdminUsers />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <AdminOrders />
-        </TabPanel>
-      </div>
-    </Section>
-  );
+  if (loggedInContext.user?.authorizedAdmin) {
+    return (
+      <Section>
+        <div className={classes.root}>
+          <AppBar position="static">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="simple tabs example"
+            >
+              <Tab label="Products" {...a11yProps(0)} />
+              <Tab label="Users" {...a11yProps(1)} />
+              <Tab label="Orders" {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <AdminProducts />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <AdminUsers />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <AdminOrders />
+          </TabPanel>
+        </div>
+      </Section>
+    );
+  } else {
+    return (
+      <Section>
+        <Typography>
+          You do not have permission to visit this page...
+        </Typography>
+      </Section>
+    );
+  }
 }
 
 export default Admin;

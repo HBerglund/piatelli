@@ -1,4 +1,4 @@
-import { createContext, FC, useState } from "react";
+import { createContext, FC, useEffect, useState } from "react";
 import { User } from "../../helpers/typings";
 
 interface LoginInput {
@@ -40,6 +40,27 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
         }
       });
   };
+
+  //CHECK IF THERE IS AN ACTIVE LOGGED IN - COOKIE, AND SET USER
+  const authenticateLoggedIn = () => {
+    fetch("/users/authenticate", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.message) {
+          console.log(result.message);
+          setUser(undefined);
+        } else {
+          setUser(result.user);
+        }
+      });
+  };
+
+  useEffect(() => {
+    authenticateLoggedIn();
+  }, []);
 
   const logOut = () => {
     fetch("/users/logout", {
