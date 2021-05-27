@@ -39,8 +39,9 @@ function ProductGrid(props: IProps, id: string) {
                 <Typography variant="h6">
                   <Hidden only={["xs", "sm", "md"]}>
                     <Img
+                      style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.preview, fallback]}
+                      src={[product.img, fallback]}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
@@ -56,8 +57,9 @@ function ProductGrid(props: IProps, id: string) {
                       >
                         <Box>
                           <Img
+                            style={{ objectFit: "cover" }}
                             onMouseEnter={() => setIsHover(product.name)}
-                            src={[product.preview, fallback]}
+                            src={[product.img, fallback]}
                             className={classes.customCursor}
                             draggable={false}
                             alt="Bags from Pialetti"
@@ -163,8 +165,9 @@ function ProductGrid(props: IProps, id: string) {
                 <Typography variant="h6">
                   <Hidden mdDown>
                     <Img
+                      style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.preview, fallback]}
+                      src={[product.img, fallback]}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
@@ -176,7 +179,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -188,8 +191,9 @@ function ProductGrid(props: IProps, id: string) {
                   <Hidden only={["xs", "sm", "lg", "xl"]}>
                     <Link to={`/products/${product.name}`}>
                       <Img
+                        style={{ objectFit: "cover" }}
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -202,7 +206,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"

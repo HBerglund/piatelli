@@ -30,7 +30,7 @@ function EditableProductItem(props: Props) {
       <Box key={i} className={classes.productCard}>
         <Hidden only={"xs"}>
           <Img
-            src={[product.preview, fallback]}
+            src={[product.img, fallback]}
             className={classes.imageStyling}
             draggable={false}
             alt="Bags from Pialetti"
@@ -40,7 +40,7 @@ function EditableProductItem(props: Props) {
         </Hidden>
         <Hidden smUp>
           <img
-            src={product.preview}
+            src={product.img}
             className={classes.imageStyling}
             draggable={false}
             alt="Bags from Pialetti"

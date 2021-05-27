@@ -47,6 +47,7 @@ function Checkout() {
     } else {
       setLoading(false);
     }
+    // eslint-disable-next-line
   }, []);
 
   //Step counter
@@ -173,7 +174,7 @@ function Checkout() {
                 <Box key={i} className={classes.cartContent}>
                   <Link href={`/products/${product.name}`}>
                     <Img
-                      src={[product.preview, fallback]}
+                      src={[product.img, fallback]}
                       width="100rem"
                       height="100rem"
                     />

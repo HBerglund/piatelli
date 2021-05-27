@@ -37,9 +37,9 @@ function Cart(props: IProps) {
           <Box className={classes.cartWrapper}>
             {cart.map((product: CartItem, i) => (
               <Box key={i} className={classes.cartItems}>
-                <Link to={`/products/${product.name}`}>
+                <Link to={`/producimgoduct.name}`}>
                   <Img
-                    src={[product.preview, fallback]}
+                    src={[product.img, fallback]}
                     width="100rem"
                     height="100rem"
                   />
