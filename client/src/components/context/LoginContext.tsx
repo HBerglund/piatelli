@@ -51,6 +51,7 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
       .then((result) => {
         if (result.message) {
           console.log(result.message);
+          setUser(undefined);
         } else {
           setUser(result.user);
         }

@@ -49,7 +49,6 @@ function LoginPage() {
   // TODO: ADD CHECKS TO LOGIN VALIDATION
   const handleLoginClick = () => {
     loggedInContext.validateLogin(loginInput);
-    history.replace("/");
   };
 
   return (
