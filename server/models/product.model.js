@@ -7,8 +7,8 @@ const productSchema = new mongoose.Schema({
   price: { type: "Number", required: true },
   img: {
     type: "String",
-    required: true,
-    validate: [validateImgUrl, "invalid image url"],
+    // required: true,
+    // validate: [validateImgUrl, "invalid image url"],
   },
   description: {
     type: "String",

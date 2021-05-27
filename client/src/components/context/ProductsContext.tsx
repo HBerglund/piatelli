@@ -76,14 +76,10 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then((result) => console.log(result));
-
-    // const updateProductView = [...products, product];
-    // setProducts(updateProductView);
-
-    // product.id = randomID();
-    // const updateProductView = [...products, product];
-    // setProducts(updateProductView);
+      .then(() => {
+        const updateProductView = [...products, product];
+        setProducts(updateProductView);
+      });
   }
 
   function updateProduct(product: Product) {
