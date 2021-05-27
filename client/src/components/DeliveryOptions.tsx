@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
-import { useEffect, useState } from "react";
 import { Delivery } from "../helpers/typings";
 
 interface IProps {
@@ -60,10 +60,21 @@ function DeliveryOptions(props: IProps) {
               <Typography>
                 Delivery cost: {chosenDeliveryOption.price} kr
               </Typography>
-              {/* <Typography>Estimated delivery time: {String(pnDel)}</Typography> */}
-              <Typography>
-                Delivery time: {chosenDeliveryOption.deliveryTime}
-              </Typography>
+              {chosenDeliveryOption.name === "Post Nord" ? (
+                <Typography>
+                  Estimated delivery time: {String(pnDel)}
+                </Typography>
+              ) : null}
+              {chosenDeliveryOption.name === "Budbee home delivery" ? (
+                <Typography>
+                  Estimated delivery time: {String(budbeeDel)}
+                </Typography>
+              ) : null}
+              {chosenDeliveryOption.name === "Instabox" ? (
+                <Typography>
+                  Estimated delivery time: {String(instaDel)}
+                </Typography>
+              ) : null}
             </Box>
           </Box>
         ) : null}

@@ -96,7 +96,7 @@ function OrderComfirmation(props: IProps) {
                 Nord.
               </Typography>
             ) : null}
-            {props.deliveryOption?.name === "Budbee" ? (
+            {props.deliveryOption?.name === "Budbee home delivery" ? (
               <Typography>
                 Delivery method: <br /> Home delivery with Budbee.
               </Typography>
