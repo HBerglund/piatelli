@@ -1,12 +1,12 @@
 const express = require("express");
 const {
   getAll,
-  createDelivery,
+  createDeliveryOption,
 } = require("../controllers/delivery.controller");
 
 const deliveryRouter = express.Router();
 
-deliveryRouter.get("/orders", getAll);
-deliveryRouter.post("/orders/", createDelivery);
+deliveryRouter.get("/delivery", getAll);
+deliveryRouter.post("/delivery", createDeliveryOption);
 
 module.exports = deliveryRouter;

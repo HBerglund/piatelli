@@ -1,12 +1,19 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
+import { Delivery } from "../helpers/typings";
+
 interface IProps {
-  deliveryOption: string | undefined;
-  setDeliveryOption: (value: string) => void;
+  deliveryOption: Delivery | undefined;
+  setDeliveryOption: (value: any) => void;
 }
 
 function DeliveryOptions(props: IProps) {
   const classes = useStyles();
+
+  const [deliveryOptions, setDeliveryOptions] = useState<Delivery[]>([]);
+  const [chosenDeliveryOption, setChosenDeliveryOption] =
+    useState<Delivery | undefined>(undefined);
 
   //vars for delivery dates
   let today = moment();
@@ -15,54 +22,62 @@ function DeliveryOptions(props: IProps) {
   let pnDel = today.add(3, "d").format("dddd, MMMM Do");
   let budbeeDel = today2.add(2, "d").format("dddd, MMMM Do");
   let instaDel = today3.add(1, "d").format("dddd, MMMM Do");
+
+  useEffect(() => {
+    fetch("/delivery")
+      .then((res) => res.json())
+      .then((result) => {
+        setDeliveryOptions(result);
+      });
+  }, []);
+
+  const handleDeliveryClick = (deliveryOption: Delivery) => {
+    props.setDeliveryOption(deliveryOption);
+    setChosenDeliveryOption(deliveryOption);
+  };
+
   return (
     <>
       <h5 className={classes.centerFlex}>Delivery Options</h5>
       <Box className={classes.marginBottom}>
         <Box className={`${classes.centerFlex}`}>
-          <Box
-            onClick={() => props.setDeliveryOption("pn")}
-            className={classes.deliveryBox}
-          >
-            Post Nord: 2-5 days
-          </Box>
-          <Box
-            onClick={() => props.setDeliveryOption("budbee")}
-            className={classes.deliveryBox}
-          >
-            Budbee home delivery: 1-3 days
-          </Box>
-          <Box
-            onClick={() => props.setDeliveryOption("instabox")}
-            className={classes.deliveryBox}
-          >
-            Instabox: 1-3 days
-          </Box>
+          {deliveryOptions.map((option) => (
+            <Box className={classes.flexColumn} key={option._id}>
+              <Button
+                onClick={() => handleDeliveryClick(option)}
+                className={classes.deliveryBox}
+              >
+                {option.name}
+              </Button>
+            </Box>
+          ))}
         </Box>
-        <Box className={`${classes.centerFlex} ${classes.deliveryInformation}`}>
-          {props.deliveryOption === "pn" ? (
+        {chosenDeliveryOption ? (
+          <Box
+            className={`${classes.centerFlex} ${classes.deliveryInformation}`}
+          >
             <Box>
-              <Typography>Delivery cost: free</Typography>
-              <Typography>Estimated delivery time: {String(pnDel)}</Typography>
-            </Box>
-          ) : null}
-          {props.deliveryOption === "budbee" ? (
-            <Box>
-              <Typography>Delivery cost: 69kr</Typography>
               <Typography>
-                Estimated delivery time: {String(budbeeDel)}
+                Delivery cost: {chosenDeliveryOption.price} kr
               </Typography>
+              {chosenDeliveryOption.name === "Post Nord" ? (
+                <Typography>
+                  Estimated delivery time: {String(pnDel)}
+                </Typography>
+              ) : null}
+              {chosenDeliveryOption.name === "Budbee home delivery" ? (
+                <Typography>
+                  Estimated delivery time: {String(budbeeDel)}
+                </Typography>
+              ) : null}
+              {chosenDeliveryOption.name === "Instabox" ? (
+                <Typography>
+                  Estimated delivery time: {String(instaDel)}
+                </Typography>
+              ) : null}
             </Box>
-          ) : null}
-          {props.deliveryOption === "instabox" ? (
-            <Box>
-              <Typography>Delivery cost: 39kr</Typography>
-              <Typography>
-                Estimated delivery time: {String(instaDel)}
-              </Typography>
-            </Box>
-          ) : null}
-        </Box>
+          </Box>
+        ) : null}
       </Box>
     </>
   );
@@ -73,6 +88,10 @@ export default DeliveryOptions;
 const useStyles = makeStyles((theme) => ({
   flexColumn: {
     flexDirection: "column",
+    display: "flex",
+  },
+  flexRow: {
+    flexDirection: "row",
     display: "flex",
   },
   centerFlex: {

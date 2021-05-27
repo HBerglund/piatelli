@@ -1,20 +1,15 @@
 const DeliveryModel = require("../models/delivery.model");
 
-const getAll = async (req, res, next) => {
-  const delivery = await DeliveryModel.find({}).populate("order");
+const getAll = async (req, res) => {
+  const delivery = await DeliveryModel.find({});
   res.status(200).json(delivery);
 };
 
-//Is this function needed? Should be hardcoded?
-
-const createDelivery = async (req, res) => {
+const createDeliveryOption = async (req, res) => {
   const delivery = await DeliveryModel.create({
     ...req.body,
   });
-  res.status(201).json(address);
+  res.status(201).json(delivery);
 };
 
-module.exports = {
-  getAll,
-  createDelivery,
-};
+module.exports = { getAll, createDeliveryOption };

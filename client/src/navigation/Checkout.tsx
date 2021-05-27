@@ -18,6 +18,7 @@ import OrderComfirmation from "../components/OrderComfirmation";
 import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
+import { Delivery } from "../helpers/typings";
 
 function getSteps() {
   return [
@@ -41,7 +42,7 @@ function Checkout() {
   const [zipCode, setZipCode] = useState<string>();
   const [country, setCountry] = useState<string>();
   const [city, setCity] = useState<string>();
-  const [deliveryOption, setDeliveryOption] = useState<string>();
+  const [deliveryOption, setDeliveryOption] = useState<Delivery>();
 
   function validation(value: number | string, pattern: RegExp) {
     const charPattern = pattern;
