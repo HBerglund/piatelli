@@ -1,4 +1,4 @@
-import { Box, Button, Link, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import { ShoppingCart as CartIcon } from "@material-ui/icons";
@@ -7,6 +7,8 @@ import { useContext } from "react";
 import GroupedButtons from "./CartIncrementer";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
+import { Link } from "react-router-dom";
+
 interface IProps {
   isVisible: boolean;
   onHide: () => void;
@@ -35,7 +37,7 @@ function Cart(props: IProps) {
           <Box className={classes.cartWrapper}>
             {cart.map((product: CartItem, i) => (
               <Box key={i} className={classes.cartItems}>
-                <Link href={`/products/${product.name}`}>
+                <Link to={`/products/${product.name}`}>
                   <Img
                     src={[product.preview, fallback]}
                     width="100rem"
@@ -60,7 +62,7 @@ function Cart(props: IProps) {
                 variant="contained"
                 size={"small"}
               >
-                <Link href="/checkout" underline="none" color="inherit">
+                <Link to="/checkout" color="inherit">
                   Checkout
                 </Link>
               </Button>

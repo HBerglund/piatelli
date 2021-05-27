@@ -11,8 +11,13 @@ import Explore from "../components/Explore";
 import PromotionSecond from "../components/PromotionSecond";
 import ProductGrid from "../components/ProductGrid";
 import Newsletter from "../components/Newsletter";
+import { useEffect } from "react";
 
 function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const classes = useStyles();
 
   return (

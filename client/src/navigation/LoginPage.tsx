@@ -6,18 +6,20 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 //images
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 //icons
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router";
+import { LoggedInContext } from "../components/context/LoginContext";
 
 function LoginPage() {
   const classes = useStyles();
 
   const history = useHistory();
+  const loggedInContext = useContext(LoggedInContext);
 
   const [logInProgress, setLogInProgress] = useState("default");
   const [loginInput, setLoginInput] = useState({
@@ -29,7 +31,11 @@ function LoginPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(logInProgress);
+  useEffect(() => {
+    if (loggedInContext.user) {
+      history.replace("/");
+    }
+  }, [loggedInContext.user]);
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -40,26 +46,8 @@ function LoginPage() {
   };
 
   const handleLoginClick = () => {
-    validateLogin();
-  };
-
-  const validateLogin = () => {
-    fetch("/users/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginInput),
-    }).then((res) => {
-      if (res.status === 201) {
-        res.json().then((result) => console.log(result));
-        setLogInProgress("success");
-        history.replace("/");
-      } else {
-        setLogInProgress("failure");
-      }
-    });
+    loggedInContext.validateLogin(loginInput);
+    history.replace("/");
   };
 
   return (

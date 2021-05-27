@@ -37,6 +37,19 @@ function RegistrationForm() {
     role: "customer",
   });
 
+  const { email, password, fullName, phone, address } = userInputs;
+  const { street, city, zipcode, country } = address;
+  const inputFields = [
+    { name: "email", value: email },
+    { name: "fullName", value: fullName },
+    { name: "phone", value: phone },
+    { name: "street", value: street },
+    { name: "city", value: city },
+    { name: "zipcode", value: zipcode },
+    { name: "country", value: country },
+    { name: "password", value: password },
+  ];
+
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   useEffect(() => {
@@ -45,7 +58,7 @@ function RegistrationForm() {
     } else {
       setPasswordMatch(true);
     }
-  }, [confirmPassword]);
+  }, [confirmPassword, userInputs.password]);
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -91,6 +104,8 @@ function RegistrationForm() {
     validateRegistration();
   };
 
+  const [errMessage, setErrMessage] = useState();
+
   const validateRegistration = () => {
     fetch("/users/register", {
       method: "POST",
@@ -99,125 +114,39 @@ function RegistrationForm() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userInputs),
-    }).then((res) => {
-      if (res.status === 201) {
-        res.json().then((result) => console.log(result));
-        setRegistrationProgress("success");
-        history.replace("/login");
-      } else {
-        setRegistrationProgress("failure");
-      }
-    });
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result._id) {
+          setRegistrationProgress("success");
+          history.replace("/login");
+        } else {
+          setErrMessage(result.message);
+          setRegistrationProgress("failure");
+          console.log(result);
+        }
+      });
   };
 
   return (
     <form className={classes.form} noValidate>
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="email"
-        label="Email"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.email}
-      />
-
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="fullName"
-        label="Full Name"
-        name="fullName"
-        autoComplete="fullName"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.fullName}
-      />
-
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="street"
-        label="Street Address"
-        name="street"
-        autoComplete="street"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.address.street}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="zipcode"
-        label="Zip Code"
-        name="zipcode"
-        autoComplete="zipcode"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.address.zipcode}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="city"
-        label="City"
-        name="city"
-        autoComplete="city"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.address.city}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="country"
-        label="Country"
-        name="country"
-        autoComplete="country"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.address.country}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="phone"
-        label="Phone"
-        name="phone"
-        autoComplete="phone"
-        autoFocus
-        onChange={handleUserInputs}
-        value={userInputs.phone}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        name="password"
-        label="Password"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        value={userInputs.password}
-        onChange={handleUserInputs}
-      />
+      {inputFields.map(({ name, value }) => (
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id={name}
+          label={name.charAt(0).toUpperCase() + name.slice(1)}
+          name={name}
+          autoComplete={name}
+          autoFocus
+          type={name === "password" ? "password" : "text"}
+          onChange={handleUserInputs}
+          value={value}
+        />
+      ))}
       <TextField
         variant="outlined"
         margin="normal"
@@ -235,9 +164,7 @@ function RegistrationForm() {
         <Typography className={classes.errorText}>
           Passwords doesn't match..
         </Typography>
-      ) : (
-        <div></div>
-      )}
+      ) : null}
       <FormControl>
         <InputLabel onClick={handleShowRoles}>Role</InputLabel>
         <Select
@@ -260,13 +187,8 @@ function RegistrationForm() {
       ) : null}
 
       {registrationProgress === "failure" ? (
-        <Typography className={classes.errorText}>
-          Something went wrong with your registration... Please try again and
-          make sure you've filled out all fields correctly.
-        </Typography>
-      ) : (
-        <div></div>
-      )}
+        <Typography className={classes.errorText}>{errMessage}</Typography>
+      ) : null}
 
       <Button
         onClick={handleRegistrationClick}

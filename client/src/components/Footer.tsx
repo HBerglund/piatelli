@@ -1,13 +1,19 @@
 import { Box, Container, Typography, Link, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
+import { useHistory } from "react-router";
 import { LoggedInContext } from "./context/LoginContext";
 import FooterSection from "./FooterSection";
 
 function Footer() {
   const classes = useStyles();
-
   const loggedInContext = useContext(LoggedInContext);
+  const history = useHistory();
+
+  const handleLogOutClick = () => {
+    loggedInContext.logOut();
+    history.replace("/");
+  };
 
   return (
     <Container className={classes.containerStyle} maxWidth={false}>
@@ -21,7 +27,11 @@ function Footer() {
           </Hidden>
         </Box>
       </Hidden>
-      {loggedInContext.authenticated ? null : (
+      {loggedInContext.user ? (
+        <Link>
+          <Typography onClick={handleLogOutClick}>Log out</Typography>
+        </Link>
+      ) : (
         <>
           <Link href="/login">
             <Typography>Log in</Typography>

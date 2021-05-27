@@ -9,7 +9,7 @@ import {
   Stepper,
   Typography,
 } from "@material-ui/core";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PersonalDetails from "../components/PersonalDetails";
 import DeliveryOptions from "../components/DeliveryOptions";
 import PaymentMethod from "../components/PaymentMethod";
@@ -18,6 +18,8 @@ import OrderComfirmation from "../components/OrderComfirmation";
 import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
+import { useHistory } from "react-router";
+import { LoggedInContext } from "../components/context/LoginContext";
 import { Delivery } from "../helpers/typings";
 
 function getSteps() {
@@ -30,6 +32,23 @@ function getSteps() {
 }
 
 function Checkout() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const history = useHistory();
+  const loggedInContext = useContext(LoggedInContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    //THIS DOESN'T WORK
+    if (!loggedInContext.user) {
+      history.replace("/login");
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
   //Step counter
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
@@ -242,6 +261,9 @@ function Checkout() {
     }
   }
 
+  if (loading) {
+    return <div>loading</div>;
+  }
   return (
     <Box mb={10}>
       <Box className={classes.root}>
