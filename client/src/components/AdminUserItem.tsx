@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useContext } from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import {
@@ -19,13 +19,14 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { LoggedInContext } from "./context/LoginContext";
 
 interface Props {
   user: {
     email: string;
     role: string;
     fullName: string;
-    approvedAdmin: boolean;
+    authorizedAdmin: boolean;
     phone: string;
     address: {
       street: string;
@@ -37,12 +38,13 @@ interface Props {
 }
 
 function AdminUserItem(props: Props) {
+  const loggedInContext = useContext(LoggedInContext);
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const [editable, setEditable] = useState<boolean>(false);
   // TODO: State type should be of User
   const [user, setUser] = useState<any>(props.user);
 
-  const { email, role, fullName, approvedAdmin, phone, address } = user;
+  const { email, role, fullName, authorizedAdmin, phone, address } = user;
   const { street, city, zipcode, country } = address;
 
   const inputFields = [
@@ -88,13 +90,14 @@ function AdminUserItem(props: Props) {
     e.target.value === "true" ? (value = true) : (value = false);
     setUser({
       ...user,
-      approvedAdmin: value,
+      authorizedAdmin: value,
     });
   };
 
   const saveUserToDb = () => {
-    //TODO: POST UPDATED USER TO DATABASE
     setEditable(false);
+    //TODO: POST UPDATED USER TO DATABASE
+    loggedInContext.updateUser(user);
   };
 
   const classes = useStyles();
@@ -117,6 +120,16 @@ function AdminUserItem(props: Props) {
           <Hidden xsDown>
             <Typography className={classes.secondaryHeading}>{role}</Typography>
           </Hidden>
+          {role === "admin" && !authorizedAdmin ? (
+            <Hidden xsDown>
+              <Typography
+                className={classes.secondaryHeading}
+                style={{ marginLeft: "2rem" }}
+              >
+                Approval required
+              </Typography>
+            </Hidden>
+          ) : null}
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
           <Box className={classes.editBox}>
@@ -167,16 +180,16 @@ function AdminUserItem(props: Props) {
             </Typography>
             {editable ? (
               <Select
-                defaultValue={approvedAdmin}
-                name="approvedAdmin"
-                value={approvedAdmin}
+                defaultValue={authorizedAdmin}
+                name="authorizedAdmin"
+                value={authorizedAdmin}
                 onChange={handleApprovedChange}
               >
                 <MenuItem value={"true"}>Approved</MenuItem>
                 <MenuItem value={"false"}>Not approved</MenuItem>
               </Select>
             ) : (
-              <Typography>{approvedAdmin ? "true" : "false"}</Typography>
+              <Typography>{authorizedAdmin ? "true" : "false"}</Typography>
             )}
           </Box>
           {inputFields.map(({ name, value }) => {

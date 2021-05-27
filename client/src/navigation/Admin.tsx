@@ -91,7 +91,7 @@ function Admin() {
     return (
       <Section>
         <Typography>
-          You do not have permission to visit this page...
+          You do not have permissions to visit this page...
         </Typography>
       </Section>
     );

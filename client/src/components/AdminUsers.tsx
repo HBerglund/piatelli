@@ -1,5 +1,7 @@
 import { Box, createStyles, makeStyles, Typography } from "@material-ui/core";
+import { useContext, useEffect } from "react";
 import AdminUserItem from "./AdminUserItem";
+import { LoggedInContext } from "./context/LoginContext";
 
 function AdminUsers() {
   const useStyles = makeStyles(() =>
@@ -7,6 +9,11 @@ function AdminUsers() {
       root: {},
     })
   );
+  const loggedInContext = useContext(LoggedInContext);
+
+  useEffect(() => {
+    loggedInContext.getAllUsers();
+  }, []);
 
   // TODO: GET USERS FROM DB
   const users: any = [
@@ -46,9 +53,11 @@ function AdminUsers() {
         All Users
       </Typography>
       <Box>
-        {users.map((user: any, i: number) => (
-          <AdminUserItem user={user} key={i} />
-        ))}
+        {loggedInContext.allUsers?.length
+          ? loggedInContext.allUsers.map((user: any, i: number) => (
+              <AdminUserItem user={user} key={i} />
+            ))
+          : null}
       </Box>
     </div>
   );

@@ -6,6 +6,7 @@ export interface User {
   fullName: string;
   address: Address;
   phone: string;
+  _id?: string;
 }
 
 export interface Address {
