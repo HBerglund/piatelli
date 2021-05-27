@@ -37,7 +37,7 @@ function ProductDetails() {
     <Box className={classes.wrapper}>
       <Box className={classes.productWrapper}>
         <Img
-          src={[detailViewProduct.preview, fallback]}
+          src={[detailViewProduct.img, fallback]}
           alt=""
           className={classes.preview}
         />
@@ -52,7 +52,7 @@ function ProductDetails() {
               <Hidden only={"sm"}>
                 <Typography>
                   <h3 className={classes.headerText}>
-                    {detailViewProduct.collection}
+                    {detailViewProduct.category}
                   </h3>
                 </Typography>
               </Hidden>
@@ -125,6 +125,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   preview: {
+    objectFit: "cover",
     height: 600,
     width: 600,
     [theme.breakpoints.down("xs")]: {

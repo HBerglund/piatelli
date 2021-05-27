@@ -35,6 +35,7 @@ function LoginPage() {
     if (loggedInContext.user) {
       history.replace("/");
     }
+    // eslint-disable-next-line
   }, [loggedInContext.user]);
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +46,7 @@ function LoginPage() {
     });
   };
 
+  // TODO: ADD CHECKS TO LOGIN VALIDATION
   const handleLoginClick = () => {
     loggedInContext.validateLogin(loginInput);
     history.replace("/");

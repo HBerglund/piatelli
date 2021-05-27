@@ -1,5 +1,4 @@
-import React, { createContext, FC, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { createContext, FC, useState } from "react";
 import { User } from "../../helpers/typings";
 
 interface LoginInput {

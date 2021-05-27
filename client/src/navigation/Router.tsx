@@ -1,6 +1,4 @@
-import React from "react";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
-import AdminProducts from "./AdminProducts";
 import Checkout from "./Checkout";
 import Home from "./Home";
 import ProductDetails from "./ProductDetails";

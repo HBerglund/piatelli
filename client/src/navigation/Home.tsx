@@ -28,7 +28,7 @@ function Home() {
         <Explore />
         <PromotionSecond />
         <Box className={classes.cataloguePreviewContainer}>
-          <ProductGrid isLarge={false} />
+          <ProductGrid filterBy="all" isLarge={false} />
         </Box>
       </Box>
       <Hidden smDown>

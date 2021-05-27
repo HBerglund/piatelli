@@ -9,6 +9,7 @@ import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
 interface IProps {
   isLarge: boolean;
+  filterBy: string;
 }
 
 function ProductGrid(props: IProps, id: string) {
@@ -18,6 +19,17 @@ function ProductGrid(props: IProps, id: string) {
   const [isHover, setIsHover] = useState(id);
   const previewCatalogue = products.slice(1, 7);
   const classes = useStyles();
+
+  const filteredProducts = products.filter((product) => {
+    if (props.filterBy === "all") {
+      return product;
+    } else {
+      for (const category of product.category) {
+        if (category === props.filterBy) return product;
+      }
+      return null;
+    }
+  });
 
   return (
     <Box>
@@ -30,7 +42,7 @@ function ProductGrid(props: IProps, id: string) {
             spacing={1}
             className={classes.innerGridStyle}
           >
-            {products.map((product, i) => (
+            {filteredProducts.map((product, i) => (
               <Box
                 key={i}
                 className={classes.boxStyle}
@@ -39,8 +51,9 @@ function ProductGrid(props: IProps, id: string) {
                 <Typography variant="h6">
                   <Hidden only={["xs", "sm", "md"]}>
                     <Img
+                      style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.preview, fallback]}
+                      src={[product.img, fallback]}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
@@ -56,8 +69,9 @@ function ProductGrid(props: IProps, id: string) {
                       >
                         <Box>
                           <Img
+                            style={{ objectFit: "cover" }}
                             onMouseEnter={() => setIsHover(product.name)}
-                            src={[product.preview, fallback]}
+                            src={[product.img, fallback]}
                             className={classes.customCursor}
                             draggable={false}
                             alt="Bags from Pialetti"
@@ -163,8 +177,9 @@ function ProductGrid(props: IProps, id: string) {
                 <Typography variant="h6">
                   <Hidden mdDown>
                     <Img
+                      style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.preview, fallback]}
+                      src={[product.img, fallback]}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
@@ -176,7 +191,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -188,8 +203,9 @@ function ProductGrid(props: IProps, id: string) {
                   <Hidden only={["xs", "sm", "lg", "xl"]}>
                     <Link to={`/products/${product.name}`}>
                       <Img
+                        style={{ objectFit: "cover" }}
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -202,7 +218,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.preview, fallback]}
+                        src={[product.img, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"

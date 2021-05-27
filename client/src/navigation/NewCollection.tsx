@@ -22,7 +22,7 @@ function NewCollection() {
         Our bags
       </Typography>
       <Box mb={8} mt={5}>
-        <ProductGrid isLarge={true} />
+        <ProductGrid filterBy="all" isLarge={true} />
       </Box>
     </Box>
   );

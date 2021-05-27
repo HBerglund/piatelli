@@ -1,20 +1,20 @@
 import { createContext, useEffect, useState } from "react";
-import { productsMocked } from "./mockedProducts";
 
 // TODO - Update product type to match product schema
 export interface Product {
   name: string;
   price: number;
-  preview: string;
-  collection: string;
+  img: string;
+  category: string[];
   description: string;
   details: string;
   care: string;
-  id: number;
+  stock: number;
 }
 
 interface IState {
   products: Product[];
+  categories: string[];
 }
 
 interface IProps {
@@ -28,60 +28,76 @@ interface ContextValue extends IState {
 
 export const ProductsContext = createContext<ContextValue>({
   products: [],
+  categories: [],
   addNewProduct: () => {},
   updateProduct: () => {},
   removeProduct: () => {},
 });
 
 function ProductProvider(props: IProps) {
-  const [products, setProducts] = useState(productsMocked);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const getAllCategories = (products: Product[]) => {
+    const categories: string[] = [];
+    products.forEach((product) => {
+      if (product.category.length > 1) {
+        product.category.forEach((category: string) => {
+          categories.push(category);
+        });
+      } else {
+        categories.push(product.category[0] as string);
+      }
+      setCategories(Array.from(new Set(categories)));
+    });
+  };
 
   useEffect(() => {
-    fetch("/products", { method: "GET" });
-
-    // eslint-disable-next-line
+    fetch("/products", { method: "GET" }).then((res) =>
+      res.json().then((result) => {
+        setProducts(result);
+        getAllCategories(result);
+      })
+    );
   }, []);
 
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(products));
   });
 
-  function randomID() {
-    return Math.random() * (99999 - 1) + 1;
-  }
-
   function addNewProduct(product: Product) {
-    product.id = randomID();
-    const updateProductView = [...products, product];
-    setProducts(updateProductView);
+    // product.id = randomID();
+    // const updateProductView = [...products, product];
+    // setProducts(updateProductView);
   }
 
   function updateProduct(product: Product) {
-    let updatedProducts = products.map((item) => {
-      if (item.id === product.id) {
-        return { ...item, product };
-      }
-      return item;
-    });
-    setProducts(updatedProducts);
+    // let updatedProducts = products.map((item) => {
+    //   if (item.id === product.id) {
+    //     return { ...item, product };
+    //   }
+    //   return item;
+    // });
+    // setProducts(updatedProducts);
   }
 
   function removeProduct(product: Product) {
-    setProducts((prev) =>
-      prev.reduce((ack, item) => {
-        if (item.id === product.id) {
-          return ack;
-        } else {
-          return [...ack, item];
-        }
-      }, [] as Product[])
-    );
+    // setProducts((prev) =>
+    //   prev.reduce((ack, item) => {
+    //     if (item.id === product.id) {
+    //       return ack;
+    //     } else {
+    //       return [...ack, item];
+    //     }
+    //   }, [] as Product[])
+    // );
   }
 
   return (
     <ProductsContext.Provider
       value={{
         products,
+        categories,
         addNewProduct,
         updateProduct,
         removeProduct,

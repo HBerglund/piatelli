@@ -1,28 +1,59 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { Box, Button, makeStyles, Typography } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { ProductsContext } from "../components/context/ProductsContext";
 import ProductGrid from "../components/ProductGrid";
+import Section from "../components/Section";
 
 function Products() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const productsContext = useContext(ProductsContext);
+
+  const [filter, setFilter] = useState("all");
+
   const useStyles = makeStyles(() => ({
-    catalogueStyles: {
-      marginTop: "8.5rem",
+    catalogueStyles: {},
+    categoriesWrapper: {
+      display: "flex",
+      justifyContent: "center",
+      padding: "2rem",
+      flexWrap: "wrap",
+    },
+    categoryButton: {
+      margin: "0.5rem 2rem",
     },
   }));
   const classes = useStyles();
 
   return (
-    <Box className={classes.catalogueStyles}>
-      <Typography variant={"h3"} align={"center"}>
-        Our bags
-      </Typography>
-      <Box mb={8} mt={5}>
-        <ProductGrid isLarge={true} />
+    <Section>
+      <Box className={classes.catalogueStyles}>
+        <Typography variant={"h3"} align={"center"}>
+          Our Products
+        </Typography>
+        <Box className={classes.categoriesWrapper}>
+          <Button
+            onClick={() => setFilter("all")}
+            className={classes.categoryButton}
+          >
+            All Products
+          </Button>
+          {productsContext.categories.map((category) => (
+            <Button
+              onClick={() => setFilter(category)}
+              className={classes.categoryButton}
+            >
+              {category}
+            </Button>
+          ))}
+        </Box>
+        <Box mb={8} mt={5}>
+          <ProductGrid filterBy={filter} isLarge={true} />
+        </Box>
       </Box>
-    </Box>
+    </Section>
   );
 }
 

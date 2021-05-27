@@ -1,10 +1,4 @@
-import {
-  Box,
-  createStyles,
-  makeStyles,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { Box, createStyles, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import AdminOrderItem from "./AdminOrderItem";
 

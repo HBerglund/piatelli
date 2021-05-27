@@ -58,7 +58,7 @@ function OrderComfirmation(props: IProps) {
             {props.payedProducts!.map((product: CartItem, i) => (
               <Box key={i} className={`${classes.cartContent}`}>
                 <Img
-                  src={[product.preview, fallback]}
+                  src={[product.img, fallback]}
                   width="100rem"
                   height="100rem"
                 />

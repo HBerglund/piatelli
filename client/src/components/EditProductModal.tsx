@@ -81,7 +81,7 @@ function EditProductModal(props: IProps) {
         <Hidden only={"xs"}>
           <Box className={classes.editCard}>
             <Img
-              src={[props.product.preview, fallback]}
+              src={[props.product.img, fallback]}
               draggable={false}
               alt="Bags from Pialetti"
               width="100"
@@ -164,10 +164,10 @@ function EditProductModal(props: IProps) {
                   id="product-Picture"
                   label="Picture"
                   onChange={(event) => {
-                    handleChange(event.target.value, "preview");
+                    handleChange(event.target.value, "img");
                     checkUrl(event.target.value);
                   }}
-                  defaultValue={props.product.preview}
+                  defaultValue={props.product.img}
                 ></TextField>
               </Box>
               <Box mb={5}>
@@ -183,13 +183,13 @@ function EditProductModal(props: IProps) {
                       </InputAdornment>
                     ),
                   }}
-                  error={props.product.collection === ""}
+                  error={props.product.category === [""]}
                   id="product-collection"
                   label="collection"
                   onChange={(event) =>
-                    handleChange(event.target.value, "collection")
+                    handleChange(event.target.value, "category")
                   }
-                  defaultValue={props.product.collection}
+                  defaultValue={props.product.category}
                 ></TextField>
               </Box>
             </Box>
