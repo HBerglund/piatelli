@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 
 // TODO - Update product type to match product schema
 export interface Product {
+  _id?: string;
   name: string;
   price: number;
   img: string;
@@ -66,31 +67,61 @@ function ProductProvider(props: IProps) {
   });
 
   function addNewProduct(product: Product) {
-    // product.id = randomID();
-    // const updateProductView = [...products, product];
-    // setProducts(updateProductView);
+    fetch("/products", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        const updateProductView = [...products, product];
+        setProducts(updateProductView);
+      });
   }
 
   function updateProduct(product: Product) {
-    // let updatedProducts = products.map((item) => {
-    //   if (item.id === product.id) {
-    //     return { ...item, product };
-    //   }
-    //   return item;
-    // });
-    // setProducts(updatedProducts);
+    const id = product._id;
+    fetch(`/products/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        let updatedProducts = products.map((item) => {
+          if (item._id === product._id) {
+            return { ...item, product };
+          }
+          return item;
+        });
+        setProducts(updatedProducts);
+      });
   }
 
   function removeProduct(product: Product) {
-    // setProducts((prev) =>
-    //   prev.reduce((ack, item) => {
-    //     if (item.id === product.id) {
-    //       return ack;
-    //     } else {
-    //       return [...ack, item];
-    //     }
-    //   }, [] as Product[])
-    // );
+    const id = product._id;
+    console.log(id);
+    fetch(`/products/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setProducts((prev) =>
+          prev.reduce((ack, item) => {
+            if (item._id === product._id) {
+              return ack;
+            } else {
+              return [...ack, item];
+            }
+          }, [] as Product[])
+        );
+      });
   }
 
   return (

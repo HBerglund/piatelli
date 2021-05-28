@@ -151,7 +151,7 @@ function EditProductModal(props: IProps) {
                   className={classes.formWidth}
                   variant={"outlined"}
                   required
-                  name="Picture"
+                  name="image"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -162,7 +162,7 @@ function EditProductModal(props: IProps) {
                   error={!validUrlInput}
                   helperText={"Please enter a valid url"}
                   id="product-Picture"
-                  label="Picture"
+                  label="Image"
                   onChange={(event) => {
                     handleChange(event.target.value, "img");
                     checkUrl(event.target.value);
@@ -175,7 +175,7 @@ function EditProductModal(props: IProps) {
                   className={classes.formWidth}
                   variant={"outlined"}
                   required
-                  name="collection"
+                  name="category"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -184,8 +184,8 @@ function EditProductModal(props: IProps) {
                     ),
                   }}
                   error={props.product.category === [""]}
-                  id="product-collection"
-                  label="collection"
+                  id="product-category"
+                  label="category"
                   onChange={(event) =>
                     handleChange(event.target.value, "category")
                   }
@@ -241,6 +241,29 @@ function EditProductModal(props: IProps) {
                   label="care"
                   onChange={(event) => handleChange(event.target.value, "care")}
                   defaultValue={props.product.care}
+                ></TextField>
+              </Box>
+              <Box mb={5}>
+                <TextField
+                  className={classes.formWidth}
+                  variant={"outlined"}
+                  required
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocalOfferOutlinedIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  name="stock"
+                  type="number"
+                  error={props.product.stock === null}
+                  id="product-stock"
+                  label="Stock"
+                  onChange={(event) =>
+                    handleChange(event.target.value, "stock")
+                  }
+                  defaultValue={props.product.stock}
                 ></TextField>
               </Box>
             </Box>
