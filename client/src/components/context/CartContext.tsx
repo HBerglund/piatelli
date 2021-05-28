@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Product } from "./ProductsContext";
+import { Product } from "../../helpers/typings";
 
 export interface CartItem extends Product {
   quantity: number;
@@ -29,7 +29,6 @@ function CartProvider(props: Props) {
   const [cartItems, setCartItems] = useState([] as CartItem[]);
 
   function addToCart(product: Product) {
-    console.log("test");
     setCartItems((prev) => {
       const isItemInCart = prev.find((item) => item.name === product.name);
       if (isItemInCart) {

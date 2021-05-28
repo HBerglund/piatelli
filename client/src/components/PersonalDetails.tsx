@@ -1,9 +1,7 @@
-import {
-  Box,
-  makeStyles,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Box, makeStyles, TextField, Typography } from "@material-ui/core";
+import { useContext, useEffect } from "react";
+import { useHistory } from "react-router";
+import { UsersContext } from "./context/UsersContext";
 interface IProps {
   fullName: string | undefined;
   setFullName: (event: string) => void;
@@ -23,6 +21,16 @@ interface IProps {
 
 function PersonalDetails(props: IProps) {
   const classes = useStyles();
+  const usersContext = useContext(UsersContext);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!usersContext.user) {
+      history.replace("/login");
+    }
+  }, [usersContext]);
+
+  const handleUseSavedInfoClick = () => {};
 
   return (
     <>
@@ -30,7 +38,33 @@ function PersonalDetails(props: IProps) {
         className={`${classes.centerFlex} ${classes.textAlign}`}
         variant="h6"
       >
-        Fill in your personal detail below:
+        Use your saved information:
+      </Typography>
+      <Box className={classes.userInformationWrapper}>
+        <Box
+          className={classes.userInformation}
+          onClick={handleUseSavedInfoClick}
+        >
+          <Typography style={{ marginBottom: ".5rem" }}>
+            {usersContext.user?.fullName}
+          </Typography>
+          <Typography style={{ marginBottom: ".5rem" }}>
+            {usersContext.user?.email}
+          </Typography>
+          <Typography>{usersContext.user?.address.street}</Typography>
+          <Typography>{usersContext.user?.address.zipcode}</Typography>
+          <Typography>{usersContext.user?.address.city}</Typography>
+          <Typography style={{ marginBottom: ".5rem" }}>
+            {usersContext.user?.address.country}
+          </Typography>
+          <Typography>{usersContext.user?.phone}</Typography>
+        </Box>
+      </Box>
+      <Typography
+        className={`${classes.centerFlex} ${classes.textAlign}`}
+        variant="h6"
+      >
+        Or choose to use another address:
       </Typography>
       <Box>
         <Box className={classes.formContainer}>
@@ -47,18 +81,6 @@ function PersonalDetails(props: IProps) {
                 label="Full Name"
                 onChange={(event) => props.setFullName(event.target.value)}
                 defaultValue={props.fullName}
-              />
-              <TextField
-                className={classes.textField}
-                required
-                variant={"outlined"}
-                name="email"
-                type="email"
-                error={props.email === ""}
-                id="standard-required"
-                label="Email"
-                onChange={(event) => props.setEmail(event.target.value)}
-                defaultValue={props.email}
               />
               <TextField
                 variant={"outlined"}
@@ -132,6 +154,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       height: "100rem",
     },
+  },
+  userInformationWrapper: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  userInformation: {
+    border: "1px solid black",
+    padding: "1rem",
+    margin: "1rem",
   },
   textAlign: {
     textAlign: "center",

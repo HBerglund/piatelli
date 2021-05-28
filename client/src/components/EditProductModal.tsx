@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useContext, useState } from "react";
-import { Product } from "./context/ProductsContext";
 import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
@@ -17,6 +16,7 @@ import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import FolderOutlinedIcon from "@material-ui/icons/FolderOutlined";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
+import { Product } from "../helpers/typings";
 
 interface IProps {
   closeModal: () => void;
