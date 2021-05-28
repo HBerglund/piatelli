@@ -5,10 +5,6 @@ interface OrderValue {
   allOrders: Order[];
   currentOrder: Order | undefined;
   getAllOrders: () => void;
-
-  //DENNA BORDE VI KUNNA FILTRERA UT FRÅN GRÄNSSNITTET ISTÄLLET?
-  getOneOrder: () => void;
-
   createOrder: (order: Order) => void;
 }
 
@@ -16,7 +12,6 @@ export const OrderContext = createContext<OrderValue>({
   allOrders: [],
   currentOrder: undefined,
   getAllOrders: () => {},
-  getOneOrder: () => {},
   createOrder: () => {},
 });
 
@@ -39,8 +34,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
       })
     );
   };
-
-  const getOneOrder = () => {};
 
   const createOrder = (data: Order) => {
     fetch("/orders", {
@@ -68,7 +61,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
         allOrders,
         currentOrder,
         getAllOrders,
-        getOneOrder,
         createOrder,
       }}
     >
