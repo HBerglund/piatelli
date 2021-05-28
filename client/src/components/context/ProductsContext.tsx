@@ -83,13 +83,25 @@ function ProductProvider(props: IProps) {
   }
 
   function updateProduct(product: Product) {
-    // let updatedProducts = products.map((item) => {
-    //   if (item.id === product.id) {
-    //     return { ...item, product };
-    //   }
-    //   return item;
-    // });
-    // setProducts(updatedProducts);
+    const id = product._id;
+    fetch(`/products/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        let updatedProducts = products.map((item) => {
+          if (item._id === product._id) {
+            return { ...item, product };
+          }
+          return item;
+        });
+        setProducts(updatedProducts);
+      });
   }
 
   function removeProduct(product: Product) {
