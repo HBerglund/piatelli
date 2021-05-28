@@ -91,9 +91,9 @@ const UsersProvider: FC<{}> = ({ children }) => {
       credentials: "include",
     }).then((res) =>
       res.json().then((result) => {
-        if (result.message) {
-          console.log(result.message);
-          setAllUsers(result.users);
+        if (result.errorCode) {
+          console.log({ result });
+          setAllUsers([]);
         } else {
           setAllUsers(result);
         }
