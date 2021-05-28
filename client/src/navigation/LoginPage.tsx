@@ -13,13 +13,14 @@ import alternativeCursor from "../assets/alternativeCursor.png";
 //icons
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router";
-import { LoggedInContext } from "../components/context/LoginContext";
+import { UsersContext } from "../components/context/UsersContext";
 
 function LoginPage() {
   const classes = useStyles();
 
   const history = useHistory();
-  const loggedInContext = useContext(LoggedInContext);
+  const usersContext = useContext(UsersContext);
+  const [loading, setLoading] = useState(true);
 
   // const [logInProgress, setLogInProgress] = useState("default");
   const [loginInput, setLoginInput] = useState({
@@ -32,11 +33,13 @@ function LoginPage() {
   }, []);
 
   useEffect(() => {
-    if (loggedInContext.user) {
+    if (usersContext.user) {
       history.replace("/");
+    } else {
+      setLoading(false);
     }
     // eslint-disable-next-line
-  }, [loggedInContext.user]);
+  }, [usersContext.user]);
 
   const handleUserInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -48,9 +51,12 @@ function LoginPage() {
 
   // TODO: ADD CHECKS TO LOGIN VALIDATION
   const handleLoginClick = () => {
-    loggedInContext.validateLogin(loginInput);
+    usersContext.validateLogin(loginInput);
   };
 
+  if (loading) {
+    return <div>loading</div>;
+  }
   return (
     <Box className={classes.catalogueStyles}>
       <div className={classes.paper}>
