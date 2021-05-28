@@ -5,13 +5,13 @@ import ProductProvider from "./components/context/ProductsContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Router from "./navigation/Router";
 import CartProvider from "./components/context/CartContext";
-import LoggedInProvider from "./components/context/LoginContext";
+import UsersProvider from "./components/context/UsersContext";
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <LoggedInProvider>
+        <UsersProvider>
           <ProductProvider>
             <CartProvider>
               <ErrorBoundary>
@@ -19,7 +19,7 @@ class App extends Component {
               </ErrorBoundary>
             </CartProvider>
           </ProductProvider>
-        </LoggedInProvider>
+        </UsersProvider>
       </BrowserRouter>
     );
   }
