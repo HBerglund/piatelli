@@ -14,6 +14,7 @@ import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
 import { UsersContext } from "./context/UsersContext";
+import { runRegExValidation } from "../helpers/helpers";
 
 function RegistrationForm() {
   const classes = useStyles();
@@ -31,6 +32,8 @@ function RegistrationForm() {
   }, [usersContext.user]);
 
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const [fieldErr, setFieldErr] = useState<string[]>([]);
 
   const [userInputs, setUserInputs] = useState({
     email: "",
@@ -105,13 +108,62 @@ function RegistrationForm() {
     });
   };
 
+  const removeFieldErr = (name: string) => {
+    setFieldErr((prev) =>
+      prev.reduce((ack, item) => {
+        if (item === name) {
+          return ack;
+        } else {
+          return [...ack, item];
+        }
+      }, [] as string[])
+    );
+  };
+
   const handleShowRoles = () => {
     setShowRoles((prev) => !prev);
   };
 
   const handleRegistrationClick = () => {
     usersContext.validateRegistration(userInputs);
+    // we need to setErrMessage somehow
     history.replace("/login");
+  };
+
+  const [errMessage, setErrMessage] = useState();
+
+  const getErrorMsg = (name: string) => {
+    let errMsg = "";
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        errMsg = "Please enter a valid " + name;
+      } else {
+        errMsg = "";
+      }
+    });
+    return errMsg;
+  };
+
+  const getError = (name: string) => {
+    let err = false;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        err = true;
+      } else {
+        err = false;
+      }
+    });
+    return err;
+  };
+
+  const validateInput = (name: string, value: string) => {
+    if (!runRegExValidation(name, value) || !value.length) {
+      if (!fieldErr.includes(name)) {
+        setFieldErr([...fieldErr, name]);
+      }
+    } else {
+      removeFieldErr(name);
+    }
   };
 
   if (loading) {
@@ -119,22 +171,31 @@ function RegistrationForm() {
   }
   return (
     <form className={classes.form} noValidate>
-      {inputFields.map(({ name, value }) => (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id={name}
-          label={name.charAt(0).toUpperCase() + name.slice(1)}
-          name={name}
-          autoComplete={name}
-          autoFocus
-          type={name === "password" ? "password" : "text"}
-          onChange={handleUserInputs}
-          value={value}
-        />
-      ))}
+      {inputFields.map(({ name, value }) => {
+        const formattedLabel = name.charAt(0).toUpperCase() + name.slice(1);
+        return (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id={name}
+            label={
+              name === "password"
+                ? formattedLabel + " (at least 6 characters)"
+                : formattedLabel
+            }
+            name={name}
+            autoComplete={name}
+            type={name === "password" ? "password" : "text"}
+            onChange={handleUserInputs}
+            onBlur={() => validateInput(name, value)}
+            error={getError(name)}
+            helperText={getErrorMsg(name)}
+            value={value}
+          />
+        );
+      })}
       <TextField
         variant="outlined"
         margin="normal"
