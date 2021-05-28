@@ -108,6 +108,7 @@ function EditProductModal(props: IProps) {
               alt="Bags from Pialetti"
               width="100"
               height="100"
+              style={{ objectFit: "cover" }}
             />
             <Box className={classes.cardText}>
               <Typography variant={"body1"}>
@@ -126,9 +127,11 @@ function EditProductModal(props: IProps) {
                   required
                   name="name"
                   variant={"outlined"}
-                  onBlur={(event) => validateInput("name", event.target.value)}
-                  error={getError("name")}
-                  helperText={getErrorMsg("name")}
+                  onBlur={(event) =>
+                    validateInput("product name", event.target.value)
+                  }
+                  error={getError("product name")}
+                  helperText={getErrorMsg("product name")}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -183,8 +186,11 @@ function EditProductModal(props: IProps) {
                       </InputAdornment>
                     ),
                   }}
-                  error={getError("img")}
-                  helperText={getErrorMsg("img")}
+                  error={getError("image url")}
+                  helperText={getErrorMsg("image url")}
+                  onBlur={(event) =>
+                    validateInput("image url", event.target.value)
+                  }
                   id="product-Picture"
                   label="Image"
                   onChange={(event) => {
@@ -299,6 +305,7 @@ function EditProductModal(props: IProps) {
               onClick={() => {
                 if (!fieldErr.length) {
                   history.replace("/admin");
+                  props.closeModal();
                   if (props.newProduct) {
                     addNewProduct(props.product!);
                     props.isProductNew();

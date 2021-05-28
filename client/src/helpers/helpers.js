@@ -16,14 +16,17 @@ const runRegExValidation = (type, value) => {
     case "phone":
       re = /^(([+]46)\s*(7)|07)[02369]\s*(\d{4})\s*(\d{3})$/;
       break;
-    case "img":
+    case "image url":
       re = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/;
       break;
     case "zipcode":
       re = /^(s-|S-){0,1}[0-9]{3}\s?[0-9]{2}$/;
       break;
-    case "name":
+    case "product name" || "address" || "country" || "street": // validates that there is no special characters
       re = /^[_A-z0-9]*((-|\s)*[_A-z0-9])*$/;
+      break;
+    case "fullName":
+      re = /^[a-zA-ZäöåÄÖÅ ,.'-]+$/;
       break;
     case "price":
       re = /^[0-9]*$/;

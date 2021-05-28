@@ -133,12 +133,17 @@ function RegistrationForm() {
   const [errMessage, setErrMessage] = useState();
 
   const getErrorMsg = (name: string) => {
-    let errMsg = "";
+    let errMsg: string | null = null;
     fieldErr.forEach((fieldName) => {
       if (fieldName === name) {
-        errMsg = "Please enter a valid " + name;
+        name === "fullName"
+          ? (errMsg = "Please enter a valid full name")
+          : (errMsg = "Please enter a valid " + name);
+        name === "password"
+          ? (errMsg = "Password needs to contain atleast 6 characters")
+          : (errMsg = "Please enter a valid " + name);
       } else {
-        errMsg = "";
+        errMsg = null;
       }
     });
     return errMsg;
@@ -180,11 +185,7 @@ function RegistrationForm() {
             required
             fullWidth
             id={name}
-            label={
-              name === "password"
-                ? formattedLabel + " (at least 6 characters)"
-                : formattedLabel
-            }
+            label={formattedLabel}
             name={name}
             autoComplete={name}
             type={name === "password" ? "password" : "text"}
