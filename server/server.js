@@ -30,18 +30,18 @@ app.use(deliveryRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);
-  if (err.message.includes("validation failed")) {
-    let errFields = {};
-    for (const [key, value] of Object.entries(err.errors)) {
-      errFields[key] = value.message;
-    }
-    res.status(400).json({
-      errorCode: 400,
-      validationError: true,
-      fields: errFields,
-    });
-    return;
-  }
+  // if (err.message.includes("validation failed")) {
+  //   let errFields = {};
+  //   for (const [key, value] of Object.entries(err.errors)) {
+  //     errFields[key] = value.message;
+  //   }
+  //   res.status(400).json({
+  //     errorCode: 400,
+  //     validationError: true,
+  //     fields: errFields,
+  //   });
+  //   return;
+  // }
   const statusCode = err.status || err.statusCode || 500;
   res.status(statusCode).json({
     errorCode: statusCode,

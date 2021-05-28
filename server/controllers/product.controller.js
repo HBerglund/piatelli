@@ -13,7 +13,7 @@ const getOneById = async (req, res) => {
   if (product) {
     res.status(200).json(product);
   } else {
-    res.status(404).json("The product doesn't exist");
+    throw new ResponseError(400, "The product doesn't exist.");
   }
 };
 
@@ -21,9 +21,15 @@ const deleteOneById = async (req, res) => {
   const id = req.params.id;
   if (userIsAdmin(req)) {
     const product = await ProductModel.findByIdAndDelete(id);
+    if (!product) {
+      throw new ResponseError(400, "The product doesn't exist in the database");
+    }
     res.status(200).json(product);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 
@@ -32,7 +38,10 @@ const createProduct = async (req, res, next) => {
     const newProduct = await ProductModel.create(req.body);
     res.status(201).json(newProduct);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 
@@ -44,9 +53,15 @@ const updateOneById = async (req, res) => {
       { ...req.body },
       { new: true }
     );
+    if (!product) {
+      throw new ResponseError(400, "The product doesn't exist in the database");
+    }
     res.status(200).json(product);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 

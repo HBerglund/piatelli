@@ -5,13 +5,17 @@ const {
   userIsAdmin,
 } = require("../helpers/authHelper");
 const bcrypt = require("bcrypt");
+const ResponseError = require("../error/ResError");
 
 const getAll = async (req, res) => {
   if (userIsAdmin(req)) {
     const users = await UserModel.find({});
     res.status(200).json(users);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 
