@@ -2,29 +2,22 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-<<<<<<< HEAD
-GET http://localhost:4000/users/60acdae5cb6fda47e46d6368
-
-### DELETE BY ID
-DELETE http://localhost:4000/users/60acd7d1354b8445fcfdeec0
-=======
 GET http://localhost:4000/users/60acccf5f6bb064989f05e5c
 
 ### DELETE BY ID
 DELETE http://localhost:4000/users/60acb3080925fd4101a26cca
->>>>>>> 35fa04cd412bfa5b29fdf8bc09ff72d229a7c0f4
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "oscar@OSCAR.se",
+    "email": "herman.e.berglund@gmail.com",
     "password": "asdasdd",
     "role": "customer",
     "authorizedAdmin": false,
     "fullName": "Oscar Andersson",
-    "phone": "0705552233",
+    "phone": "0703453433",
     "address": {
         "street": "stampgatan 38",
         "zipcode": "411  02",
@@ -47,8 +40,8 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-    "email": "herman.e.berglund@gmail.com",
-    "password": "hejhej"
+    "email": "carro@gmail.com",
+    "password": "hej"
 }
 
 ### LOGIN ADMIN

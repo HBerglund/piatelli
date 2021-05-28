@@ -5,16 +5,17 @@ const {
   userIsAdmin,
 } = require("../helpers/authHelper");
 const bcrypt = require("bcrypt");
+const ResponseError = require("../error/ResError");
 
 const getAll = async (req, res) => {
   if (userIsAdmin(req)) {
     const users = await UserModel.find({});
     res.status(200).json(users);
   } else {
-    res.status(403).json({
-      users: undefined,
-      message: "You don't have permission to perform this request",
-    });
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 
@@ -23,9 +24,15 @@ const getOneById = async (req, res) => {
   const userToCheck = await UserModel.findById(id);
   if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findById(id);
+    if (!user) {
+      throw new ResponseError(404, "User does not exist on database");
+    }
     res.status(200).json(user);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
   }
 };
 
@@ -35,8 +42,14 @@ const deleteOneById = async (req, res) => {
   if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findByIdAndDelete(id);
     res.status(200).json(user);
+    if (!user) {
+      throw new ResponseError(404, "User does not exist on database");
+    }
   } else {
-    res.status(403).json("You don't have permission to delete this user");
+    throw new ResponseError(
+      403,
+      "You don't have permission to delete this user"
+    );
   }
 };
 
@@ -49,14 +62,15 @@ const updateOneById = async (req, res) => {
       { ...req.body },
       { new: true }
     );
+    if (!user) {
+      throw new ResponseError(404, "User does not exist on database");
+    }
     res.status(200).json(user);
   } else {
-    res
-      .status(403)
-      .json({
-        user: user,
-        message: "You don't have permission to perform this request",
-      });
+    res.status(403).json({
+      user: user,
+      message: "You don't have permission to perform this request",
+    });
   }
 };
 
@@ -68,9 +82,7 @@ const register = async (req, res) => {
   const users = await UserModel.find({});
   const existingUser = users.find((user) => user.email === email);
   if (existingUser) {
-    res
-      .status(500)
-      .json({ message: "User already exist", status: res.statusCode });
+    throw new ResponseError(409, "User already exist");
   }
 
   const user = await UserModel.create({
@@ -87,11 +99,7 @@ const login = async (req, res) => {
 
   const user = users.find((user) => user.email === email);
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    res.status(401).json({
-      status: res.statusCode,
-      message: "Wrong username or password",
-    });
-    return;
+    throw new ResponseError(401, "Wrong username or password");
   }
 
   req.session.user = user;
@@ -107,7 +115,7 @@ const authenticate = async (req, res) => {
     });
     return;
   }
-  res.status(400).json({ user: undefined, message: "No user is logged in" });
+  throw new ResponseError(400, "No user is logged in");
 };
 
 const logOut = async (req, res) => {
@@ -115,7 +123,7 @@ const logOut = async (req, res) => {
     req.session = null;
     res.status(200).json("You're logged out!");
   } else {
-    res.status(400).json("You're already logged out");
+    throw new ResponseError(400, "You're already logged out");
   }
 };
 
