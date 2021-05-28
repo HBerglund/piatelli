@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CartContext } from "./context/CartContext";
 import { useContext } from "react";
 import { ProductsContext } from "./context/ProductsContext";
-import { LoggedInContext } from "./context/LoginContext";
+import { UsersContext } from "./context/UsersContext";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -18,7 +18,7 @@ function Header() {
   const { products } = useContext(ProductsContext);
   const { cart } = useContext(CartContext);
   const classes = useStyles();
-  const loggedInContext = useContext(LoggedInContext);
+  const usersContext = useContext(UsersContext);
 
   const amountOfItemsInCart = cart.reduce(
     (ack: number, item) => ack + item.quantity,
@@ -61,8 +61,8 @@ function Header() {
         </Link>
       </Hidden>
       <Box className={classes.iconWrapper}>
-        {loggedInContext.user ? (
-          <Typography>Logged in as {loggedInContext.user?.fullName}</Typography>
+        {usersContext.user ? (
+          <Typography>Logged in as {usersContext.user?.fullName}</Typography>
         ) : null}
         <Box onClick={() => setSearchClicked(true)} m="1rem">
           {!searchClicked ? (

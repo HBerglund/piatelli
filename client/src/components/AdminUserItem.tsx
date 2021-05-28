@@ -19,7 +19,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { LoggedInContext } from "./context/LoginContext";
+import { UsersContext } from "./context/UsersContext";
 
 interface Props {
   user: {
@@ -38,7 +38,7 @@ interface Props {
 }
 
 function AdminUserItem(props: Props) {
-  const loggedInContext = useContext(LoggedInContext);
+  const usersContext = useContext(UsersContext);
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const [editable, setEditable] = useState<boolean>(false);
   // TODO: State type should be of User
@@ -97,7 +97,7 @@ function AdminUserItem(props: Props) {
   const saveUserToDb = () => {
     setEditable(false);
     //TODO: POST UPDATED USER TO DATABASE
-    loggedInContext.updateUser(user);
+    usersContext.updateUser(user);
   };
 
   const classes = useStyles();

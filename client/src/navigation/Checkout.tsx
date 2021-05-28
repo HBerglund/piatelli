@@ -19,7 +19,7 @@ import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
 import { useHistory } from "react-router";
-import { LoggedInContext } from "../components/context/LoginContext";
+import { UsersContext } from "../components/context/UsersContext";
 import { Delivery } from "../helpers/typings";
 
 function getSteps() {
@@ -37,15 +37,17 @@ function Checkout() {
   }, []);
 
   const history = useHistory();
-  const loggedInContext = useContext(LoggedInContext);
+  const usersContext = useContext(UsersContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!loggedInContext.user) {
+    if (!usersContext.user) {
       history.replace("/login");
+    } else {
+      setLoading(false);
     }
     // eslint-disable-next-line
-  }, [loggedInContext.user]);
+  }, [usersContext.user]);
 
   //Step counter
   const [activeStep, setActiveStep] = useState(0);

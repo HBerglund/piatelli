@@ -8,18 +8,27 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 //images
 import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
+import { UsersContext } from "./context/UsersContext";
 
 function RegistrationForm() {
   const classes = useStyles();
   const history = useHistory();
+  const usersContext = useContext(UsersContext);
+  const [loading, setLoading] = useState(true);
 
-  const [registrationProgress, setRegistrationProgress] =
-    useState<"default" | "failure" | "success">("default");
+  useEffect(() => {
+    if (usersContext.user) {
+      history.replace("/login");
+    } else {
+      setLoading(false);
+    }
+    // eslint-disable-next-line
+  }, [usersContext.user]);
 
   const [passwordMatch, setPasswordMatch] = useState(true);
 
@@ -101,34 +110,13 @@ function RegistrationForm() {
   };
 
   const handleRegistrationClick = () => {
-    validateRegistration();
+    usersContext.validateRegistration(userInputs);
+    history.replace("/login");
   };
 
-  const [errMessage, setErrMessage] = useState();
-
-  const validateRegistration = () => {
-    fetch("/users/register", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInputs),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-        if (result._id) {
-          setRegistrationProgress("success");
-          history.replace("/login");
-        } else {
-          setErrMessage(result.message);
-          setRegistrationProgress("failure");
-          console.log(result);
-        }
-      });
-  };
-
+  if (loading) {
+    return <div>loading</div>;
+  }
   return (
     <form className={classes.form} noValidate>
       {inputFields.map(({ name, value }) => (
@@ -184,10 +172,6 @@ function RegistrationForm() {
           If you choose to sign up as an admin, another admin has to approve you
           before you get admin rights
         </Typography>
-      ) : null}
-
-      {registrationProgress === "failure" ? (
-        <Typography className={classes.errorText}>{errMessage}</Typography>
       ) : null}
 
       <Button

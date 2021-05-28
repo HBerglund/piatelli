@@ -1,32 +1,48 @@
 import { createContext, FC, useEffect, useState } from "react";
-import { User } from "../../helpers/typings";
+import { LoginInput, RegistrationInput, User } from "../../helpers/typings";
 
-interface LoginInput {
-  email: string;
-  password: string;
-}
-
-interface LoggedInValue {
+interface UsersValue {
   user: User | undefined;
   allUsers: User[] | undefined;
   validateLogin: (data: LoginInput) => void;
+  validateRegistration: (data: RegistrationInput) => void;
   logOut: () => void;
   getAllUsers: () => void;
   updateUser: (user: User) => void;
 }
 
-export const LoggedInContext = createContext<LoggedInValue>({
+export const UsersContext = createContext<UsersValue>({
   user: undefined,
   allUsers: [],
-  validateLogin: () => false,
+  validateLogin: () => {},
+  validateRegistration: () => {},
   logOut: () => {},
   getAllUsers: () => {},
   updateUser: () => {},
 });
 
-const LoggedInProvider: FC<{}> = ({ children }) => {
+const UsersProvider: FC<{}> = ({ children }) => {
   const [user, setUser] = useState<User>();
   const [allUsers, setAllUsers] = useState<User[] | []>([]);
+
+  const validateRegistration = (data: RegistrationInput) => {
+    fetch("/users/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.message) {
+          console.log(result.message);
+        } else {
+          console.log(result);
+        }
+      });
+  };
 
   const validateLogin = (data: LoginInput) => {
     fetch("/users/login", {
@@ -119,19 +135,20 @@ const LoggedInProvider: FC<{}> = ({ children }) => {
   };
 
   return (
-    <LoggedInContext.Provider
+    <UsersContext.Provider
       value={{
         user,
         allUsers,
         validateLogin,
+        validateRegistration,
         logOut,
         getAllUsers,
         updateUser,
       }}
     >
       {children}
-    </LoggedInContext.Provider>
+    </UsersContext.Provider>
   );
 };
 
-export default LoggedInProvider;
+export default UsersProvider;
