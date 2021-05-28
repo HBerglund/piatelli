@@ -52,7 +52,10 @@ const updateOneById = async (req, res) => {
     );
     res.status(200).json(user);
   } else {
-    res.status(403).json("You don't have permission to perform this request");
+    res.status(403).json({
+      user: user,
+      message: "You don't have permission to perform this request",
+    });
   }
 };
 

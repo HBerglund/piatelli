@@ -9,7 +9,7 @@ import Section from "../components/Section";
 import AdminProducts from "./AdminProducts";
 import AdminUsers from "../components/AdminUsers";
 import AdminOrders from "../components/AdminOrders";
-import { LoggedInContext } from "../components/context/LoginContext";
+import { UsersContext } from "../components/context/UsersContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Admin() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const loggedInContext = useContext(LoggedInContext);
+  const usersContext = useContext(UsersContext);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
-  if (loggedInContext.user?.authorizedAdmin) {
+  if (usersContext.user?.authorizedAdmin) {
     return (
       <Section>
         <div className={classes.root}>
@@ -91,7 +91,7 @@ function Admin() {
     return (
       <Section>
         <Typography>
-          You do not have permission to visit this page...
+          You do not have permissions to visit this page...
         </Typography>
       </Section>
     );

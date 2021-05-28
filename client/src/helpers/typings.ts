@@ -6,6 +6,26 @@ export interface User {
   fullName: string;
   address: Address;
   phone: string;
+  _id?: string;
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export interface RegistrationInput {
+  email: string;
+  fullName: string;
+  address: {
+    street: string;
+    zipcode: string;
+    city: string;
+    country: string;
+  };
+  phone: string;
+  password: string;
+  role: string;
 }
 
 export interface Address {
