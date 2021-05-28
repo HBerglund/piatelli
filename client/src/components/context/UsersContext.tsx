@@ -9,6 +9,7 @@ interface UsersValue {
   logOut: () => void;
   getAllUsers: () => void;
   updateUser: (user: User) => void;
+  removeUser: (user: User) => void;
 }
 
 export const UsersContext = createContext<UsersValue>({
@@ -19,6 +20,7 @@ export const UsersContext = createContext<UsersValue>({
   logOut: () => {},
   getAllUsers: () => {},
   updateUser: () => {},
+  removeUser: () => {},
 });
 
 const UsersProvider: FC<{}> = ({ children }) => {
@@ -121,6 +123,18 @@ const UsersProvider: FC<{}> = ({ children }) => {
       });
   };
 
+  const removeUser = (user: User) => {
+    const id = user._id;
+    console.log(id);
+    fetch(`/users/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      });
+  };
+
   const logOut = () => {
     fetch("/users/logout", {
       method: "DELETE",
@@ -144,6 +158,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
         logOut,
         getAllUsers,
         updateUser,
+        removeUser,
       }}
     >
       {children}

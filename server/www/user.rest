@@ -5,21 +5,21 @@ GET http://localhost:4000/users
 GET http://localhost:4000/users/60acccf5f6bb064989f05e5c
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60acb3080925fd4101a26cca
+DELETE http://localhost:4000/users/60b0f91d2881bf293e5061bf
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "herman.e.berglund@gmail.com",
-    "password": "asdasdd",
+    "email": "osse@gmail.com",
+    "password": "hej",
     "role": "customer",
     "authorizedAdmin": false,
-    "fullName": "Oscar Andersson",
+    "fullName": "Osse Andersson",
     "phone": "0703453433",
     "address": {
-        "street": "stampgatan 38",
+        "street": "Folkungagatan 38",
         "zipcode": "411  02",
         "city": "Gothenburg",
         "country": "Sweden"
