@@ -37,4 +37,4 @@ const runRegExValidation = (type, value) => {
   return re.test(value);
 };
 
-module.exports = { runRegExValidation };
+module.exports = runRegExValidation;

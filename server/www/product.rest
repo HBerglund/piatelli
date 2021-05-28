@@ -5,7 +5,7 @@ GET http://localhost:4000/products
 GET http://localhost:4000/products/60a5146db931ca41af97a026
 
 ### DELETE BY ID
-DELETE http://localhost:4000/products/60b09daef833d415e9c77964
+DELETE http://localhost:4000/products/60b0978bc3e06d135143e294
 
 ### POST ONE
 POST http://localhost:4000/products
@@ -15,10 +15,10 @@ Content-Type: application/json
     "category": "Sport Bag",
     "name": "a cool bag",
     "price": 200,
-    "img": "asdasd",
+    "img": "https://images.unsplash.com/photo-1621570359164-ad2429a2c93b",
     "description": "Baggy wear his ugly bag",
     "details": "bhaggy is ugly with his bag",
-    "care": "Take care of this bag",
+    "care": "a",
     "stock": 100
 }
 

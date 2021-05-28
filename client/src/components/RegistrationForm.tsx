@@ -14,7 +14,7 @@ import alternativeCursorBlack from "../assets/alternativeCursorBlack.png";
 import alternativeCursor from "../assets/alternativeCursor.png";
 import { useHistory } from "react-router";
 import { UsersContext } from "./context/UsersContext";
-import { runRegExValidation } from "../helpers/helpers";
+import runRegExValidation from "../helpers/validation";
 
 function RegistrationForm() {
   const classes = useStyles();
