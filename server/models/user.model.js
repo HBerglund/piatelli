@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
-const { validateEmail, validatePhone } = require("./model.helpers");
+const {
+  validateEmail,
+  validatePhone,
+  removeWhiteSpace,
+} = require("./model.helpers");
 
 const addressSchema = new mongoose.Schema(
   {
@@ -8,6 +12,7 @@ const addressSchema = new mongoose.Schema(
       type: "String",
       minLength: [5, "invalid zipcode"],
       maxLength: [5, "invalid zipcode"],
+      set: (zip) => removeWhiteSpace(zip),
     },
     city: { type: "String", required: true },
     country: "String",
@@ -22,10 +27,12 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validateEmail, "invalid email"],
     trim: true,
+    set: (email) => email.toLowerCase(),
   },
   password: {
     type: "String",
     required: true,
+    minLength: [5, "password must be at least 6 characters"],
   },
   role: {
     type: "String",
@@ -41,8 +48,6 @@ const userSchema = new mongoose.Schema({
   address: addressSchema,
   phone: {
     type: "String",
-    minLength: [10, "invalid phone number"],
-    maxLength: [12, "invalid phone number"],
     validate: [validatePhone, "invalid phone number"],
   },
 });

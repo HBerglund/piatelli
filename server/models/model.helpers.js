@@ -4,7 +4,7 @@ const validateEmail = (email) => {
 };
 
 const validatePhone = (phone) => {
-  const re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  const re = /^(([+]46)\s*(7)|07)[02369]\s*(\d{4})\s*(\d{3})$/;
   return re.test(phone);
 };
 
@@ -13,4 +13,13 @@ const validateImgUrl = (url) => {
   return re.test(url);
 };
 
-module.exports = { validateEmail, validatePhone, validateImgUrl };
+const removeWhiteSpace = (string) => {
+  return string.replace(/ /g, "");
+};
+
+module.exports = {
+  validateEmail,
+  validatePhone,
+  validateImgUrl,
+  removeWhiteSpace,
+};
