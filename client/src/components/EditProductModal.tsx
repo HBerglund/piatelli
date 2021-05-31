@@ -17,6 +17,9 @@ import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import FolderOutlinedIcon from "@material-ui/icons/FolderOutlined";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import { Product } from "../helpers/typings";
+import runRegExValidation from "../helpers/validation";
+import { useHistory } from "react-router";
+
 
 interface IProps {
   closeModal: () => void;
@@ -31,46 +34,66 @@ function EditProductModal(props: IProps) {
 
   const { addNewProduct, updateProduct } = useContext(ProductsContext);
 
-  const [validInput, isInputValid] = useState(true);
-  const [validUrlInput, isUrlInputValid] = useState(true);
+  const history = useHistory();
+
+  const [fieldErr, setFieldErr] = useState<string[]>([]);
   const [, setProduct] = useState<Product>();
 
-  function checkInput(value: string) {
-    const format = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
-    if (format.test(value)) {
-      isInputValid(false);
-    } else {
-      isInputValid(true);
-    }
-  }
-
-  function checkUrl(value: string) {
-    const pattern = new RegExp(
-      "^(https?:\\/\\/)?" + // protocol
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|" + // domain name
-        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    ); // fragment locator
-    if (pattern.test(value)) {
-      isUrlInputValid(false);
-    } else {
-      isUrlInputValid(true);
-    }
-  }
-
   function handleChange(value: string | number, key: keyof Product) {
-    /* const editedProduct = {...props.product}
-    editedProduct[key] = value; 
-    setProduct(editedProduct) */
     setProduct(props.product);
     setProduct((prev: any) => {
       prev[key] = value;
       return prev;
     });
   }
+
+  const getError = (name: string) => {
+    let err = false;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        err = true;
+      } else {
+        err = false;
+      }
+    });
+    return err;
+  };
+
+  const getErrorMsg = (name: string) => {
+    let errMsg = "";
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        errMsg = "Please enter a valid " + name;
+      } else {
+        errMsg = "";
+      }
+    });
+    return errMsg;
+  };
+
+  const removeFieldErr = (name: string) => {
+    setFieldErr((prev) =>
+      prev.reduce((ack, item) => {
+        if (item === name) {
+          return ack;
+        } else {
+          return [...ack, item];
+        }
+      }, [] as string[])
+    );
+  };
+
+  const validateInput = (name: string, value: string) => {
+    if (!runRegExValidation(name, value) || !value.length) {
+      if (!fieldErr.includes(name)) {
+        setFieldErr([...fieldErr, name]);
+      }
+    } else {
+      removeFieldErr(name);
+    }
+  };
+
+  console.log(fieldErr);
 
   if (!props.product) return null;
 
@@ -86,6 +109,7 @@ function EditProductModal(props: IProps) {
               alt="Bags from Pialetti"
               width="100"
               height="100"
+              style={{ objectFit: "cover" }}
             />
             <Box className={classes.cardText}>
               <Typography variant={"body1"}>
@@ -104,8 +128,11 @@ function EditProductModal(props: IProps) {
                   required
                   name="name"
                   variant={"outlined"}
-                  error={!validInput}
-                  helperText={"No special characters*"}
+                  onBlur={(event) =>
+                    validateInput("product name", event.target.value)
+                  }
+                  error={getError("product name")}
+                  helperText={getErrorMsg("product name")}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -117,7 +144,6 @@ function EditProductModal(props: IProps) {
                   label="Name"
                   onChange={(event) => {
                     handleChange(event.target.value, "name");
-                    checkInput(event.target.value);
                   }}
                   defaultValue={props.product.name}
                 ></TextField>
@@ -137,9 +163,11 @@ function EditProductModal(props: IProps) {
                   }}
                   name="price"
                   type="number"
-                  error={props.product.price === null}
                   id="product-price"
                   label="price"
+                  onBlur={(event) => validateInput("price", event.target.value)}
+                  error={getError("price")}
+                  helperText={getErrorMsg("price")}
                   onChange={(event) =>
                     handleChange(event.target.value, "price")
                   }
@@ -159,13 +187,15 @@ function EditProductModal(props: IProps) {
                       </InputAdornment>
                     ),
                   }}
-                  error={!validUrlInput}
-                  helperText={"Please enter a valid url"}
+                  error={getError("image url")}
+                  helperText={getErrorMsg("image url")}
+                  onBlur={(event) =>
+                    validateInput("image url", event.target.value)
+                  }
                   id="product-Picture"
                   label="Image"
                   onChange={(event) => {
                     handleChange(event.target.value, "img");
-                    checkUrl(event.target.value);
                   }}
                   defaultValue={props.product.img}
                 ></TextField>
@@ -274,8 +304,9 @@ function EditProductModal(props: IProps) {
             <Button
               variant="contained"
               onClick={() => {
-                if (validInput && validUrlInput) {
-                  window.location.href = "/admin";
+                if (!fieldErr.length) {
+                  history.replace("/admin");
+                  props.closeModal();
                   if (props.newProduct) {
                     addNewProduct(props.product!);
                     props.isProductNew();
