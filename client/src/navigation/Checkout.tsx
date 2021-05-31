@@ -21,14 +21,10 @@ import fallback from "../assets/bags/fallback.png";
 import { useHistory } from "react-router";
 import { Delivery } from "../helpers/typings";
 import { UsersContext } from "../components/context/UsersContext";
+import Section from "../components/Section";
 
 function getSteps() {
-  return [
-    "Shopping Cart",
-    "Personal Details",
-    "Payment Options",
-    "Order Confirmation",
-  ];
+  return ["Shopping Cart", "Delivery", "Payment", "Order Confirmation"];
 }
 
 function Checkout() {
@@ -163,7 +159,7 @@ function Checkout() {
               Products in cart
             </Typography>
             <Typography variant="body1" className={classes.centerFlex}>
-              Total: {total}kr
+              Total: {total} kr
             </Typography>
             <Box className={classes.cartContentWrapper}>
               {cart.length === 0 ? (
@@ -176,14 +172,18 @@ function Checkout() {
                   <Link href={`/products/${product.name}`}>
                     <Img
                       src={[product.img, fallback]}
-                      width="100rem"
-                      height="100rem"
+                      style={{
+                        width: "200px",
+                        height: "200px",
+                        objectFit: "cover",
+                        margin: "0 2rem",
+                      }}
                     />
                   </Link>
                   <div className={classes.productInfo}>
-                    <Typography variant="body1">{product.name}</Typography>
-                    <Typography variant="body2">
-                      Price: {product.price}
+                    <Typography variant="body2">{product.name}</Typography>
+                    <Typography variant="body1">
+                      Price: {product.price} kr
                     </Typography>
                     <GroupedButtons product={product} />
                   </div>
@@ -267,91 +267,90 @@ function Checkout() {
     return <div>loading</div>;
   }
   return (
-    <Box mb={10}>
-      <Box className={classes.root}>
-        <Hidden only={"xs"}>
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Hidden>
+    <Section>
+      <Box mb={10}>
+        <Box className={classes.root}>
+          <Hidden only={"xs"}>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Hidden>
 
-        <Box>
-          {activeStep === steps.length ? (
-            <Box>
-              <Typography>All steps completed</Typography>
-              <Box className={classes.buttonWrapper}>
-                <Button onClick={handleReset}>Reset</Button>
+          <Box>
+            {activeStep === steps.length ? (
+              <Box>
+                <Typography>All steps completed</Typography>
+                <Box className={classes.buttonWrapper}>
+                  <Button onClick={handleReset}>Reset</Button>
+                </Box>
               </Box>
-            </Box>
-          ) : (
-            <Box>
-              <Box>{getStepContent(activeStep)}</Box>
-              <Box className={classes.buttonWrapper}>
-                <Button
-                  disabled={activeStep === 0 || activeStep === 3}
-                  onClick={handleBack}
-                >
-                  Back
-                </Button>
-                {activeStep === 0 ? (
+            ) : (
+              <Box>
+                <Box>{getStepContent(activeStep)}</Box>
+                <Box className={classes.buttonWrapper}>
                   <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    disabled={cart.length === 0}
+                    disabled={activeStep === 0 || activeStep === 3}
+                    onClick={handleBack}
                   >
-                    {activeStep === steps.length - 1 ? "Error" : "Next"}
+                    Back
                   </Button>
-                ) : null}
-                {activeStep === 1 ? (
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    disabled={!isFormValid}
-                  >
-                    {activeStep === steps.length - 1 ? "Error" : "Next"}
-                  </Button>
-                ) : null}
-                {activeStep === 2 ? (
-                  <Button
-                    variant="contained"
-                    onClick={makePayment}
-                    disabled={!isPaymentValid}
-                  >
-                    {activeStep === steps.length - 1 ? "Error" : "Next"}
-                  </Button>
-                ) : null}
-                {activeStep === 3 ? (
-                  <Link href="/#">
-                    <Button variant="contained">
-                      {activeStep === steps.length - 1
-                        ? "Continue shopping"
-                        : "Error"}
+                  {activeStep === 0 ? (
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      disabled={cart.length === 0}
+                    >
+                      {activeStep === steps.length - 1 ? "Error" : "Next"}
                     </Button>
-                  </Link>
-                ) : null}
+                  ) : null}
+                  {activeStep === 1 ? (
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      disabled={!isFormValid}
+                    >
+                      {activeStep === steps.length - 1 ? "Error" : "Next"}
+                    </Button>
+                  ) : null}
+                  {activeStep === 2 ? (
+                    <Button
+                      variant="contained"
+                      onClick={makePayment}
+                      disabled={!isPaymentValid}
+                    >
+                      {activeStep === steps.length - 1 ? "Error" : "Next"}
+                    </Button>
+                  ) : null}
+                  {activeStep === 3 ? (
+                    <Link href="/#">
+                      <Button variant="contained">
+                        {activeStep === steps.length - 1
+                          ? "Continue shopping"
+                          : "Error"}
+                      </Button>
+                    </Link>
+                  ) : null}
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Section>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "0 10rem",
-    marginTop: "8.5rem",
-    height: "50rem",
     // border: "solid 2px black",
     position: "relative",
     [theme.breakpoints.down("md")]: {
       padding: 0,
-      height: "auto",
     },
   },
   mobileStepper: {
@@ -389,7 +388,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paymentMethodWrapper: {
     width: "15rem",
-    height: "8rem",
     border: "solid 1px black",
     margin: "1rem",
     padding: "2rem",
@@ -397,11 +395,10 @@ const useStyles = makeStyles((theme) => ({
   },
   paymentLogoSize: {
     width: "15rem",
-    height: "8rem",
   },
   cartContentWrapper: {
     overflow: "auto",
-    height: "30rem",
+    paddingBottom: "4rem",
     "&::-webkit-scrollbar": {
       width: "0.4em",
     },
@@ -423,6 +420,7 @@ const useStyles = makeStyles((theme) => ({
   cartContent: {
     margin: "1rem 2rem",
     display: "flex",
+    alignItems: "flex-end",
   },
   productInfo: {
     marginLeft: "1rem",
