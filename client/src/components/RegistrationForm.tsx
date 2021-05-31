@@ -108,18 +108,6 @@ function RegistrationForm() {
     });
   };
 
-  const removeFieldErr = (name: string) => {
-    setFieldErr((prev) =>
-      prev.reduce((ack, item) => {
-        if (item === name) {
-          return ack;
-        } else {
-          return [...ack, item];
-        }
-      }, [] as string[])
-    );
-  };
-
   const handleShowRoles = () => {
     setShowRoles((prev) => !prev);
   };
@@ -131,6 +119,18 @@ function RegistrationForm() {
   };
 
   const [errMessage, setErrMessage] = useState();
+
+  const removeFieldErr = (name: string) => {
+    setFieldErr((prev) =>
+      prev.reduce((ack, item) => {
+        if (item === name) {
+          return ack;
+        } else {
+          return [...ack, item];
+        }
+      }, [] as string[])
+    );
+  };
 
   const getErrorMsg = (name: string) => {
     let errMsg: string | null = null;
