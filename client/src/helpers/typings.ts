@@ -30,7 +30,7 @@ export interface RegistrationInput {
 
 export interface Address {
   street: string;
-  zipCode: string;
+  zipcode: string;
   city: string;
   country: string;
 }
@@ -40,4 +40,25 @@ export interface Delivery {
   name: string;
   price: number;
   deliveryTime: string;
+}
+
+export interface Order {
+  _id: string;
+  customer: User;
+  items: Product[];
+  payment: string;
+  delivery: Delivery;
+  sum: number;
+}
+
+export interface Product {
+  _id?: string;
+  name: string;
+  price: number;
+  img: string;
+  category: string[];
+  description: string;
+  details: string;
+  care: string;
+  stock: number;
 }

@@ -25,7 +25,7 @@ export const UsersContext = createContext<UsersValue>({
 
 const UsersProvider: FC<{}> = ({ children }) => {
   const [user, setUser] = useState<User>();
-  const [allUsers, setAllUsers] = useState<User[] | []>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
 
   const validateRegistration = (data: RegistrationInput) => {
     fetch("/users/register", {

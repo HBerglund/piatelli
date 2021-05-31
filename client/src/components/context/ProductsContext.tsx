@@ -1,17 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-
-// TODO - Update product type to match product schema
-export interface Product {
-  _id?: string;
-  name: string;
-  price: number;
-  img: string;
-  category: string[];
-  description: string;
-  details: string;
-  care: string;
-  stock: number;
-}
+import { Product } from "../../helpers/typings";
 
 interface IState {
   products: Product[];
@@ -61,10 +49,6 @@ function ProductProvider(props: IProps) {
       })
     );
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products));
-  });
 
   function addNewProduct(product: Product) {
     fetch("/products", {
