@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
   imageStyling: {
     marginRight: ".5rem",
     marginBottom: ".5rem",
+    objectFit: "cover",
   },
   flexRow: {
     display: "flex",
