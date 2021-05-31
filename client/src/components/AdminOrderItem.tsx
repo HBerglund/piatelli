@@ -10,6 +10,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React from "react";
+import { formatDate } from "../helpers/helpers";
 import { Order } from "../helpers/typings";
 
 interface Props {
@@ -63,7 +64,10 @@ function AdminOrderItem(props: Props) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const { _id, customer, items, payment, sum, delivery, address } = props.order;
+  const { _id, customer, address, items, payment, delivery, sum, createdAt } =
+    props.order;
+
+  console.log(items);
 
   const classes = useStyles();
 
@@ -88,7 +92,7 @@ function AdminOrderItem(props: Props) {
           </Typography>
           <Hidden xsDown>
             <Typography className={classes.secondaryHeading}>
-              Amount: {sum} $
+              {formatDate(createdAt)}
             </Typography>
           </Hidden>
         </AccordionSummary>
@@ -97,7 +101,7 @@ function AdminOrderItem(props: Props) {
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Customer
             </Typography>
-            <Typography>{customer}</Typography>
+            <Typography>{customer.fullName}</Typography>
           </Box>
           <Box className={classes.row}>
             <Typography style={{ marginBottom: "4px" }} variant="caption">
@@ -112,9 +116,11 @@ function AdminOrderItem(props: Props) {
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Items
             </Typography>
-
-            {items.forEach((item) => (
-              <Typography>{item}</Typography>
+            {items.map((items) => (
+              <Box style={{ display: "flex", justifyContent: "space-around" }}>
+                <Typography>{items.name}</Typography>
+                <Typography>Quantity: {items.quantity}</Typography>
+              </Box>
             ))}
           </Box>
           <Box className={classes.row}>

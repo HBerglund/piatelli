@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ProductModel = require("./product.model");
 
 const deliverySchema = new mongoose.Schema({
   name: "String",
@@ -24,7 +25,7 @@ const orderSchema = new mongoose.Schema(
       require: true,
     },
     address: addressSchema,
-    items: [String],
+    items: [ProductModel.schema],
     payment: "String",
     delivery: deliverySchema,
     sum: "Number",

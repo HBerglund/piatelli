@@ -5,14 +5,14 @@ interface OrderValue {
   allOrders: Order[];
   currentOrder: Order | undefined;
   getAllOrders: () => void;
-  createOrder: (order: Order) => void;
+  saveOrderToDB: (order: Order) => void;
 }
 
 export const OrderContext = createContext<OrderValue>({
   allOrders: [],
   currentOrder: undefined,
   getAllOrders: () => [],
-  createOrder: () => {},
+  saveOrderToDB: () => {},
 });
 
 const OrderProvider: FC<{}> = ({ children }) => {
@@ -38,7 +38,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
     );
   };
 
-  const createOrder = (data: Order) => {
+  const saveOrderToDB = (data: Order) => {
     fetch("/orders", {
       method: "POST",
       credentials: "include",
@@ -64,7 +64,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
         allOrders,
         currentOrder,
         getAllOrders,
-        createOrder,
+        saveOrderToDB,
       }}
     >
       {children}

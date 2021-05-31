@@ -12,17 +12,17 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <UsersProvider>
-          <ProductProvider>
-            <CartProvider>
-              <OrderProvider>
+        <OrderProvider>
+          <UsersProvider>
+            <ProductProvider>
+              <CartProvider>
                 <ErrorBoundary>
                   <Router />
                 </ErrorBoundary>
-              </OrderProvider>
-            </CartProvider>
-          </ProductProvider>
-        </UsersProvider>
+              </CartProvider>
+            </ProductProvider>
+          </UsersProvider>
+        </OrderProvider>
       </BrowserRouter>
     );
   }

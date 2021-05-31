@@ -12,26 +12,7 @@ function AdminOrders() {
   );
 
   const orderContext = useContext(OrderContext);
-
-  const orders: any = [
-    {
-      customer: "dfg87dfg87dgh78f87hg9sgdf9dgh",
-      address: {
-        street: "Jenny Lindsgatan 4B",
-        zipcode: "41662",
-        city: "Gothenburg",
-        country: "Sweden",
-      },
-      items: ["234254243fdggdfg", "df7gd78fg87dfg", "dfg97fgh9fg89h8fg9h"],
-      payment: "Klarna",
-      delivery: {
-        name: "Schenker",
-        price: 5,
-        deliveryTime: "3 days",
-      },
-      sum: 4765,
-    },
-  ];
+  console.log(orderContext.allOrders);
 
   const classes = useStyles();
 

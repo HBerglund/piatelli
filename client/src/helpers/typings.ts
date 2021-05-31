@@ -50,6 +50,7 @@ export interface Order {
   payment: string;
   delivery: Delivery;
   sum: number;
+  createdAt?: Date;
 }
 
 export interface Product {
@@ -62,4 +63,5 @@ export interface Product {
   details: string;
   care: string;
   stock: number;
+  quantity?: number;
 }

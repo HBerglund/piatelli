@@ -39,6 +39,7 @@ const productSchema = new mongoose.Schema({
     minLength: [1, "Care can't be left blank"],
   },
   stock: { type: "Number", required: true },
+  quantity: { type: "Number", required: false },
 });
 
 const ProductModel = mongoose.model("product", productSchema);
