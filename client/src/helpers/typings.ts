@@ -45,6 +45,7 @@ export interface Delivery {
 export interface Order {
   _id: string;
   customer: User;
+  address: Address;
   items: Product[];
   payment: string;
   delivery: Delivery;

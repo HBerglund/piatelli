@@ -1,6 +1,8 @@
 import { Box, createStyles, makeStyles, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Order } from "../helpers/typings";
 import AdminOrderItem from "./AdminOrderItem";
+import { OrderContext } from "./context/OrderContext";
 
 function AdminOrders() {
   const useStyles = makeStyles(() =>
@@ -8,6 +10,8 @@ function AdminOrders() {
       root: {},
     })
   );
+
+  const orderContext = useContext(OrderContext);
 
   const orders: any = [
     {
@@ -37,7 +41,7 @@ function AdminOrders() {
         All Orders
       </Typography>
       <Box>
-        {orders.map((order: any, i: number) => (
+        {orderContext.allOrders.map((order: Order, i: number) => (
           <AdminOrderItem order={order} key={i} />
         ))}
       </Box>

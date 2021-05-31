@@ -20,7 +20,6 @@ import { Product } from "../helpers/typings";
 import runRegExValidation from "../helpers/validation";
 import { useHistory } from "react-router";
 
-
 interface IProps {
   closeModal: () => void;
   editOpen: boolean;
@@ -92,8 +91,6 @@ function EditProductModal(props: IProps) {
       removeFieldErr(name);
     }
   };
-
-  console.log(fieldErr);
 
   if (!props.product) return null;
 

@@ -11,13 +11,17 @@ interface OrderValue {
 export const OrderContext = createContext<OrderValue>({
   allOrders: [],
   currentOrder: undefined,
-  getAllOrders: () => {},
+  getAllOrders: () => [],
   createOrder: () => {},
 });
 
 const OrderProvider: FC<{}> = ({ children }) => {
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [currentOrder, setCurrentOrder] = useState<Order | undefined>();
+
+  useEffect(() => {
+    getAllOrders();
+  }, []);
 
   const getAllOrders = () => {
     fetch("/orders", {
@@ -26,7 +30,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
     }).then((res) =>
       res.json().then((result) => {
         if (result.errorCode) {
-          console.log({ result });
           setAllOrders([]);
         } else {
           setAllOrders(result);
