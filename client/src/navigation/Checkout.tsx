@@ -19,8 +19,8 @@ import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
 import { useHistory } from "react-router";
-import { UsersContext } from "../components/context/UsersContext";
 import { Delivery } from "../helpers/typings";
+import { UsersContext } from "../components/context/UsersContext";
 
 function getSteps() {
   return [
@@ -142,6 +142,8 @@ function Checkout() {
       }, 3000);
     });
   async function makePayment() {
+    // run create order in OrderContext
+
     setIsLoading(true);
     setPayedProducts(cart);
     setTotalPayed(total);

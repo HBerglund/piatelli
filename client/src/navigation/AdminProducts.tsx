@@ -1,14 +1,12 @@
 import { Typography, Box, Button, Grid, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useContext, useState } from "react";
-import {
-  Product,
-  ProductsContext,
-} from "../components/context/ProductsContext";
+import { ProductsContext } from "../components/context/ProductsContext";
 
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import EditableProductItem from "../components/EditableProductItem";
 import EditProductModal from "../components/EditProductModal";
+import { Product } from "../helpers/typings";
 
 function AdminProducts() {
   const classes = useStyles();

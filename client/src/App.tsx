@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Router from "./navigation/Router";
 import CartProvider from "./components/context/CartContext";
 import UsersProvider from "./components/context/UsersContext";
+import OrderProvider from "./components/context/OrderContext";
 
 class App extends Component {
   render() {
@@ -14,9 +15,11 @@ class App extends Component {
         <UsersProvider>
           <ProductProvider>
             <CartProvider>
-              <ErrorBoundary>
-                <Router />
-              </ErrorBoundary>
+              <OrderProvider>
+                <ErrorBoundary>
+                  <Router />
+                </ErrorBoundary>
+              </OrderProvider>
             </CartProvider>
           </ProductProvider>
         </UsersProvider>

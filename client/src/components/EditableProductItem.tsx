@@ -8,10 +8,11 @@ import {
 } from "@material-ui/core";
 import { useContext } from "react";
 import { Img } from "react-image";
-import { Product, ProductsContext } from "./context/ProductsContext";
+import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
+import { Product } from "../helpers/typings";
 
 interface Props {
   product: Product;
