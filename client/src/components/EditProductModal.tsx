@@ -20,7 +20,6 @@ import { Product } from "../helpers/typings";
 import runRegExValidation from "../helpers/validation";
 import { useHistory } from "react-router";
 
-
 interface IProps {
   closeModal: () => void;
   editOpen: boolean;
@@ -47,30 +46,6 @@ function EditProductModal(props: IProps) {
     });
   }
 
-  const getError = (name: string) => {
-    let err = false;
-    fieldErr.forEach((fieldName) => {
-      if (fieldName === name) {
-        err = true;
-      } else {
-        err = false;
-      }
-    });
-    return err;
-  };
-
-  const getErrorMsg = (name: string) => {
-    let errMsg = "";
-    fieldErr.forEach((fieldName) => {
-      if (fieldName === name) {
-        errMsg = "Please enter a valid " + name;
-      } else {
-        errMsg = "";
-      }
-    });
-    return errMsg;
-  };
-
   const removeFieldErr = (name: string) => {
     setFieldErr((prev) =>
       prev.reduce((ack, item) => {
@@ -83,6 +58,35 @@ function EditProductModal(props: IProps) {
     );
   };
 
+  const getErrorMsg = (name: string) => {
+    let errMsg: string | null = null;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        name === "fullName"
+          ? (errMsg = "Please enter a valid full name")
+          : (errMsg = "Please enter a valid " + name);
+        name === "password"
+          ? (errMsg = "Password needs to contain atleast 6 characters")
+          : (errMsg = "Please enter a valid " + name);
+      } else {
+        errMsg = null;
+      }
+    });
+    return errMsg;
+  };
+
+  const getError = (name: string) => {
+    let err = false;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        err = true;
+      } else {
+        err = false;
+      }
+    });
+    return err;
+  };
+
   const validateInput = (name: string, value: string) => {
     if (!runRegExValidation(name, value) || !value.length) {
       if (!fieldErr.includes(name)) {
@@ -92,8 +96,6 @@ function EditProductModal(props: IProps) {
       removeFieldErr(name);
     }
   };
-
-  console.log(fieldErr);
 
   if (!props.product) return null;
 
