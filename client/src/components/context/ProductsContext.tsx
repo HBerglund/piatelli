@@ -68,6 +68,7 @@ function ProductProvider(props: IProps) {
 
   function updateProduct(product: Product) {
     const id = product._id;
+    console.log(id);
     fetch(`/products/${id}`, {
       method: "PUT",
       credentials: "include",
@@ -77,34 +78,42 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then(() => {
-        let updatedProducts = products.map((item) => {
-          if (item._id === product._id) {
-            return { ...item, product };
-          }
-          return item;
-        });
-        setProducts(updatedProducts);
+      .then((result) => {
+        if (result.errorCode) {
+          // Catch error
+          console.log(result);
+        } else {
+          let updatedProducts = products.map((item) => {
+            if (item._id === product._id) {
+              return { ...item, product };
+            }
+            return item;
+          });
+          setProducts(updatedProducts);
+        }
       });
   }
 
   function removeProduct(product: Product) {
     const id = product._id;
-    console.log(id);
     fetch(`/products/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
-      .then(() => {
-        setProducts((prev) =>
-          prev.reduce((ack, item) => {
-            if (item._id === product._id) {
-              return ack;
-            } else {
-              return [...ack, item];
-            }
-          }, [] as Product[])
-        );
+      .then((result) => {
+        if (result.errorCode) {
+          console.log(result.errorCode);
+        } else {
+          setProducts((prev) =>
+            prev.reduce((ack, item) => {
+              if (item._id === product._id) {
+                return ack;
+              } else {
+                return [...ack, item];
+              }
+            }, [] as Product[])
+          );
+        }
       });
   }
 
