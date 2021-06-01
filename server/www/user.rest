@@ -2,21 +2,21 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-GET http://localhost:4000/users/60acccf5f6bb064989f05e5c
+GET http://localhost:4000/users/60b47f07bd4163066026c8c0
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60acb3080925fd4101a26cca
+DELETE http://localhost:4000/users/60b0f91d2881bf293e5061bf
 
 ### POST ONE
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "victor.wikstrom@icloud.com",
+    "email": "ogge@gmail.com",
     "password": "asdasd",
-    "role": "admin",
-    "authorizedAdmin": true,
-    "fullName": "Victor Wikström",
+    "role": "customer",
+    "authorizedAdmin": false,
+    "fullName": "Ogge Andersson",
     "phone": "0702045411",
     "address": {
         "street": "Jenny Lindsgatan 4B",

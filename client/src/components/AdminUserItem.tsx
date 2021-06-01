@@ -149,7 +149,8 @@ function AdminUserItem(props: Props) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete user" arrow>
-                  <IconButton>
+                  {/* TODO: onClick removeUser */}
+                  <IconButton onClick={() => usersContext.removeUser(user)}>
                     <DeleteForeverIcon />
                   </IconButton>
                 </Tooltip>
@@ -178,7 +179,7 @@ function AdminUserItem(props: Props) {
             <Typography style={{ marginRight: "8px" }} variant="caption">
               Approved Admin
             </Typography>
-            {editable ? (
+            {editable && role === "admin" ? (
               <Select
                 defaultValue={authorizedAdmin}
                 name="authorizedAdmin"
@@ -210,7 +211,6 @@ function AdminUserItem(props: Props) {
                     name={name}
                     onChange={handleInputChange}
                     value={value}
-                    autoFocus
                   />
                 ) : (
                   value

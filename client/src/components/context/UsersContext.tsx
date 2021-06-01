@@ -8,7 +8,8 @@ interface UsersValue {
   validateRegistration: (data: RegistrationInput) => void;
   logOut: () => void;
   getAllUsers: () => void;
-  updateUser: (userData: User) => void;
+  updateUser: (user: User) => void;
+  removeUser: (user: User) => void;
 }
 
 export const UsersContext = createContext<UsersValue>({
@@ -19,6 +20,7 @@ export const UsersContext = createContext<UsersValue>({
   logOut: () => {},
   getAllUsers: () => {},
   updateUser: () => {},
+  removeUser: () => {},
 });
 
 const UsersProvider: FC<{}> = ({ children }) => {
@@ -112,11 +114,29 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
-        if (result.message) {
-          console.log(result.message);
+        if (result.errorCode) {
+          console.log({ result });
+          // ---------TODO---------
+          // setAllUsers(allUsers); ???
         } else {
-          console.log(result);
+          setAllUsers({ ...allUsers });
+        }
+      });
+  };
+
+  const removeUser = (user: User) => {
+    const id = user._id;
+    fetch(`/users/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+          // ---------TODO---------
+          // setAllUsers(allUsers); ???
+        } else {
+          setAllUsers({ ...allUsers });
         }
       });
   };
@@ -144,6 +164,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
         logOut,
         getAllUsers,
         updateUser,
+        removeUser,
       }}
     >
       {children}

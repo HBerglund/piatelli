@@ -2,12 +2,10 @@ import {
   Box,
   FormControl,
   FormControlLabel,
-  FormLabel,
   makeStyles,
   Radio,
   RadioGroup,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
