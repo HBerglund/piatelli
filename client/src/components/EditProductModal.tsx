@@ -8,7 +8,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
@@ -36,9 +36,13 @@ function EditProductModal(props: IProps) {
   const history = useHistory();
 
   const [fieldErr, setFieldErr] = useState<string[]>([]);
-  const [product, setProduct] = useState<Product>(
-    props.product || ({} as Product)
-  );
+  const [product, setProduct] = useState<Product>();
+
+  useEffect(() => {
+    if (props.product) {
+      setProduct({ ...props.product });
+    }
+  }, [props.product]);
 
   // {
   //   name: props.product?.name,
@@ -51,12 +55,16 @@ function EditProductModal(props: IProps) {
   //   stock: props.product?.stock,
   // }
 
-  function handleChange(value: string | number, key: keyof Product) {
-    setProduct((prev: any) => {
-      const productCopy = { ...prev };
-      productCopy[key] = value;
-      return productCopy;
-    });
+  function handleChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    const { value, name } = e.target;
+    if (product)
+      setProduct({
+        ...product,
+        [name]: value,
+      });
+    console.log(product);
   }
 
   const removeFieldErr = (name: string) => {
@@ -158,9 +166,7 @@ function EditProductModal(props: IProps) {
                   }}
                   id="product-name"
                   label="Name"
-                  onChange={(event) => {
-                    handleChange(event.target.value, "name");
-                  }}
+                  onChange={handleChange}
                   defaultValue={props.product.name}
                 ></TextField>
               </Box>
@@ -184,9 +190,7 @@ function EditProductModal(props: IProps) {
                   onBlur={(event) => validateInput("price", event.target.value)}
                   error={getError("price")}
                   helperText={getErrorMsg("price")}
-                  onChange={(event) =>
-                    handleChange(event.target.value, "price")
-                  }
+                  onChange={handleChange}
                   defaultValue={props.product.price}
                 ></TextField>
               </Box>
@@ -195,7 +199,7 @@ function EditProductModal(props: IProps) {
                   className={classes.formWidth}
                   variant={"outlined"}
                   required
-                  name="image"
+                  name="img"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -210,9 +214,7 @@ function EditProductModal(props: IProps) {
                   }
                   id="product-Picture"
                   label="Image"
-                  onChange={(event) => {
-                    handleChange(event.target.value, "img");
-                  }}
+                  onChange={handleChange}
                   defaultValue={props.product.img}
                 ></TextField>
               </Box>
@@ -232,9 +234,7 @@ function EditProductModal(props: IProps) {
                   error={props.product.category === [""]}
                   id="product-category"
                   label="category"
-                  onChange={(event) =>
-                    handleChange(event.target.value, "category")
-                  }
+                  onChange={handleChange}
                   defaultValue={props.product.category}
                 ></TextField>
               </Box>
@@ -255,9 +255,7 @@ function EditProductModal(props: IProps) {
                   }
                   id="product-description"
                   label="description"
-                  onChange={(event) =>
-                    handleChange(event.target.value, "description")
-                  }
+                  onChange={handleChange}
                   defaultValue={props.product.description}
                 ></TextField>
               </Box>
@@ -276,9 +274,7 @@ function EditProductModal(props: IProps) {
                   }
                   id="product-details"
                   label="details"
-                  onChange={(event) =>
-                    handleChange(event.target.value, "details")
-                  }
+                  onChange={handleChange}
                   defaultValue={props.product.details}
                 ></TextField>
               </Box>
@@ -295,7 +291,7 @@ function EditProductModal(props: IProps) {
                   onBlur={(event) => validateInput("care", event.target.value)}
                   id="product-care"
                   label="care"
-                  onChange={(event) => handleChange(event.target.value, "care")}
+                  onChange={handleChange}
                   defaultValue={props.product.care}
                 ></TextField>
               </Box>
@@ -316,9 +312,7 @@ function EditProductModal(props: IProps) {
                   error={props.product.stock === null}
                   id="product-stock"
                   label="Stock"
-                  onChange={(event) =>
-                    handleChange(event.target.value, "stock")
-                  }
+                  onChange={handleChange}
                   defaultValue={props.product.stock}
                 ></TextField>
               </Box>
@@ -330,19 +324,16 @@ function EditProductModal(props: IProps) {
             <Button
               variant="contained"
               onClick={() => {
-                if (!fieldErr.length) {
+                if (!fieldErr.length && product) {
                   history.replace("/admin");
                   props.closeModal();
                   if (props.newProduct) {
-                    if (product) {
-                      addNewProduct(product);
-                    }
+                    addNewProduct(product);
                     props.isProductNew();
                   } else {
-                    if (product) {
-                      updateProduct(product);
-                    }
+                    updateProduct(product);
                   }
+                  props.closeModal();
                 }
               }}
             >

@@ -67,8 +67,9 @@ function ProductProvider(props: IProps) {
   }
 
   function updateProduct(product: Product) {
+    console.log({ product });
     const id = product._id;
-    console.log(id);
+
     fetch(`/products/${id}`, {
       method: "PUT",
       credentials: "include",

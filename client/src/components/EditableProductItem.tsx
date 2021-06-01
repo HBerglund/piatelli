@@ -64,7 +64,6 @@ function EditableProductItem(props: Props) {
             <Button
               onClick={() => {
                 props.setEditingProduct(product);
-                console.log(product);
               }}
             >
               <EditOutlinedIcon fontSize={"small"} />
