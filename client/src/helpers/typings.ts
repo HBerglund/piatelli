@@ -36,14 +36,14 @@ export interface Address {
 }
 
 export interface Delivery {
-  _id: string;
+  _id?: string;
   name: string;
   price: number;
   deliveryTime: string;
 }
 
 export interface Order {
-  _id: string;
+  _id?: string;
   customer: User;
   address: Address;
   items: Product[];

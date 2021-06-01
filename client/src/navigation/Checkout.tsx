@@ -22,6 +22,8 @@ import { useHistory } from "react-router";
 import { Delivery } from "../helpers/typings";
 import { UsersContext } from "../components/context/UsersContext";
 import Section from "../components/Section";
+import { OrderContext } from "../components/context/OrderContext";
+import { Order } from "../helpers/typings";
 
 function getSteps() {
   return ["Shopping Cart", "Delivery", "Payment", "Order Confirmation"];
@@ -34,6 +36,7 @@ function Checkout() {
 
   const history = useHistory();
   const usersContext = useContext(UsersContext);
+  const orderContext = useContext(OrderContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -119,6 +122,22 @@ function Checkout() {
   const [totalPayed, setTotalPayed] = useState<number>();
   // let payedProducts = [''];
 
+  useEffect(() => {
+    if (paymentOption) {
+      orderContext.savePaymentDetails(paymentOption);
+    }
+  }, [paymentOption]);
+
+  useEffect(() => {
+    if (deliveryOption) {
+      orderContext.saveDeliveryDetails(deliveryOption);
+    }
+  }, [deliveryOption]);
+
+  useEffect(() => {
+    orderContext.saveTotalSum(total);
+  }, [paymentOption]);
+
   // changes to the stepper
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -130,20 +149,11 @@ function Checkout() {
     setActiveStep(0);
   };
 
-  //promise for "awaiting" payment validation
-  const paymentPromise = () =>
-    new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 3000);
-    });
-  async function makePayment() {
-    // run create order in OrderContext
-
+  async function placeOrder() {
     setIsLoading(true);
     setPayedProducts(cart);
     setTotalPayed(total);
-    await paymentPromise();
+    orderContext.saveOrderToDB();
     clearCart();
     handleNext();
   }
@@ -311,7 +321,7 @@ function Checkout() {
                     <Button
                       variant="contained"
                       onClick={handleNext}
-                      disabled={!isFormValid}
+                      // disabled={!isFormValid}
                     >
                       {activeStep === steps.length - 1 ? "Error" : "Next"}
                     </Button>
@@ -319,10 +329,12 @@ function Checkout() {
                   {activeStep === 2 ? (
                     <Button
                       variant="contained"
-                      onClick={makePayment}
-                      disabled={!isPaymentValid}
+                      onClick={placeOrder}
+                      // disabled={!isPaymentValid}
                     >
-                      {activeStep === steps.length - 1 ? "Error" : "Next"}
+                      {activeStep === steps.length - 1
+                        ? "Error"
+                        : "Place order"}
                     </Button>
                   ) : null}
                   {activeStep === 3 ? (
