@@ -10,10 +10,15 @@ import { Product } from "../helpers/typings";
 
 function AdminProducts() {
   const classes = useStyles();
-  const { products } = useContext(ProductsContext);
+  const productsContext = useContext(ProductsContext);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
   const [emptyProduct] = useState<Product>({} as Product);
   const [newProduct, setNewProduct] = useState(false);
+  const [products, setProducts] = useState<Product[]>(productsContext.products);
+
+  useEffect(() => {
+    setProducts(productsContext.products);
+  }, [productsContext.products]);
 
   return (
     <Box className={classes.modalContainer}>

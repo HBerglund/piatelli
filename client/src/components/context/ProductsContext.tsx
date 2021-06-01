@@ -67,7 +67,6 @@ function ProductProvider(props: IProps) {
   }
 
   function updateProduct(product: Product) {
-    console.log({ product });
     const id = product._id;
 
     fetch(`/products/${id}`, {
@@ -84,13 +83,7 @@ function ProductProvider(props: IProps) {
           // Catch error
           console.log(result);
         } else {
-          let updatedProducts = products.map((item) => {
-            if (item._id === product._id) {
-              return { ...item, product };
-            }
-            return item;
-          });
-          setProducts(updatedProducts);
+          console.log(result);
         }
       });
   }

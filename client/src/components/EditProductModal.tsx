@@ -64,7 +64,6 @@ function EditProductModal(props: IProps) {
         ...product,
         [name]: value,
       });
-    console.log(product);
   }
 
   const removeFieldErr = (name: string) => {
