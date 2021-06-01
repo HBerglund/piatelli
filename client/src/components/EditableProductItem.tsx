@@ -50,7 +50,7 @@ function EditableProductItem(props: Props) {
           />
         </Hidden>
         <Box className={classes.flexRow}>
-          <Typography variant={"body2"} className={classes.productName}>
+          <Typography variant={"body1"} className={classes.productName}>
             {product.name}
           </Typography>
         </Box>
@@ -100,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
   },
   imageStyling: {
     height: "10rem",
+    width: "10rem",
     marginRight: ".5rem",
     marginBottom: ".5rem",
     objectFit: "cover",
