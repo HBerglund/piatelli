@@ -8,6 +8,8 @@ import {
 import swishLogo from "../assets/swish.png";
 import cardLogo from "../assets/card.png";
 import { Delivery } from "../helpers/typings";
+import { useContext } from "react";
+import { UsersContext } from "./context/UsersContext";
 interface IProps {
   deliveryOption: Delivery | undefined;
   setPaymentOption: (value: string) => void;
@@ -26,6 +28,7 @@ interface IProps {
 
 function PaymentMethod(props: IProps) {
   const classes = useStyles();
+  const usersContext = useContext(UsersContext);
 
   return (
     <>
@@ -100,7 +103,7 @@ function PaymentMethod(props: IProps) {
                 autoFocus
                 id="standard-required"
                 label="Phone number for swish"
-                defaultValue={props.phoneNumber}
+                defaultValue={usersContext.user?.phone}
                 onChange={(event) => {
                   props.setSwishNumber(event.target.value);
                 }}

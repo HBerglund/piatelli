@@ -1,23 +1,65 @@
-import { createContext, FC, useEffect, useState } from "react";
-import { Order } from "../../helpers/typings";
+import { createContext, FC, useContext, useEffect, useState } from "react";
+import { Address, Delivery, Order, User } from "../../helpers/typings";
+import { CartContext } from "./CartContext";
+import { UsersContext } from "./UsersContext";
 
 interface OrderValue {
   allOrders: Order[];
-  currentOrder: Order | undefined;
+  latestOrderId: string | undefined;
+  addressDetails: Address | undefined;
   getAllOrders: () => void;
-  createOrder: (order: Order) => void;
+  saveOrderToDB: () => void;
+  saveAddressDetails: (addressDeets: Address) => void;
+  saveDeliveryDetails: (deliveryDeets: Delivery) => void;
+  savePaymentDetails: (paymentDeets: string) => void;
+  saveTotalSum: (sumDeets: number) => void;
 }
 
 export const OrderContext = createContext<OrderValue>({
   allOrders: [],
-  currentOrder: undefined,
-  getAllOrders: () => {},
-  createOrder: () => {},
+  latestOrderId: undefined,
+  addressDetails: undefined,
+  getAllOrders: () => [],
+  saveOrderToDB: () => {},
+  saveAddressDetails: () => {},
+  saveDeliveryDetails: () => {},
+  savePaymentDetails: () => {},
+  saveTotalSum: () => {},
 });
 
 const OrderProvider: FC<{}> = ({ children }) => {
+  const usersContext = useContext(UsersContext);
+  const cartContext = useContext(CartContext);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
-  const [currentOrder, setCurrentOrder] = useState<Order | undefined>();
+  const [latestOrderId, setLatestOrderId] = useState<string>();
+  const [addressDetails, setAddressDetails] = useState<Address | undefined>();
+  const [paymentDetails, setPaymentDetails] = useState<string>();
+  const [deliveryDetails, setDeliveryDetails] = useState<Delivery>();
+  const [totalSum, setTotalSum] = useState<number>();
+
+  const saveAddressDetails = (addressDeets: Address) => {
+    setAddressDetails(addressDeets);
+  };
+  const saveDeliveryDetails = (deliveryDeets: Delivery) => {
+    setDeliveryDetails(deliveryDeets);
+  };
+
+  const savePaymentDetails = (paymentDeets: string) => {
+    setPaymentDetails(paymentDeets);
+  };
+
+  const saveTotalSum = (sumDeets: number) => {
+    if (deliveryDetails) {
+      console.log("sumdeets: " + sumDeets);
+      console.log("deliveryPrice: " + deliveryDetails?.price);
+      const totalPrice = deliveryDetails?.price + sumDeets;
+      setTotalSum(totalPrice);
+    }
+  };
+
+  useEffect(() => {
+    getAllOrders();
+  }, []);
 
   const getAllOrders = () => {
     fetch("/orders", {
@@ -26,7 +68,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
     }).then((res) =>
       res.json().then((result) => {
         if (result.errorCode) {
-          console.log({ result });
           setAllOrders([]);
         } else {
           setAllOrders(result);
@@ -35,22 +76,30 @@ const OrderProvider: FC<{}> = ({ children }) => {
     );
   };
 
-  const createOrder = (data: Order) => {
+  const saveOrderToDB = () => {
+    const orderToSave: Order = {
+      customer: usersContext.user ? usersContext.user : ({} as User),
+      address: addressDetails ? addressDetails : ({} as Address),
+      items: cartContext.cart,
+      payment: paymentDetails ? paymentDetails : "",
+      delivery: deliveryDetails ? deliveryDetails : ({} as Delivery),
+      sum: totalSum ? totalSum : 0,
+    };
     fetch("/orders", {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(orderToSave),
     })
       .then((res) => res.json())
       .then((result) => {
         if (result.errorCode) {
           console.log({ result });
-          setCurrentOrder(undefined);
         } else {
-          setCurrentOrder(result);
+          console.log(result._id);
+          setLatestOrderId(result._id);
         }
       });
   };
@@ -59,9 +108,14 @@ const OrderProvider: FC<{}> = ({ children }) => {
     <OrderContext.Provider
       value={{
         allOrders,
-        currentOrder,
+        latestOrderId,
+        addressDetails,
         getAllOrders,
-        createOrder,
+        saveOrderToDB,
+        saveAddressDetails,
+        saveDeliveryDetails,
+        savePaymentDetails,
+        saveTotalSum,
       }}
     >
       {children}

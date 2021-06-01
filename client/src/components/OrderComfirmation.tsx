@@ -2,115 +2,98 @@ import { Box, Typography, makeStyles } from "@material-ui/core";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
 import { CartItem } from "./context/CartContext";
-import { Delivery } from "../helpers/typings";
+import { Delivery, Order, Product } from "../helpers/typings";
+import { Children, useContext, useEffect, useState } from "react";
+import { OrderContext } from "./context/OrderContext";
+import ErrorBoundary from "./ErrorBoundary";
 
-interface IProps {
-  email: string | undefined;
-  name: string | undefined;
-  adress: string | undefined;
-  phoneNumber: string | undefined;
-  zipCode: string | undefined;
-  country: string | undefined;
-  city: string | undefined;
-  payedProducts: CartItem[] | undefined;
-  deliveryOption: Delivery | undefined;
-  total: number | undefined;
-}
-
-function OrderComfirmation(props: IProps) {
+function OrderComfirmation() {
   const classes = useStyles();
+  const orderContext = useContext(OrderContext);
 
-  function makeId(length: number) {
-    let result = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
+  const [latestOrder, setLatestOrder] = useState<Order>();
 
-  const invoiceID = makeId(10);
+  useEffect(() => {
+    fetchLatestOrder();
+  }, [orderContext.latestOrderId]);
 
-  return (
-    <Box>
-      <Box mb={10} className={classes.textAlignCenterResponsive}>
-        <Box mb={5}>
-          <Typography variant="h6" className={classes.centerFlex}>
-            Thank you for your purchase.
+  const fetchLatestOrder = () => {
+    console.log("im in the fetch");
+    fetch(`/orders/${orderContext.latestOrderId}`, {
+      method: "GET",
+      credentials: "include",
+    }).then((res) =>
+      res.json().then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setLatestOrder(result);
+        }
+      })
+    );
+  };
+
+  if (latestOrder) {
+    return (
+      <Box>
+        <Box mb={10} className={classes.textAlignCenterResponsive}>
+          <Box mb={5}>
+            <Typography variant="h6" className={classes.centerFlex}>
+              Thank you for your purchase.
+            </Typography>
+          </Box>
+          <Typography variant="body1" className={classes.centerFlex}>
+            Order ID: {latestOrder._id}
           </Typography>
         </Box>
-        <Typography
-          align={"center"}
-          variant="body2"
-          className={classes.centerFlex}
-        >
-          An email with more information has been send to {props.email}.
-        </Typography>
-        <Typography variant="body1" className={classes.centerFlex}>
-          Invoice ID: {invoiceID}{" "}
-        </Typography>
-      </Box>
-      <Box className={`${classes.centerFlex} ${classes.columnResponsive}`}>
-        <Box>
-          <Box className={`${classes.cartContentWrapper} ${classes.margin2}`}>
-            {props.payedProducts!.map((product: CartItem, i) => (
-              <Box key={i} className={`${classes.cartContent}`}>
-                <Img
-                  src={[product.img, fallback]}
-                  width="100rem"
-                  height="100rem"
-                />
-                <div className={classes.productInfo}>
-                  <Typography variant="body1">{product.name}</Typography>
-                  <Typography variant="body1">x{product.quantity}</Typography>
-                  <Typography variant="body2">
-                    Price: {product.price}&nbsp;kr
-                  </Typography>
-                </div>
+        <Box className={`${classes.centerFlex} ${classes.columnResponsive}`}>
+          <Box>
+            <Box className={`${classes.cartContentWrapper} ${classes.margin2}`}>
+              {latestOrder.items.map((product: Product, i) => (
+                <Box key={i} className={`${classes.cartContent}`}>
+                  <Img
+                    src={[product.img, fallback]}
+                    width="100rem"
+                    height="100rem"
+                  />
+                  <div className={classes.productInfo}>
+                    <Typography variant="body1">{product.name}</Typography>
+                    <Typography variant="body1">x{product.quantity}</Typography>
+                    <Typography variant="body2">
+                      Price: {product.price}&nbsp;kr
+                    </Typography>
+                  </div>
+                </Box>
+              ))}
+              <Box mb={5}>
+                <Typography>Total price: ${latestOrder.sum}</Typography>
               </Box>
-            ))}
-          </Box>
-          <Box mb={5}>
-            <Typography>
-              Price: {props.total} kr + {props.deliveryOption?.name} shipping
-              cost: ({props.deliveryOption?.price} kr)
-            </Typography>
-          </Box>
-        </Box>
-        <Box>
-          <Box ml={3} className={classes.margin2}>
-            <Typography variant="h6">Customer:</Typography>
-            <Typography>Name: {props.name}</Typography>
-            <Typography>
-              Address: {props.adress}, {props.zipCode} {props.city},{" "}
-              {props.country}
-            </Typography>
-            <Typography>Phone number: {props.phoneNumber}</Typography>
-          </Box>
-          <Box className={classes.margin2}>
-            {props.deliveryOption?.name === "Post Nord" ? (
-              <Typography>
-                Delivery method: <br /> Delivery to closest Postombud with Post
-                Nord.
-              </Typography>
-            ) : null}
-            {props.deliveryOption?.name === "Budbee home delivery" ? (
-              <Typography>
-                Delivery method: <br /> Home delivery with Budbee.
-              </Typography>
-            ) : null}
-            {props.deliveryOption?.name === "Instabox" ? (
-              <Typography>
-                Delivery method: <br /> Delivery to closest Instabox.
-              </Typography>
-            ) : null}
+              <Box>
+                <Box className={classes.margin2}>
+                  {latestOrder.delivery?.name === "Post Nord" ? (
+                    <Typography>
+                      Delivery method: <br /> Delivery to closest Postombud with
+                      Post Nord.
+                    </Typography>
+                  ) : null}
+                  {latestOrder.delivery?.name === "Budbee home delivery" ? (
+                    <Typography>
+                      Delivery method: <br /> Home delivery with Budbee.
+                    </Typography>
+                  ) : null}
+                  {latestOrder.delivery?.name === "Instabox" ? (
+                    <Typography>
+                      Delivery method: <br /> Delivery to closest Instabox.
+                    </Typography>
+                  ) : null}
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
-  );
+    );
+  } else return <div>HEJ</div>;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -150,6 +133,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       height: "auto",
     },
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   cartContent: {
     margin: "1rem 0rem",
