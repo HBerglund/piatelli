@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Hidden,
-  Link,
   makeStyles,
   Step,
   StepLabel,
@@ -24,6 +23,7 @@ import { UsersContext } from "../components/context/UsersContext";
 import Section from "../components/Section";
 import { OrderContext } from "../components/context/OrderContext";
 import { Order } from "../helpers/typings";
+import { Link } from "react-router-dom";
 
 function getSteps() {
   return ["Shopping Cart", "Delivery", "Payment", "Order Confirmation"];
@@ -179,7 +179,7 @@ function Checkout() {
               ) : null}
               {cart.map((product: CartItem, i) => (
                 <Box key={i} className={classes.cartContent}>
-                  <Link href={`/products/${product.name}`}>
+                  <Link to={`/products/${product.name}`}>
                     <Img
                       src={[product.img, fallback]}
                       style={{
@@ -254,18 +254,7 @@ function Checkout() {
       case 3:
         return (
           <Box mb={10}>
-            <OrderComfirmation
-              name={fullName}
-              adress={adress}
-              phoneNumber={phoneNumber}
-              zipCode={zipCode}
-              country={country}
-              city={city}
-              email={email}
-              payedProducts={payedProducts}
-              deliveryOption={deliveryOption}
-              total={totalPayed}
-            />
+            <OrderComfirmation />
           </Box>
         );
       default:
@@ -338,7 +327,7 @@ function Checkout() {
                     </Button>
                   ) : null}
                   {activeStep === 3 ? (
-                    <Link href="/#">
+                    <Link to="/#">
                       <Button variant="contained">
                         {activeStep === steps.length - 1
                           ? "Continue shopping"

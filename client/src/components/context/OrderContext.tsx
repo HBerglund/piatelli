@@ -5,7 +5,7 @@ import { UsersContext } from "./UsersContext";
 
 interface OrderValue {
   allOrders: Order[];
-  currentOrder: Order;
+  latestOrderId: string | undefined;
   addressDetails: Address | undefined;
   getAllOrders: () => void;
   saveOrderToDB: () => void;
@@ -17,7 +17,7 @@ interface OrderValue {
 
 export const OrderContext = createContext<OrderValue>({
   allOrders: [],
-  currentOrder: {} as Order,
+  latestOrderId: undefined,
   addressDetails: undefined,
   getAllOrders: () => [],
   saveOrderToDB: () => {},
@@ -31,7 +31,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
   const usersContext = useContext(UsersContext);
   const cartContext = useContext(CartContext);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
-  const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
+  const [latestOrderId, setLatestOrderId] = useState<string>();
   const [addressDetails, setAddressDetails] = useState<Address | undefined>();
   const [paymentDetails, setPaymentDetails] = useState<string>();
   const [deliveryDetails, setDeliveryDetails] = useState<Delivery>();
@@ -85,7 +85,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
       delivery: deliveryDetails ? deliveryDetails : ({} as Delivery),
       sum: totalSum ? totalSum : 0,
     };
-    console.log(orderToSave);
     fetch("/orders", {
       method: "POST",
       credentials: "include",
@@ -99,7 +98,8 @@ const OrderProvider: FC<{}> = ({ children }) => {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          console.log(result);
+          console.log(result._id);
+          setLatestOrderId(result._id);
         }
       });
   };
@@ -108,7 +108,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
     <OrderContext.Provider
       value={{
         allOrders,
-        currentOrder,
+        latestOrderId,
         addressDetails,
         getAllOrders,
         saveOrderToDB,
