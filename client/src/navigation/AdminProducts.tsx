@@ -1,6 +1,6 @@
 import { Typography, Box, Button, Grid, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ProductsContext } from "../components/context/ProductsContext";
 
 import PostAddIcon from "@material-ui/icons/PostAdd";

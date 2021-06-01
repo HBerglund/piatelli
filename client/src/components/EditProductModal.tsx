@@ -8,7 +8,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
@@ -248,7 +248,11 @@ function EditProductModal(props: IProps) {
                   rows={15}
                   multiline={true}
                   name="description"
-                  error={props.product.description === ""}
+                  error={getError("description")}
+                  helperText={getErrorMsg("description")}
+                  onBlur={(event) =>
+                    validateInput("description", event.target.value)
+                  }
                   id="product-description"
                   label="description"
                   onChange={(event) =>
@@ -265,7 +269,11 @@ function EditProductModal(props: IProps) {
                   rows={15}
                   multiline={true}
                   name="details"
-                  error={props.product.details === ""}
+                  error={getError("details")}
+                  helperText={getErrorMsg("details")}
+                  onBlur={(event) =>
+                    validateInput("details", event.target.value)
+                  }
                   id="product-details"
                   label="details"
                   onChange={(event) =>
@@ -282,7 +290,9 @@ function EditProductModal(props: IProps) {
                   rows={"10"}
                   multiline={true}
                   name="care"
-                  error={props.product.care === ""}
+                  error={getError("care")}
+                  helperText={getErrorMsg("care")}
+                  onBlur={(event) => validateInput("care", event.target.value)}
                   id="product-care"
                   label="care"
                   onChange={(event) => handleChange(event.target.value, "care")}
