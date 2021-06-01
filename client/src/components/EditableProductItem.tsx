@@ -27,7 +27,7 @@ function EditableProductItem(props: Props) {
   const { removeProduct } = useContext(ProductsContext);
 
   return (
-    <div key={i}>
+    <div className={classes.root} key={i}>
       <Box key={i} className={classes.productCard}>
         <Hidden only={"xs"}>
           <Img
@@ -50,16 +50,18 @@ function EditableProductItem(props: Props) {
           />
         </Hidden>
         <Box className={classes.flexRow}>
-          <Typography variant={"body1"} className={classes.productName}>
+          <Typography variant={"body2"} className={classes.productName}>
             {product.name}
           </Typography>
         </Box>
-        <Box className={classes.flexRow}>
-          <Typography variant={"body1"} className={classes.productName}>
-            {product.price}&nbsp;kr
-          </Typography>
-        </Box>
-        <div>
+
+        <div
+          style={{
+            border: "1px solid black",
+            borderRadius: "4px",
+            marginTop: "1rem",
+          }}
+        >
           <Tooltip title="Edit" arrow>
             <Button
               onClick={() => {
@@ -81,6 +83,7 @@ function EditableProductItem(props: Props) {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: { margin: "0 1rem" },
   productName: {
     fontSize: "0.8rem",
   },
@@ -96,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   imageStyling: {
+    height: "10rem",
     marginRight: ".5rem",
     marginBottom: ".5rem",
     objectFit: "cover",

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../components/context/ProductsContext";
 
-import PostAddIcon from "@material-ui/icons/PostAdd";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EditableProductItem from "../components/EditableProductItem";
 import EditProductModal from "../components/EditProductModal";
 import { Product } from "../helpers/typings";
@@ -42,16 +42,17 @@ function AdminProducts() {
           })}
         </Grid>
         <Box className={classes.addItemButton}>
-          <Tooltip title="Add product" arrow>
-            <Button
-              onClick={() => {
-                setEditingProduct(emptyProduct);
-                setNewProduct(true);
-              }}
-            >
-              <PostAddIcon fontSize={"large"} />
-            </Button>
-          </Tooltip>
+          <Button
+            size="large"
+            variant="contained"
+            endIcon={<AddCircleIcon />}
+            onClick={() => {
+              setEditingProduct(emptyProduct);
+              setNewProduct(true);
+            }}
+          >
+            Add New Product
+          </Button>
         </Box>
       </Box>
       <EditProductModal
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
-    padding: "2rem 0",
+
     maxWidth: "1200px",
     [theme.breakpoints.down("md")]: {
       justifyContent: "center",

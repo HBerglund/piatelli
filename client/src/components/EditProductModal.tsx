@@ -123,7 +123,7 @@ function EditProductModal(props: IProps) {
   return (
     <Modal open={props.editOpen}>
       <Box className={classes.editContainer}>
-        <Typography variant={"h3"}>Product settings</Typography>
+        <Typography variant="subtitle1">Update product information</Typography>
         <Hidden only={"xs"}>
           <Box className={classes.editCard}>
             <Img
@@ -132,13 +132,10 @@ function EditProductModal(props: IProps) {
               alt="Bags from Pialetti"
               width="100"
               height="100"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", marginBottom: "1rem" }}
             />
             <Box className={classes.cardText}>
-              <Typography variant={"body1"}>
-                {props.product.price}&nbsp;kr
-              </Typography>
-              <Typography variant={"body1"}>{props.product.name}</Typography>
+              <Typography variant={"body2"}>{props.product.name}</Typography>
             </Box>
           </Box>
         </Hidden>
@@ -358,14 +355,16 @@ function EditProductModal(props: IProps) {
 const useStyles = makeStyles((theme) => ({
   editContainer: {
     marginTop: "5rem",
+    borderRadius: "8px",
     height: "80%",
     width: "60%",
     margin: "auto",
-    backgroundColor: "#ffffff",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "#ffffff",
     outline: "0",
+    padding: "2rem 2rem 0 2rem",
     [theme.breakpoints.down("md")]: {
       height: "100vh",
       marginTop: "2rem",
@@ -386,8 +385,10 @@ const useStyles = makeStyles((theme) => ({
   },
   editCard: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
   },
   cardText: {
     display: "flex",
@@ -399,10 +400,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    margin: "1rem 0",
     overflow: "auto",
     [theme.breakpoints.down("md")]: {
       width: "100%",
-      // marginTop: "5rem",
       overflow: "auto",
       height: "100%",
     },
