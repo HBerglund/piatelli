@@ -12,7 +12,7 @@ POST http://localhost:4000/products
 Content-Type: application/json
 
 {
-    "category": "Sport Bag",
+    "category": "Sp3ci@l Chars",
     "name": "a cool bag",
     "price": 200,
     "img": "https://images.unsplash.com/photo-1621570359164-ad2429a2c93b",

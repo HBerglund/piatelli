@@ -13,9 +13,10 @@ const addressSchema = new mongoose.Schema(
       minLength: [5, "invalid zipcode"],
       maxLength: [5, "invalid zipcode"],
       set: (zip) => removeWhiteSpace(zip),
+      required: true,
     },
     city: { type: "String", required: true },
-    country: "String",
+    country: { type: "String", required: true },
   },
   { _id: false }
 );

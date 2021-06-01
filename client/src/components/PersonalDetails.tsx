@@ -117,8 +117,6 @@ function PersonalDetails(props: IProps) {
     );
   };
 
-  console.log(deliveryDetails);
-
   const getErrorMsg = (name: string) => {
     let errMsg: string | null = null;
     fieldErr.forEach((fieldName) => {

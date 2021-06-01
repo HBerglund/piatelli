@@ -1,4 +1,4 @@
-import { createContext, FC, useEffect, useState } from "react";
+import { createContext, FC, useState } from "react";
 import { Order } from "../../helpers/typings";
 
 interface OrderValue {

@@ -44,8 +44,12 @@ function ProductProvider(props: IProps) {
   useEffect(() => {
     fetch("/products", { method: "GET" }).then((res) =>
       res.json().then((result) => {
-        setProducts(result);
-        getAllCategories(result);
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setProducts(result);
+          getAllCategories(result);
+        }
       })
     );
   }, []);
@@ -60,9 +64,13 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then(() => {
-        const updateProductView = [...products, product];
-        setProducts(updateProductView);
+      .then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          const updateProductView = [...products, product];
+          setProducts(updateProductView);
+        }
       });
   }
 
@@ -80,8 +88,7 @@ function ProductProvider(props: IProps) {
       .then((res) => res.json())
       .then((result) => {
         if (result.errorCode) {
-          // Catch error
-          console.log(result);
+          console.log({ result });
         } else {
           let updatedProducts = products.map((item) => {
             if (item._id === product._id) {

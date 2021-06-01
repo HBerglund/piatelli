@@ -14,6 +14,11 @@ const productSchema = new mongoose.Schema({
   price: {
     type: "Number",
     required: true,
+    min: 0,
+    validate: {
+      validator: (v) => runRegExValidation("price", v),
+      message: "Please enter a valid price",
+    },
   },
   img: {
     type: "String",
