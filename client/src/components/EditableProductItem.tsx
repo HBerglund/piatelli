@@ -61,7 +61,12 @@ function EditableProductItem(props: Props) {
         </Box>
         <div>
           <Tooltip title="Edit" arrow>
-            <Button onClick={() => props.setEditingProduct(product)}>
+            <Button
+              onClick={() => {
+                props.setEditingProduct(product);
+                console.log(product);
+              }}
+            >
               <EditOutlinedIcon fontSize={"small"} />
             </Button>
           </Tooltip>

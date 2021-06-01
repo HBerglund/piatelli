@@ -114,24 +114,30 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
-        if (result.message) {
-          console.log(result.message);
+        if (result.errorCode) {
+          console.log({ result });
+          // ---------TODO---------
+          // setAllUsers(allUsers); ???
         } else {
-          console.log(result);
+          setAllUsers({ ...allUsers });
         }
       });
   };
 
   const removeUser = (user: User) => {
     const id = user._id;
-    console.log(id);
     fetch(`/users/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        if (result.errorCode) {
+          console.log({ result });
+          // ---------TODO---------
+          // setAllUsers(allUsers); ???
+        } else {
+          setAllUsers({ ...allUsers });
+        }
       });
   };
 

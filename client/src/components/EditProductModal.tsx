@@ -8,7 +8,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
@@ -19,7 +19,6 @@ import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import { Product } from "../helpers/typings";
 import runRegExValidation from "../helpers/validation";
 import { useHistory } from "react-router";
-
 
 interface IProps {
   closeModal: () => void;
@@ -37,15 +36,32 @@ function EditProductModal(props: IProps) {
   const history = useHistory();
 
   const [fieldErr, setFieldErr] = useState<string[]>([]);
-  const [, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<Product>(
+    props.product || ({} as Product)
+  );
+
+  // {
+  //   name: props.product?.name,
+  //   price: props.product?.price,
+  //   img: props.product?.img,
+  //   category: props.product?.category,
+  //   description: props.product?.description,
+  //   details: props.product?.details,
+  //   care: props.product?.care,
+  //   stock: props.product?.stock,
+  // }
 
   function handleChange(value: string | number, key: keyof Product) {
-    setProduct(props.product);
     setProduct((prev: any) => {
-      prev[key] = value;
-      return prev;
+      const productCopy = { ...prev };
+      productCopy[key] = value;
+      return productCopy;
     });
   }
+
+  console.log(props.product);
+
+  console.log(product);
 
   const getError = (name: string) => {
     let err = false;
@@ -92,8 +108,6 @@ function EditProductModal(props: IProps) {
       removeFieldErr(name);
     }
   };
-
-  console.log(fieldErr);
 
   if (!props.product) return null;
 
@@ -308,10 +322,14 @@ function EditProductModal(props: IProps) {
                   history.replace("/admin");
                   props.closeModal();
                   if (props.newProduct) {
-                    addNewProduct(props.product!);
+                    if (product) {
+                      addNewProduct(product);
+                    }
                     props.isProductNew();
                   } else {
-                    updateProduct(props.product!);
+                    if (product) {
+                      updateProduct(product);
+                    }
                   }
                 }
               }}
@@ -320,7 +338,12 @@ function EditProductModal(props: IProps) {
             </Button>
           </Box>
           <Box>
-            <Button variant="contained" onClick={props.closeModal}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                props.closeModal();
+              }}
+            >
               Cancel
             </Button>
           </Box>
