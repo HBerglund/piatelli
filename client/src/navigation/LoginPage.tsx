@@ -49,6 +49,12 @@ function LoginPage() {
     });
   };
 
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleLoginClick();
+    }
+  });
+
   // TODO: ADD CHECKS TO LOGIN VALIDATION
   const handleLoginClick = () => {
     usersContext.validateLogin(loginInput);
