@@ -114,6 +114,7 @@ function RegistrationForm() {
 
   const handleRegistrationClick = () => {
     usersContext.validateRegistration(userInputs);
+    // if validation fail -> error message and stay on /register
     // we need to setErrMessage somehow
     history.replace("/login");
   };

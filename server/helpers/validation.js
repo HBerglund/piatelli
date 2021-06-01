@@ -26,7 +26,8 @@ const runRegExValidation = (type, value) => {
       "address" ||
       "country" ||
       "street" ||
-      "delivery name": // validates that there is no special characters
+      "delivery name" ||
+      "city": // validates that there is no special characters
       re = /^[_A-z0-9]*((-|\s)*[_A-z0-9])*$/;
       break;
     case "fullName":

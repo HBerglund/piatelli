@@ -1,22 +1,42 @@
 const mongoose = require("mongoose");
-const {
-  validateEmail,
-  validatePhone,
-  removeWhiteSpace,
-} = require("./model.helpers");
+const { removeWhiteSpace } = require("./model.helpers");
+const runRegExValidation = require("../helpers/validation");
 
 const addressSchema = new mongoose.Schema(
   {
-    street: { type: "String", required: true },
+    street: {
+      type: "String",
+      required: true,
+      validate: {
+        validator: (v) => runRegExValidation("street", v),
+        message: "Please enter a valid street name",
+      },
+    },
     zipcode: {
       type: "String",
-      minLength: [5, "invalid zipcode"],
-      maxLength: [5, "invalid zipcode"],
       set: (zip) => removeWhiteSpace(zip),
       required: true,
+      validate: {
+        validator: (v) => runRegExValidation("zipcode", v),
+        message: "Please enter a valid zipcode",
+      },
     },
-    city: { type: "String", required: true },
-    country: { type: "String", required: true },
+    city: {
+      type: "String",
+      required: true,
+      validate: {
+        validator: (v) => runRegExValidation("city", v),
+        message: "Please enter a valid city name",
+      },
+    },
+    country: {
+      type: "String",
+      required: true,
+      validate: {
+        validator: (v) => runRegExValidation("country", v),
+        message: "Please enter a valid country name",
+      },
+    },
   },
   { _id: false }
 );
@@ -26,7 +46,10 @@ const userSchema = new mongoose.Schema({
     type: "String",
     required: true,
     lowercase: true,
-    validate: [validateEmail, "invalid email"],
+    validate: {
+      validator: (v) => runRegExValidation("email", v),
+      message: "Please enter a valid email",
+    },
     trim: true,
     set: (email) => email.toLowerCase(),
     unique: true,
@@ -34,7 +57,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: "String",
     required: true,
-    minLength: [5, "password must be at least 6 characters"],
+    // validate: {
+    //   validator: (v) => runRegExValidation("password", v),
+    //   message: "Password must be at least 6 characters",
+    // },
+    // minLength: [5, "password must be at least 6 characters"],
   },
   role: {
     type: "String",
@@ -46,11 +73,21 @@ const userSchema = new mongoose.Schema({
     },
   },
   authorizedAdmin: { type: "Boolean", default: false },
-  fullName: { type: "String", required: true },
+  fullName: {
+    type: "String",
+    required: true,
+    validate: {
+      validator: (v) => runRegExValidation("fullName", v),
+      message: "Please enter a valid name",
+    },
+  },
   address: addressSchema,
   phone: {
     type: "String",
-    validate: [validatePhone, "invalid phone number"],
+    validate: {
+      validator: (v) => runRegExValidation("phone", v),
+      message: "Please enter a valid phone number",
+    },
   },
 });
 

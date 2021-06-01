@@ -38,7 +38,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        if (result.error) {
+        if (result.errorCode) {
           console.log({ result });
         } else {
           console.log("Registration successful");
@@ -79,7 +79,6 @@ const UsersProvider: FC<{}> = ({ children }) => {
       .then((res) => res.json())
       .then((result) => {
         if (result.errorCode) {
-          console.log({ result });
           setUser(undefined);
         } else {
           setUser(result.user);

@@ -41,7 +41,7 @@ const deleteOneById = async (req, res) => {
   const userToCheck = await UserModel.findById(id);
   if (userIsAdmin(req) || (await userHaveAccess(req, userToCheck._id))) {
     const user = await UserModel.findByIdAndDelete(id);
-    res.status(200).json(user);
+    res.status(200).json({ message: "User deleted" });
     if (!user) {
       throw new ResponseError(404, "User does not exist on database");
     }
@@ -121,7 +121,7 @@ const authenticate = async (req, res) => {
 const logOut = async (req, res) => {
   if (loggedInUser(req)) {
     req.session = null;
-    res.status(200).json("You're logged out!");
+    res.status(200).json({ message: "You're logged out!" });
   } else {
     throw new ResponseError(400, "You're already logged out");
   }
