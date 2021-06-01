@@ -59,11 +59,6 @@ function EditProductModal(props: IProps) {
     });
   }
 
-
-
-  const getError = (name: string) => {
-    let err = false;
-
   const removeFieldErr = (name: string) => {
     setFieldErr((prev) =>
       prev.reduce((ack, item) => {
