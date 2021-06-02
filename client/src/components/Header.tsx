@@ -1,4 +1,11 @@
-import { Box, TextField, Typography, Badge, Hidden } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  Badge,
+  Hidden,
+  IconButton,
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
@@ -10,7 +17,8 @@ import { CartContext } from "./context/CartContext";
 import { useContext } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import { UsersContext } from "./context/UsersContext";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import PersonIcon from "@material-ui/icons/Person";
 
 function Header() {
   const [searchClicked, setSearchClicked] = useState(false);
@@ -19,6 +27,7 @@ function Header() {
   const { cart } = useContext(CartContext);
   const classes = useStyles();
   const usersContext = useContext(UsersContext);
+  const history = useHistory();
 
   const amountOfItemsInCart = cart.reduce(
     (ack: number, item) => ack + item.quantity,
@@ -62,8 +71,16 @@ function Header() {
       </Hidden>
       <Box className={classes.iconWrapper}>
         {usersContext.user ? (
-          <Typography>Logged in as {usersContext.user?.fullName}</Typography>
-        ) : null}
+          <Box style={{ display: "flex" }}>
+            <PersonIcon style={{ marginRight: "0.5rem" }} />
+            <Typography>{usersContext.user?.fullName}</Typography>
+          </Box>
+        ) : (
+          <IconButton onClick={() => history.push("/login")}>
+            <PersonIcon />
+          </IconButton>
+        )}
+
         <Box onClick={() => setSearchClicked(true)} m="1rem">
           {!searchClicked ? (
             <SearchIcon />

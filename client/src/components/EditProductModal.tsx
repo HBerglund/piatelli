@@ -6,6 +6,8 @@ import {
   TextField,
   Hidden,
   InputAdornment,
+  IconButton,
+  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
@@ -14,11 +16,12 @@ import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
 import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
-import FolderOutlinedIcon from "@material-ui/icons/FolderOutlined";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import { Product } from "../helpers/typings";
 import runRegExValidation from "../helpers/validation";
 import { useHistory } from "react-router";
+import EditableCategoryItem from "./EditableCategoryItem";
 
 interface IProps {
   closeModal: () => void;
@@ -38,22 +41,40 @@ function EditProductModal(props: IProps) {
   const [fieldErr, setFieldErr] = useState<string[]>([]);
   const [product, setProduct] = useState<Product>();
 
+  const [newCategory, setNewCategory] = useState<string>("");
+
+  const [categories, setCategories] = useState<string[]>([]);
+
   useEffect(() => {
     if (props.product) {
       setProduct({ ...props.product });
+      setCategories(props.product.category);
     }
   }, [props.product]);
 
-  // {
-  //   name: props.product?.name,
-  //   price: props.product?.price,
-  //   img: props.product?.img,
-  //   category: props.product?.category,
-  //   description: props.product?.description,
-  //   details: props.product?.details,
-  //   care: props.product?.care,
-  //   stock: props.product?.stock,
-  // }
+  const handleAddCategoryClick = () => {
+    if (newCategory && product) {
+      product.category.push(newCategory);
+      setCategories(product.category);
+      setNewCategory("");
+    }
+  };
+
+  const onDeleteCategory = (name: string) => {
+    if (product) {
+      const category = categories.findIndex((c) => c === name);
+      product.category.splice(category, 1);
+      setCategories((prev) =>
+        prev.reduce((ack, item) => {
+          if (item === name) {
+            return ack;
+          } else {
+            return [...ack, item];
+          }
+        }, [] as string[])
+      );
+    }
+  };
 
   function handleChange(
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -146,7 +167,7 @@ function EditProductModal(props: IProps) {
   return (
     <Modal open={props.editOpen}>
       <Box className={classes.editContainer}>
-        <Typography variant="subtitle1">Update product information</Typography>
+        <Typography variant="subtitle1">Product Details</Typography>
         <Hidden only={"xs"}>
           <Box className={classes.editCard}>
             <Img
@@ -189,7 +210,6 @@ function EditProductModal(props: IProps) {
                   defaultValue={props.product.name}
                 ></TextField>
               </Box>
-
               <Box mb={5}>
                 <TextField
                   className={classes.formWidth}
@@ -233,25 +253,28 @@ function EditProductModal(props: IProps) {
                   defaultValue={props.product.img}
                 ></TextField>
               </Box>
-              <Box mb={5}>
+              <Typography variant="subtitle1">Categories</Typography>
+              <Box className={classes.categoriesContainer} mb={5}>
+                {categories.map((categoryName) => (
+                  <EditableCategoryItem
+                    deleteCategory={() => onDeleteCategory(categoryName)}
+                    name={categoryName}
+                  />
+                ))}
                 <TextField
-                  className={classes.formWidth}
-                  variant={"outlined"}
-                  required
                   name="category"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FolderOutlinedIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  error={props.product.category === [""]}
-                  id="product-category"
-                  label="category"
-                  onChange={handleChange}
-                  defaultValue={props.product.category}
-                ></TextField>
+                  error={getError("category")}
+                  helperText={getErrorMsg("category")}
+                  onBlur={(event) =>
+                    validateInput("category", event.target.value)
+                  }
+                  label="Add category"
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  value={newCategory}
+                />
+                <IconButton onClick={() => handleAddCategoryClick()}>
+                  <AddBoxIcon />
+                </IconButton>
               </Box>
             </Box>
             <Box className={classes.largerForms}>
@@ -360,6 +383,7 @@ function EditProductModal(props: IProps) {
               variant="contained"
               onClick={() => {
                 props.closeModal();
+                setFieldErr([]);
               }}
             >
               Cancel
@@ -450,6 +474,14 @@ const useStyles = makeStyles((theme) => ({
     width: "10rem",
     display: "flex",
     flexDirection: "row",
+  },
+  categoriesContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    borderBottom: "2px solid #f3f3f3",
+    padding: "1rem 0",
   },
 }));
 

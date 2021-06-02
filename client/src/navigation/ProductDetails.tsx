@@ -44,19 +44,25 @@ function ProductDetails() {
       </Box>
       <Box className={classes.infoWrapper}>
         <Box className={classes.detailPadding}>
+          <Hidden only={"xs"}>
+            <Hidden only={"sm"}>
+              <Box style={{ display: "flex" }}>
+                {detailViewProduct.category.map((c) => (
+                  <Typography
+                    variant="subtitle1"
+                    style={{ marginRight: "1rem" }}
+                  >
+                    {c}
+                  </Typography>
+                ))}
+              </Box>
+            </Hidden>
+          </Hidden>
           <Box className={classes.column}>
             <Typography>
               <h2 className={classes.headerText}>{detailViewProduct.name}</h2>
             </Typography>
-            <Hidden only={"xs"}>
-              <Hidden only={"sm"}>
-                <Typography>
-                  <h3 className={classes.headerText}>
-                    {detailViewProduct.category}
-                  </h3>
-                </Typography>
-              </Hidden>
-            </Hidden>
+
             <Typography>
               <h4 className={classes.headerText}>
                 {detailViewProduct.price}&nbsp;kr
@@ -131,8 +137,10 @@ const useStyles = makeStyles((theme) => ({
   },
   preview: {
     objectFit: "cover",
-    height: 600,
+    objectPosition: "bottom",
     width: 600,
+    maxHeight: 700,
+
     [theme.breakpoints.down("xs")]: {
       height: "100%",
       width: "100%",
