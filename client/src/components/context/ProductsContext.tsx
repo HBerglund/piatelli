@@ -58,6 +58,19 @@ function ProductProvider(props: IProps) {
     );
   };
 
+  // const getAllImages = () => {
+  //   fetch("/image", { method: "GET" }).then((res) =>
+  //     res.json().then((result) => {
+  //       if (result.errorCode) {
+  //         console.log({ result });
+  //       } else {
+  //         setProducts(result);
+  //         getAllCategories(result);
+  //       }
+  //     })
+  //   );
+  // };
+
   function addNewProduct(product: Product) {
     fetch("/products", {
       method: "POST",

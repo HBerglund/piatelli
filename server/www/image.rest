@@ -1,0 +1,10 @@
+### GET ALL 
+GET http://localhost:4000/image
+
+### POST ONE
+POST http://localhost:4000/image
+Content-Type: application/json
+
+{
+    "img": "https://images.unsplash.com/photo-1595642527925-4d41cb781653"
+}
