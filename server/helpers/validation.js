@@ -23,6 +23,7 @@ const runRegExValidation = (type, value) => {
       re = /^(s-|S-){0,1}[0-9]{3}\s?[0-9]{2}$/;
       break;
     case "product name" ||
+      "category" ||
       "address" ||
       "country" ||
       "street" ||
@@ -33,7 +34,7 @@ const runRegExValidation = (type, value) => {
     case "fullName":
       re = /^[a-zA-ZäöåÄÖÅ ,.'-]+$/;
       break;
-    case "price":
+    case "price" || "stock":
       re = /^[0-9]*$/;
       break;
     default:

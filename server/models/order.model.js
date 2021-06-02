@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-// const { deliverySchema } = require("./delivery.model");
-// const { addressSchema } = require("./user.model");
 
 const deliverySchema = new mongoose.Schema({
   name: {
@@ -38,8 +36,6 @@ const addressSchema = new mongoose.Schema(
     },
     zipcode: {
       type: "String",
-      // minLength: [5, "invalid zipcode"],
-      // maxLength: [5, "invalid zipcode"],
       set: (zip) => removeWhiteSpace(zip),
       required: true,
       validate: {
