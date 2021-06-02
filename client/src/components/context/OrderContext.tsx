@@ -1,6 +1,7 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
 import { Address, Delivery, Order, User } from "../../helpers/typings";
 import { CartContext } from "./CartContext";
+import { ProductsContext } from "./ProductsContext";
 import { UsersContext } from "./UsersContext";
 
 interface OrderValue {
@@ -30,6 +31,7 @@ export const OrderContext = createContext<OrderValue>({
 const OrderProvider: FC<{}> = ({ children }) => {
   const usersContext = useContext(UsersContext);
   const cartContext = useContext(CartContext);
+  const productContext = useContext(ProductsContext);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [latestOrderId, setLatestOrderId] = useState<string>();
   const [addressDetails, setAddressDetails] = useState<Address | undefined>();
@@ -121,6 +123,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
           console.log({ result });
         } else {
           console.log(result);
+          productContext.getAllProducts();
         }
       });
   };

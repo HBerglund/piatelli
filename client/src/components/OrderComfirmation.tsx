@@ -5,7 +5,7 @@ import { CartItem } from "./context/CartContext";
 import { Delivery, Order, Product } from "../helpers/typings";
 import { Children, useContext, useEffect, useState } from "react";
 import { OrderContext } from "./context/OrderContext";
-import ErrorBoundary from "./ErrorBoundary";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function OrderComfirmation() {
   const classes = useStyles();
@@ -92,7 +92,7 @@ function OrderComfirmation() {
         </Box>
       </Box>
     );
-  } else return <div>Something is wrong. Please reload page.</div>;
+  } else return <CircularProgress />;
 }
 
 const useStyles = makeStyles((theme) => ({
