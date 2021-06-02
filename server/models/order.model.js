@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const runRegExValidation = require("../helpers/validation");
 
 const deliverySchema = new mongoose.Schema({
   name: {
