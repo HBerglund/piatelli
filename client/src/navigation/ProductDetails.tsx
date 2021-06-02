@@ -135,6 +135,7 @@ const useStyles = makeStyles((theme) => ({
     objectPosition: "bottom",
     width: 600,
     maxHeight: 700,
+
     [theme.breakpoints.down("xs")]: {
       height: "100%",
       width: "100%",
