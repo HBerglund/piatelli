@@ -14,6 +14,7 @@ interface ContextValue extends IState {
   addNewProduct: (product: Product) => void;
   updateProduct: (product: Product) => void;
   removeProduct: (product: Product) => void;
+  getAllProducts: () => void;
 }
 
 export const ProductsContext = createContext<ContextValue>({
@@ -22,6 +23,7 @@ export const ProductsContext = createContext<ContextValue>({
   addNewProduct: () => {},
   updateProduct: () => {},
   removeProduct: () => {},
+  getAllProducts: () => {},
 });
 
 function ProductProvider(props: IProps) {
@@ -139,6 +141,7 @@ function ProductProvider(props: IProps) {
         addNewProduct,
         updateProduct,
         removeProduct,
+        getAllProducts,
       }}
     >
       {props.children}

@@ -5,7 +5,7 @@ import { CartItem } from "./context/CartContext";
 import { Delivery, Order, Product } from "../helpers/typings";
 import { Children, useContext, useEffect, useState } from "react";
 import { OrderContext } from "./context/OrderContext";
-import ErrorBoundary from "./ErrorBoundary";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function OrderComfirmation() {
   const classes = useStyles();
@@ -18,7 +18,6 @@ function OrderComfirmation() {
   }, [orderContext.latestOrderId]);
 
   const fetchLatestOrder = () => {
-    console.log("im in the fetch");
     fetch(`/orders/${orderContext.latestOrderId}`, {
       method: "GET",
       credentials: "include",
@@ -66,7 +65,7 @@ function OrderComfirmation() {
                 </Box>
               ))}
               <Box mb={5}>
-                <Typography>Total price: ${latestOrder.sum}</Typography>
+                <Typography>Total price: {latestOrder.sum} kr</Typography>
               </Box>
               <Box>
                 <Box className={classes.margin2}>
@@ -93,7 +92,7 @@ function OrderComfirmation() {
         </Box>
       </Box>
     );
-  } else return <div>HEJ</div>;
+  } else return <CircularProgress />;
 }
 
 const useStyles = makeStyles((theme) => ({

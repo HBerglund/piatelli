@@ -1,6 +1,7 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
 import { Address, Delivery, Order, User } from "../../helpers/typings";
 import { CartContext } from "./CartContext";
+import { ProductsContext } from "./ProductsContext";
 import { UsersContext } from "./UsersContext";
 
 interface OrderValue {
@@ -30,6 +31,7 @@ export const OrderContext = createContext<OrderValue>({
 const OrderProvider: FC<{}> = ({ children }) => {
   const usersContext = useContext(UsersContext);
   const cartContext = useContext(CartContext);
+  const productContext = useContext(ProductsContext);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [latestOrderId, setLatestOrderId] = useState<string>();
   const [addressDetails, setAddressDetails] = useState<Address | undefined>();
@@ -98,8 +100,30 @@ const OrderProvider: FC<{}> = ({ children }) => {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          console.log(result._id);
           setLatestOrderId(result._id);
+          for (const product of result.items) {
+            updateStock(product._id, product.quantity);
+          }
+        }
+      });
+  };
+
+  const updateStock = (productID: string, quantity: number) => {
+    fetch(`/products/stock/${productID}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          console.log(result);
+          productContext.getAllProducts();
         }
       });
   };

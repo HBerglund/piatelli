@@ -62,6 +62,11 @@ function ProductDetails() {
                 {detailViewProduct.price}&nbsp;kr
               </h4>
             </Typography>
+            <Typography>
+              <h4 className={classes.headerText}>
+                Stock: {detailViewProduct.stock}
+              </h4>
+            </Typography>
           </Box>
           <div className={classes.row}>
             {textInfoStrings.map((tab) => (
