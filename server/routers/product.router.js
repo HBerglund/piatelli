@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const {
   getAll,
   createProduct,
@@ -6,6 +7,7 @@ const {
   deleteOneById,
   updateOneById,
   updateStockById,
+  createImage,
 } = require("../controllers/product.controller");
 
 const productRouter = express.Router();

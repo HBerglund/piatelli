@@ -118,6 +118,29 @@ function EditProductModal(props: IProps) {
     }
   };
 
+  const uploadImage = (e: any) => {
+    const formData = new FormData();
+    formData.append("img", e.target.files[0]);
+    fetch("/image", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "multipart/form-data; boundary=Row",
+      },
+      body: formData,
+    }).then((res) =>
+      res.json().then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          if (product) {
+            setProduct({ ...product, img: result });
+          }
+        }
+      })
+    );
+  };
+
   if (!props.product) return null;
 
   return (
@@ -192,6 +215,7 @@ function EditProductModal(props: IProps) {
               </Box>
               <Box mb={5}>
                 <TextField
+                  type="file"
                   className={classes.formWidth}
                   variant={"outlined"}
                   required
@@ -203,14 +227,9 @@ function EditProductModal(props: IProps) {
                       </InputAdornment>
                     ),
                   }}
-                  error={getError("image url")}
-                  helperText={getErrorMsg("image url")}
-                  onBlur={(event) =>
-                    validateInput("image url", event.target.value)
-                  }
+                  onChange={uploadImage}
                   id="product-Picture"
                   label="Image"
-                  onChange={handleChange}
                   defaultValue={props.product.img}
                 ></TextField>
               </Box>

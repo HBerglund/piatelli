@@ -5,6 +5,7 @@ const productRouter = require("./routers/product.router");
 const userRouter = require("./routers/user.router");
 const orderRouter = require("./routers/order.router");
 const deliveryRouter = require("./routers/delivery.router");
+const imageRouter = require("./routers/image.router");
 const cookieSession = require("cookie-session");
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(productRouter);
 app.use(userRouter);
 app.use(orderRouter);
 app.use(deliveryRouter);
+app.use(imageRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);
