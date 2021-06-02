@@ -98,7 +98,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          console.log(result._id);
           setLatestOrderId(result._id);
         }
       });

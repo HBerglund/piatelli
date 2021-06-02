@@ -29,3 +29,6 @@ Content-Type: application/json
 {
     "price": 300
 }
+
+### UPDATE STOCK BY ID
+PUT http://localhost:4000/products/stock/60af9b9e7c433304efacd9e0

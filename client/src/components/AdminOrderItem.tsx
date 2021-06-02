@@ -134,14 +134,14 @@ function AdminOrderItem(props: Props) {
               Delivery
             </Typography>
             <Typography>{delivery.name}</Typography>
-            <Typography>$ {delivery.price}</Typography>
+            <Typography>{delivery.price} kr</Typography>
             <Typography>Delivery within {delivery.deliveryTime}</Typography>
           </Box>
           <Box className={classes.row}>
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Order Sum
             </Typography>
-            <Typography>$ {sum}</Typography>
+            <Typography>{sum} kr</Typography>
           </Box>
         </AccordionDetails>
       </Accordion>

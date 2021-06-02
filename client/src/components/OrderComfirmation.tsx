@@ -18,7 +18,6 @@ function OrderComfirmation() {
   }, [orderContext.latestOrderId]);
 
   const fetchLatestOrder = () => {
-    console.log("im in the fetch");
     fetch(`/orders/${orderContext.latestOrderId}`, {
       method: "GET",
       credentials: "include",
@@ -66,7 +65,7 @@ function OrderComfirmation() {
                 </Box>
               ))}
               <Box mb={5}>
-                <Typography>Total price: ${latestOrder.sum}</Typography>
+                <Typography>Total price: {latestOrder.sum} kr</Typography>
               </Box>
               <Box>
                 <Box className={classes.margin2}>
