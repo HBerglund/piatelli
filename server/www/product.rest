@@ -12,20 +12,20 @@ POST http://localhost:4000/products
 Content-Type: application/json
 
 {
-    "category": "Sport Bag",
+    "category": "Accessories",
     "name": "a cool bag",
     "price": 200,
     "img": "https://images.unsplash.com/photo-1621570359164-ad2429a2c93b",
     "description": "Baggy wear his ugly bag",
-    "details": "bhaggy is ugly with his bag",
-    "care": "a",
+    "details": "Bhaggy is ugly with his bag",
+    "care": "Don't wash",
     "stock": 100
 }
 
 ### UPDATE ONE BY ID
-PUT http://localhost:4000/products/60a5016f5503828d59579da8
+PUT http://localhost:4000/products/60b63dd13829b28c5ccefa12
 Content-Type: application/json
 
 {
-    "price": 300
+    "price": 100
 }
