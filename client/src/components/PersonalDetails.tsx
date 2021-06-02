@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import { OrderContext } from "./context/OrderContext";
 import { UsersContext } from "./context/UsersContext";
 import runRegExValidation from "../helpers/validation";
+import { Address } from "../helpers/typings";
 
 interface IProps {
   fullName: string | undefined;
@@ -30,31 +31,27 @@ interface IProps {
   setCity: (event: string) => void;
 }
 
-interface deliveryDetails {
-  fullName: string | undefined;
-  phone: string | undefined;
-  street: string | undefined;
-  zipcode: string | undefined;
-  city: string | undefined;
-  country: string | undefined;
-}
-
 function PersonalDetails(props: IProps) {
   const classes = useStyles();
   const usersContext = useContext(UsersContext);
+  const orderContext = useContext(OrderContext);
   const history = useHistory();
 
   const { user } = usersContext;
 
   // THIS IS THE STATE THAT WE WANT TO SEND TO THE ORDER!!
-  const [deliveryDetails, setDeliveryDetails] = useState<deliveryDetails>({
-    fullName: user?.fullName,
-    phone: user?.phone,
-    street: user?.address.street,
-    zipcode: user?.address.zipcode,
-    city: user?.address.city,
-    country: user?.address.country,
+  const [addressDetails, setAddressDetails] = useState<Address>({
+    street: user?.address.street ? user?.address.street : "",
+    zipcode: user?.address.zipcode ? user?.address.zipcode : "",
+    city: user?.address.city ? user?.address.city : "",
+    country: user?.address.country ? user?.address.country : "",
   });
+
+  useEffect(() => {
+    if (addressDetails) {
+      orderContext.saveAddressDetails(addressDetails);
+    }
+  }, [addressDetails]);
 
   const [addressState, setAddressState] = useState<string>("savedAddress");
 
@@ -66,9 +63,7 @@ function PersonalDetails(props: IProps) {
 
   useEffect(() => {
     if (addressState === "anotherAddress") {
-      setDeliveryDetails({
-        fullName: "",
-        phone: "",
+      setAddressDetails({
         street: "",
         zipcode: "",
         city: "",
@@ -76,14 +71,14 @@ function PersonalDetails(props: IProps) {
       });
     } else {
       setFieldErr([]);
-      setDeliveryDetails({
-        fullName: user?.fullName,
-        phone: user?.phone,
-        street: user?.address.street,
-        zipcode: user?.address.zipcode,
-        city: user?.address.city,
-        country: user?.address.country,
-      });
+      if (user) {
+        setAddressDetails({
+          street: user?.address.street,
+          zipcode: user?.address.zipcode,
+          city: user?.address.city,
+          country: user?.address.country,
+        });
+      }
     }
   }, [addressState]);
 
@@ -91,8 +86,8 @@ function PersonalDetails(props: IProps) {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setDeliveryDetails({
-      ...deliveryDetails,
+    setAddressDetails({
+      ...addressDetails,
       [name]: value,
     });
   };
@@ -114,8 +109,6 @@ function PersonalDetails(props: IProps) {
       }, [] as string[])
     );
   };
-
-  console.log(deliveryDetails);
 
   const getErrorMsg = (name: string) => {
     let errMsg: string | null = null;
@@ -184,29 +177,6 @@ function PersonalDetails(props: IProps) {
             <form className={classes.contentWrapper} autoComplete="off">
               <Box className={classes.flexColumn}>
                 <TextField
-                  className={classes.textField}
-                  name="fullName"
-                  error={props.fullName === ""}
-                  id="standard-required"
-                  variant={"outlined"}
-                  label="Full Name"
-                  onChange={handleInputChange}
-                  value={deliveryDetails.fullName}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-                <TextField
-                  className={classes.textField}
-                  variant={"outlined"}
-                  name="phone"
-                  label="Phone number"
-                  error={getError("phone")}
-                  helperText={getErrorMsg("phone")}
-                  onBlur={(e) => validateInput("phone", e.target.value)}
-                  onChange={handleInputChange}
-                  value={deliveryDetails.phone}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-                <TextField
                   variant={"outlined"}
                   className={classes.textField}
                   label="Street"
@@ -215,7 +185,7 @@ function PersonalDetails(props: IProps) {
                   helperText={getErrorMsg("street")}
                   onBlur={(e) => validateInput("street", e.target.value)}
                   onChange={handleInputChange}
-                  value={deliveryDetails.street}
+                  value={addressDetails.street}
                   disabled={addressState === "savedAddress" ? true : false}
                 />
               </Box>
@@ -229,7 +199,7 @@ function PersonalDetails(props: IProps) {
                   helperText={getErrorMsg("zipcode")}
                   onBlur={(e) => validateInput("zipcode", e.target.value)}
                   onChange={handleInputChange}
-                  value={deliveryDetails.zipcode}
+                  value={addressDetails.zipcode}
                   disabled={addressState === "savedAddress" ? true : false}
                 />
                 <TextField
@@ -241,20 +211,20 @@ function PersonalDetails(props: IProps) {
                   helperText={getErrorMsg("city")}
                   onBlur={(e) => validateInput("city", e.target.value)}
                   onChange={handleInputChange}
-                  value={deliveryDetails.city}
+                  value={addressDetails.city}
                   disabled={addressState === "savedAddress" ? true : false}
                 />
                 <TextField
                   className={classes.textField}
                   variant={"outlined"}
                   id="standard-required"
-                  name="cpuntry"
+                  name="country"
                   label="Country"
                   error={getError("country")}
                   helperText={getErrorMsg("country")}
                   onBlur={(e) => validateInput("country", e.target.value)}
                   onChange={handleInputChange}
-                  value={deliveryDetails.country}
+                  value={addressDetails.country}
                   disabled={addressState === "savedAddress" ? true : false}
                 />
               </Box>

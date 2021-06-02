@@ -1,10 +1,17 @@
 const ResponseError = require("../error/ResError");
-const { userIsAdmin } = require("../helpers/authHelper");
+const { userIsAdmin, loggedInUser } = require("../helpers/authHelper");
 const ProductModel = require("../models/product.model");
 
 const getAll = async (req, res, next) => {
   const products = await ProductModel.find({});
-  res.status(200).json(products);
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    throw new ResponseError(
+      404,
+      "There's no existing products in the database."
+    );
+  }
 };
 
 const getOneById = async (req, res) => {
@@ -13,7 +20,7 @@ const getOneById = async (req, res) => {
   if (product) {
     res.status(200).json(product);
   } else {
-    throw new ResponseError(400, "The product doesn't exist.");
+    throw new ResponseError(404, "The product doesn't exist.");
   }
 };
 
@@ -22,7 +29,7 @@ const deleteOneById = async (req, res) => {
   if (userIsAdmin(req)) {
     const product = await ProductModel.findByIdAndDelete(id);
     if (!product) {
-      throw new ResponseError(400, "The product doesn't exist in the database");
+      throw new ResponseError(404, "The product doesn't exist in the database");
     }
     res.status(200).json(product);
   } else {
@@ -54,7 +61,7 @@ const updateOneById = async (req, res) => {
       { new: true }
     );
     if (!product) {
-      throw new ResponseError(400, "The product doesn't exist in the database");
+      throw new ResponseError(404, "The product doesn't exist in the database");
     }
     res.status(200).json(product);
   } else {
@@ -65,10 +72,48 @@ const updateOneById = async (req, res) => {
   }
 };
 
+const updateStockById = async (req, res) => {
+  const id = req.params.id;
+  const quantity = req.body.quantity;
+
+  if (loggedInUser(req)) {
+    const productToUpdate = await ProductModel.findById(id);
+    const updatedStock = updateStock(productToUpdate.stock, quantity);
+
+    const product = await ProductModel.findByIdAndUpdate(
+      id,
+      { stock: updatedStock },
+      { new: true }
+    );
+    res.status(200).json(product);
+
+    if (!product) {
+      throw new ResponseError(400, "The product doesn't exist in the database");
+    }
+  } else {
+    throw new ResponseError(
+      403,
+      "You don't have permission to perform this request"
+    );
+  }
+};
+
+//update stock helper
+
+function updateStock(currentStock, quantity) {
+  const updatedStock = currentStock - quantity;
+  if (updatedStock <= 0) {
+    return 0;
+  } else {
+    return updatedStock;
+  }
+}
+
 module.exports = {
   getAll,
   getOneById,
   deleteOneById,
   createProduct,
   updateOneById,
+  updateStockById,
 };

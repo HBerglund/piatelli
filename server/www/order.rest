@@ -2,7 +2,7 @@
 GET http://localhost:4000/orders
 
 ### GET ONE BY ID
-GET http://localhost:4000/orders/60acb57933c12941ea7cbeae
+GET http://localhost:4000/orders/60b4dee00678ee127eb97573
 
 ### DELETE BY ID
 DELETE http://localhost:4000/orders/60ac96ae79fbf03332fddfe1
@@ -12,21 +12,41 @@ POST http://localhost:4000/orders
 Content-Type: application/json
 
 {
-    "customer": "60acb52f33c12941ea7cbead",
+    "customer": "60afa307df2e5f7dd910a250",
     "address": {
         "street": "Folkungagatan 5",
         "zipcode": "41102",
         "city": "Gothenburg",
         "country": "Sweden"
     }, 
-    "items": ["Shades", "Umbrella", "Watch"],
+    "items": [{
+        "category": ["watches"],
+        "name": "Givenchy Antigona Bag",
+        "price": 29500,
+        "img": "https://cdn-images.farfetch-contents.com/14/96/21/83/14962183_28331298_1000.jpg",
+        "description": "Antigona large tote bag. Logo mark on the front, two handles, detachable shoulder strap, zipper at the top, pocket on the inside. Material: calfskin. Made in Italy",
+        "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "care": "This bag is really soft and if you wash it it will become cleaner, like most fabrics it is hand crafted from non child laborers. If you don't feel like washing this bag you can just rub it gently and it will become clean, it's somekind of new technology.",
+        "stock": 12,
+        "quantity": 2
+    }, {
+         "category": ["Shoes & Sandals"],
+        "name": "Bottega Veneta Chelsea Boot",
+        "price": 13000,
+        "img": "https://cdn-images.farfetch-contents.com/16/49/50/29/16495029_32716883_1000.jpg",
+        "description": "Tire Chelsea boots. Drawbar at the back, square toe, elastic side panels, ankle length, ribbed rubber sole. Material: leather. Made in Italy",
+        "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "care": "This bag is really soft and if you wash it it will become cleaner, like most fabrics it is hand crafted from non child laborers. If you don't feel like washing this bag you can just rub it gently and it will become clean, it's somekind of new technology.",
+        "stock": 10,
+        "quantity": 4
+    }],
     "payment": "PayPal",
     "delivery": {
         "name": "DHL",
         "price": 20,
         "deliveryTime": "1-3 days"
     }, 
-    "sum": 1599
+    "sum": 111000
 }
 
 ### UPDATE ONE BY ID

@@ -2,24 +2,24 @@
 GET http://localhost:4000/users
 
 ### GET ONE BY ID
-GET http://localhost:4000/users/60b47f07bd4163066026c8c0
+GET http://localhost:4000/users/60b62e6a4f6ac5511d6343c8
 
 ### DELETE BY ID
-DELETE http://localhost:4000/users/60b0f91d2881bf293e5061bf
+DELETE http://localhost:4000/users/60b5f7f48294663aeef80ba1
 
-### POST ONE
+### POST ONE / REGISTER
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-    "email": "ogge@gmail.com",
-    "password": "asdasd",
+    "email": "osse2@gmail.com",
+    "password": "hejhej1",
     "role": "customer",
     "authorizedAdmin": false,
-    "fullName": "Ogge Andersson",
-    "phone": "0702045411",
+    "fullName": "Oscar Andersson",
+    "phone": "0702245411",
     "address": {
-        "street": "Jenny Lindsgatan 4B",
+        "street": "Folkungagatan 5",
         "zipcode": "41662",
         "city": "Gothenburg",
         "country": "Sweden"
@@ -40,8 +40,8 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-    "email": "victor.wikstrom@icloud.com",
-    "password": "asdasd"
+    "email": "oskarberglund97@hotmail.com",
+    "password": "hejhej"
 }
 
 ### LOGIN ADMIN
@@ -49,8 +49,8 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-    "email": "herman@herman.se",
-    "password": "123"
+    "email": "carro@gmail.com",
+    "password": "hej"
 }
 
 ### AUTHENTICATE / CHECK COOKIE

@@ -1,3 +1,4 @@
+import { RestoreOutlined } from "@material-ui/icons";
 import { createContext, useEffect, useState } from "react";
 import { Product } from "../../helpers/typings";
 
@@ -13,6 +14,7 @@ interface ContextValue extends IState {
   addNewProduct: (product: Product) => void;
   updateProduct: (product: Product) => void;
   removeProduct: (product: Product) => void;
+  getAllProducts: () => void;
 }
 
 export const ProductsContext = createContext<ContextValue>({
@@ -21,6 +23,7 @@ export const ProductsContext = createContext<ContextValue>({
   addNewProduct: () => {},
   updateProduct: () => {},
   removeProduct: () => {},
+  getAllProducts: () => {},
 });
 
 function ProductProvider(props: IProps) {
@@ -48,13 +51,31 @@ function ProductProvider(props: IProps) {
   const getAllProducts = () => {
     fetch("/products", { method: "GET" }).then((res) =>
       res.json().then((result) => {
-        setProducts(result);
-        getAllCategories(result);
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setProducts(result);
+          getAllCategories(result);
+        }
       })
     );
   };
 
+  // const getAllImages = () => {
+  //   fetch("/image", { method: "GET" }).then((res) =>
+  //     res.json().then((result) => {
+  //       if (result.errorCode) {
+  //         console.log({ result });
+  //       } else {
+  //         setProducts(result);
+  //         getAllCategories(result);
+  //       }
+  //     })
+  //   );
+  // };
+
   function addNewProduct(product: Product) {
+    console.log(product);
     fetch("/products", {
       method: "POST",
       credentials: "include",
@@ -64,9 +85,13 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((result) => {
         // No need to set products again, just update the products array from DB
-        getAllProducts();
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          getAllProducts();
+        }
       });
   }
 
@@ -84,8 +109,7 @@ function ProductProvider(props: IProps) {
       .then((res) => res.json())
       .then((result) => {
         if (result.errorCode) {
-          // Catch error
-          console.log(result);
+          console.log({ result });
         } else {
           // No need to set products again, just update the products array from DB
           getAllProducts();
@@ -117,6 +141,7 @@ function ProductProvider(props: IProps) {
         addNewProduct,
         updateProduct,
         removeProduct,
+        getAllProducts,
       }}
     >
       {props.children}

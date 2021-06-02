@@ -27,7 +27,11 @@ function DeliveryOptions(props: IProps) {
     fetch("/delivery")
       .then((res) => res.json())
       .then((result) => {
-        setDeliveryOptions(result);
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setDeliveryOptions(result);
+        }
       });
   }, []);
 

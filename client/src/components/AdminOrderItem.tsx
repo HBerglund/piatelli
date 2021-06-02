@@ -10,25 +10,11 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React from "react";
+import { formatDate } from "../helpers/helpers";
+import { Order } from "../helpers/typings";
 
 interface Props {
-  order: {
-    customer: string;
-    address: {
-      street: string;
-      zipcode: string;
-      city: string;
-      country: string;
-    };
-    items: string[];
-    payment: string;
-    delivery: {
-      name: string;
-      price: number;
-      deliveryTime: string;
-    };
-    sum: number;
-  };
+  order: Order;
 }
 
 function AdminOrderItem(props: Props) {
@@ -78,7 +64,10 @@ function AdminOrderItem(props: Props) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const { customer, items, payment, sum, delivery, address } = props.order;
+  const { _id, customer, address, items, payment, delivery, sum, createdAt } =
+    props.order;
+
+  console.log(items);
 
   const classes = useStyles();
 
@@ -99,11 +88,11 @@ function AdminOrderItem(props: Props) {
             variant="body2"
             className={classes.heading}
           >
-            {customer}
+            {_id}
           </Typography>
           <Hidden xsDown>
             <Typography className={classes.secondaryHeading}>
-              Amount: {sum} $
+              {formatDate(createdAt)}
             </Typography>
           </Hidden>
         </AccordionSummary>
@@ -112,7 +101,7 @@ function AdminOrderItem(props: Props) {
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Customer
             </Typography>
-            <Typography>{customer}</Typography>
+            <Typography>{customer.fullName}</Typography>
           </Box>
           <Box className={classes.row}>
             <Typography style={{ marginBottom: "4px" }} variant="caption">
@@ -127,9 +116,11 @@ function AdminOrderItem(props: Props) {
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Items
             </Typography>
-
-            {items.forEach((item) => (
-              <Typography>{item}</Typography>
+            {items.map((items) => (
+              <Box style={{ display: "flex", justifyContent: "space-around" }}>
+                <Typography>{items.name}</Typography>
+                <Typography>Quantity: {items.quantity}</Typography>
+              </Box>
             ))}
           </Box>
           <Box className={classes.row}>
@@ -143,14 +134,14 @@ function AdminOrderItem(props: Props) {
               Delivery
             </Typography>
             <Typography>{delivery.name}</Typography>
-            <Typography>$ {delivery.price}</Typography>
+            <Typography>{delivery.price} kr</Typography>
             <Typography>Delivery within {delivery.deliveryTime}</Typography>
           </Box>
           <Box className={classes.row}>
             <Typography style={{ marginBottom: "4px" }} variant="caption">
               Order Sum
             </Typography>
-            <Typography>$ {sum}</Typography>
+            <Typography>{sum} kr</Typography>
           </Box>
         </AccordionDetails>
       </Accordion>
