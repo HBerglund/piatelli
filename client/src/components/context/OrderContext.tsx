@@ -99,6 +99,28 @@ const OrderProvider: FC<{}> = ({ children }) => {
           console.log({ result });
         } else {
           setLatestOrderId(result._id);
+          for (const product of result.items) {
+            updateStock(product._id, product.quantity);
+          }
+        }
+      });
+  };
+
+  const updateStock = (productID: string, quantity: number) => {
+    fetch(`/products/stock/${productID}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          console.log(result);
         }
       });
   };

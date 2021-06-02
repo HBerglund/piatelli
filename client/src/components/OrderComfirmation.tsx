@@ -92,7 +92,7 @@ function OrderComfirmation() {
         </Box>
       </Box>
     );
-  } else return <div>HEJ</div>;
+  } else return <div>Something is wrong. Please reload page.</div>;
 }
 
 const useStyles = makeStyles((theme) => ({

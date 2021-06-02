@@ -67,25 +67,21 @@ const updateOneById = async (req, res) => {
 
 const updateStockById = async (req, res) => {
   const id = req.params.id;
+  const quantity = req.body.quantity;
+
   if (loggedInUser(req)) {
     const productToUpdate = await ProductModel.findById(id);
-    const updatedStock = updateStock(productToUpdate.stock);
+    const updatedStock = updateStock(productToUpdate.stock, quantity);
 
-    if (updatedStock < 0) {
-      res.status(200).json(productToUpdate);
-    } else {
-      const product = await ProductModel.findByIdAndUpdate(
-        id,
-        { stock: updatedStock },
-        { new: true }
-      );
-      if (!product) {
-        throw new ResponseError(
-          400,
-          "The product doesn't exist in the database"
-        );
-      }
-      res.status(200).json(product);
+    const product = await ProductModel.findByIdAndUpdate(
+      id,
+      { stock: updatedStock },
+      { new: true }
+    );
+    res.status(200).json(product);
+
+    if (!product) {
+      throw new ResponseError(400, "The product doesn't exist in the database");
     }
   } else {
     throw new ResponseError(
@@ -97,8 +93,13 @@ const updateStockById = async (req, res) => {
 
 //update stock helper
 
-function updateStock(currentStock) {
-  return currentStock - 1;
+function updateStock(currentStock, quantity) {
+  const updatedStock = currentStock - quantity;
+  if (updatedStock <= 0) {
+    return 0;
+  } else {
+    return updatedStock;
+  }
 }
 
 module.exports = {
