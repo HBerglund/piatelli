@@ -50,9 +50,12 @@ function ProductProvider(props: IProps) {
   const getAllProducts = () => {
     fetch("/products", { method: "GET" }).then((res) =>
       res.json().then((result) => {
-        setProducts(result);
-        getAllCategories(result);
-        console.log(result);
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setProducts(result);
+          getAllCategories(result);
+        }
       })
     );
   };
@@ -87,8 +90,7 @@ function ProductProvider(props: IProps) {
       .then((res) => res.json())
       .then((result) => {
         if (result.errorCode) {
-          // Catch error
-          console.log(result);
+          console.log({ result });
         } else {
           // No need to set products again, just update the products array from DB
           getAllProducts();

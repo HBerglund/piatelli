@@ -4,7 +4,14 @@ const ProductModel = require("../models/product.model");
 
 const getAll = async (req, res, next) => {
   const products = await ProductModel.find({});
-  res.status(200).json(products);
+  if (products) {
+    res.status(200).json(products);
+  } else {
+    throw new ResponseError(
+      404,
+      "There's no existing products in the database."
+    );
+  }
 };
 
 const getOneById = async (req, res) => {
@@ -13,7 +20,7 @@ const getOneById = async (req, res) => {
   if (product) {
     res.status(200).json(product);
   } else {
-    throw new ResponseError(400, "The product doesn't exist.");
+    throw new ResponseError(404, "The product doesn't exist.");
   }
 };
 
@@ -22,7 +29,7 @@ const deleteOneById = async (req, res) => {
   if (userIsAdmin(req)) {
     const product = await ProductModel.findByIdAndDelete(id);
     if (!product) {
-      throw new ResponseError(400, "The product doesn't exist in the database");
+      throw new ResponseError(404, "The product doesn't exist in the database");
     }
     res.status(200).json(product);
   } else {
@@ -54,7 +61,7 @@ const updateOneById = async (req, res) => {
       { new: true }
     );
     if (!product) {
-      throw new ResponseError(400, "The product doesn't exist in the database");
+      throw new ResponseError(404, "The product doesn't exist in the database");
     }
     res.status(200).json(product);
   } else {

@@ -38,10 +38,10 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        if (result.message) {
-          console.log(result.message);
+        if (result.errorCode) {
+          console.log({ result });
         } else {
-          console.log(result);
+          console.log("Registration successful");
         }
       });
   };
@@ -57,11 +57,15 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result.message);
-        if (result.user) {
-          setUser(result.user);
+        if (result.errorCode) {
+          console.log({ result });
         } else {
-          setUser(undefined);
+          if (result.user) {
+            console.log({ result });
+            setUser(result.user);
+          } else {
+            setUser(undefined);
+          }
         }
       });
   };
@@ -74,8 +78,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        if (result.message) {
-          console.log(result.message);
+        if (result.errorCode) {
           setUser(undefined);
         } else {
           setUser(result.user);
@@ -116,8 +119,6 @@ const UsersProvider: FC<{}> = ({ children }) => {
       .then((result) => {
         if (result.errorCode) {
           console.log({ result });
-          // ---------TODO---------
-          // setAllUsers(allUsers); ???
         } else {
           setAllUsers({ ...allUsers });
         }
@@ -133,8 +134,6 @@ const UsersProvider: FC<{}> = ({ children }) => {
       .then((result) => {
         if (result.errorCode) {
           console.log({ result });
-          // ---------TODO---------
-          // setAllUsers(allUsers); ???
         } else {
           setAllUsers({ ...allUsers });
         }
@@ -144,14 +143,15 @@ const UsersProvider: FC<{}> = ({ children }) => {
   const logOut = () => {
     fetch("/users/logout", {
       method: "DELETE",
-      // credentials: "include",
-    }).then((res) => {
-      if (res.status === 200) {
-        setUser(undefined);
-      } else {
-        console.log(res.json());
-      }
-    });
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          setUser(undefined);
+        }
+      });
   };
 
   return (

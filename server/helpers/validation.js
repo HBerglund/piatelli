@@ -22,13 +22,19 @@ const runRegExValidation = (type, value) => {
     case "zipcode":
       re = /^(s-|S-){0,1}[0-9]{3}\s?[0-9]{2}$/;
       break;
-    case "product name" || "address" || "country" || "street": // validates that there is no special characters
+    case "product name" ||
+      "category" ||
+      "address" ||
+      "country" ||
+      "street" ||
+      "delivery name" ||
+      "city": // validates that there is no special characters
       re = /^[_A-z0-9]*((-|\s)*[_A-z0-9])*$/;
       break;
     case "fullName":
       re = /^[a-zA-ZäöåÄÖÅ ,.'-]+$/;
       break;
-    case "price":
+    case "price" || "stock":
       re = /^[0-9]*$/;
       break;
     default:

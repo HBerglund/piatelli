@@ -2,7 +2,14 @@ const mongoose = require("mongoose");
 const runRegExValidation = require("../helpers/validation");
 
 const productSchema = new mongoose.Schema({
-  category: { type: ["String"], required: true },
+  category: {
+    type: ["String"],
+    required: true,
+    validate: {
+      validator: (v) => runRegExValidation("category", v),
+      message: "Please enter a valid product name",
+    },
+  },
   name: {
     type: "String",
     required: true,
@@ -14,6 +21,11 @@ const productSchema = new mongoose.Schema({
   price: {
     type: "Number",
     required: true,
+    min: 0,
+    validate: {
+      validator: (v) => runRegExValidation("price", v),
+      message: "Please enter a valid price",
+    },
   },
   img: {
     type: "String",
