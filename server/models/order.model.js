@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const runRegExValidation = require("../helpers/validation");
+const ProductModel = require("./product.model");
 
 const deliverySchema = new mongoose.Schema({
   name: {
@@ -72,8 +73,8 @@ const orderSchema = new mongoose.Schema(
       require: true,
     },
     address: addressSchema,
-    items: [String],
-    payment: { type: "String", required: true },
+    items: [ProductModel.schema],
+    payment: "String",
     delivery: deliverySchema,
     sum: { type: "Number", required: true },
   },

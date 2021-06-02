@@ -27,6 +27,10 @@ function ProductProvider(props: IProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
 
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   const getAllCategories = (products: Product[]) => {
     const categories: string[] = [];
     products.forEach((product) => {
@@ -41,7 +45,7 @@ function ProductProvider(props: IProps) {
     });
   };
 
-  useEffect(() => {
+  const getAllProducts = () => {
     fetch("/products", { method: "GET" }).then((res) =>
       res.json().then((result) => {
         if (result.errorCode) {
@@ -52,7 +56,7 @@ function ProductProvider(props: IProps) {
         }
       })
     );
-  }, []);
+  };
 
   function addNewProduct(product: Product) {
     fetch("/products", {
@@ -64,19 +68,15 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then((result) => {
-        if (result.errorCode) {
-          console.log({ result });
-        } else {
-          const updateProductView = [...products, product];
-          setProducts(updateProductView);
-        }
+      .then(() => {
+        // No need to set products again, just update the products array from DB
+        getAllProducts();
       });
   }
 
   function updateProduct(product: Product) {
     const id = product._id;
-    console.log(id);
+
     fetch(`/products/${id}`, {
       method: "PUT",
       credentials: "include",
@@ -90,13 +90,8 @@ function ProductProvider(props: IProps) {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          let updatedProducts = products.map((item) => {
-            if (item._id === product._id) {
-              return { ...item, product };
-            }
-            return item;
-          });
-          setProducts(updatedProducts);
+          // No need to set products again, just update the products array from DB
+          getAllProducts();
         }
       });
   }
@@ -111,15 +106,8 @@ function ProductProvider(props: IProps) {
         if (result.errorCode) {
           console.log(result.errorCode);
         } else {
-          setProducts((prev) =>
-            prev.reduce((ack, item) => {
-              if (item._id === product._id) {
-                return ack;
-              } else {
-                return [...ack, item];
-              }
-            }, [] as Product[])
-          );
+          // No need to set products again, just update the products array from DB
+          getAllProducts();
         }
       });
   }

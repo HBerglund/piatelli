@@ -50,15 +50,8 @@ const productSchema = new mongoose.Schema({
     required: true,
     minLength: [1, "Care can't be left blank"],
   },
-  stock: {
-    type: "Number",
-    required: true,
-    min: 0,
-    validate: {
-      validator: (v) => runRegExValidation("stock", v),
-      message: "Please enter a valid amount for stock",
-    },
-  },
+  stock: { type: "Number", required: true },
+  quantity: { type: "Number", required: false },
 });
 
 const ProductModel = mongoose.model("product", productSchema);

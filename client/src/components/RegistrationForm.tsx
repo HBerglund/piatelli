@@ -119,8 +119,6 @@ function RegistrationForm() {
     history.replace("/login");
   };
 
-  const [errMessage, setErrMessage] = useState();
-
   const removeFieldErr = (name: string) => {
     setFieldErr((prev) =>
       prev.reduce((ack, item) => {
