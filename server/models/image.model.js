@@ -2,14 +2,12 @@ const mongoose = require("mongoose");
 const runRegExValidation = require("../helpers/validation");
 
 const imageSchema = new mongoose.Schema({
-  img: {
-    type: "String",
-    required: true,
-    validate: {
-      validator: (v) => runRegExValidation("image url", v),
-      message: "Please enter a valid image url",
-    },
-  },
+  fieldname: "String",
+  originalname: "String",
+  encoding: "String",
+  mimetype: "String",
+  buffer: "Buffer",
+  size: "Number",
 });
 
 const ImageModel = mongoose.model("image", imageSchema);

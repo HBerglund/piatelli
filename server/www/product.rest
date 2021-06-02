@@ -9,11 +9,11 @@ DELETE http://localhost:4000/products/60b0978bc3e06d135143e294
 
 ### POST ONE
 POST http://localhost:4000/products
-Content-Type: application/json
+Content-Type: multipart/form-data
 
 {
     "category": "Accessories",
-    "name": "a cool bag",
+    "name": "parser",
     "price": 200,
     "img": "https://images.unsplash.com/photo-1621570359164-ad2429a2c93b",
     "description": "Baggy wear his ugly bag",

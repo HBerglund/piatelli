@@ -24,20 +24,22 @@ function EditableProductItem(props: Props) {
   const classes = useStyles();
   const { product, i } = props;
 
-  const { removeProduct } = useContext(ProductsContext);
+  console.log(product);
 
+  const { removeProduct } = useContext(ProductsContext);
   return (
     <div className={classes.root} key={i}>
       <Box key={i} className={classes.productCard}>
         <Hidden only={"xs"}>
-          <Img
+          <Typography>{product.img}</Typography>
+          {/* <Img
             src={[product.img, fallback]}
             className={classes.imageStyling}
             draggable={false}
             alt="Bags from Pialetti"
             width="150"
             height="150"
-          />
+          /> */}
         </Hidden>
         <Hidden smUp>
           <img

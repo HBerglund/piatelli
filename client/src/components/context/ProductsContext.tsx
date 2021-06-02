@@ -1,3 +1,4 @@
+import { RestoreOutlined } from "@material-ui/icons";
 import { createContext, useEffect, useState } from "react";
 import { Product } from "../../helpers/typings";
 
@@ -72,6 +73,7 @@ function ProductProvider(props: IProps) {
   // };
 
   function addNewProduct(product: Product) {
+    console.log(product);
     fetch("/products", {
       method: "POST",
       credentials: "include",
@@ -81,9 +83,13 @@ function ProductProvider(props: IProps) {
       body: JSON.stringify(product),
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((result) => {
         // No need to set products again, just update the products array from DB
-        getAllProducts();
+        if (result.errorCode) {
+          console.log({ result });
+        } else {
+          getAllProducts();
+        }
       });
   }
 

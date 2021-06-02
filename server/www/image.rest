@@ -1,10 +1,14 @@
-### GET ALL 
-GET http://localhost:4000/image
+### GET ONE
+GET http://localhost:4000/image/60b77a06262bfd7e918b108b
 
 ### POST ONE
-POST http://localhost:4000/image
-Content-Type: application/json
 
-{
-    "img": "https://images.unsplash.com/photo-1595642527925-4d41cb781653"
-}
+POST http://localhost:4000/image
+Content-Type: multipart/form-data; boundary=ROW
+
+--ROW
+Content-Disposition: form-data; name="img"; filename="earth.jpeg"
+Content-Type: image/jpeg
+
+< ./earth.jpeg
+--ROW--
