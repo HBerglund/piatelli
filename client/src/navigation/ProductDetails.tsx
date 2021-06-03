@@ -37,7 +37,7 @@ function ProductDetails() {
     <Box className={classes.wrapper}>
       <Box className={classes.productWrapper}>
         <Img
-          src={[detailViewProduct.img, fallback]}
+          src={[detailViewProduct.imgUrl, fallback]}
           alt=""
           className={classes.preview}
         />

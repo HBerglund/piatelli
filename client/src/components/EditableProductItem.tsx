@@ -42,7 +42,7 @@ function EditableProductItem(props: Props) {
         </Hidden>
         <Hidden smUp>
           <img
-            src={product.img}
+            src={product.imgUrl}
             className={classes.imageStyling}
             draggable={false}
             alt="Bags from Pialetti"

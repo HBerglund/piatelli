@@ -171,7 +171,7 @@ function EditProductModal(props: IProps) {
         <Hidden only={"xs"}>
           <Box className={classes.editCard}>
             <Img
-              src={[props.product.img, fallback]}
+              src={[props.product.imgUrl, fallback]}
               draggable={false}
               alt="Bags from Pialetti"
               width="100"
@@ -250,7 +250,7 @@ function EditProductModal(props: IProps) {
                   onChange={uploadImage}
                   id="product-Picture"
                   label="Image"
-                  defaultValue={props.product.img}
+                  defaultValue={props.product.imgUrl}
                 ></TextField>
               </Box>
               <Typography variant="subtitle1">Categories</Typography>

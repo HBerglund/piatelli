@@ -181,7 +181,7 @@ function Checkout() {
                 <Box key={i} className={classes.cartContent}>
                   <Link to={`/products/${product.name}`}>
                     <Img
-                      src={[product.img, fallback]}
+                      src={[product.imgUrl, fallback]}
                       style={{
                         width: "200px",
                         height: "200px",

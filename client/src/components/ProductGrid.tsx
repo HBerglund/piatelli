@@ -71,7 +71,7 @@ function ProductGrid(props: IProps, id: string) {
                           <Img
                             style={{ objectFit: "cover" }}
                             onMouseEnter={() => setIsHover(product.name)}
-                            src={[product.img, fallback]}
+                            src={[product.imgUrl, fallback]}
                             className={classes.customCursor}
                             draggable={false}
                             alt="Bags from Pialetti"
@@ -179,7 +179,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Img
                       style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.img, fallback]}
+                      src={[product.imgUrl, fallback]}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
@@ -191,7 +191,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.img, fallback]}
+                        src={[product.imgUrl, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -205,7 +205,7 @@ function ProductGrid(props: IProps, id: string) {
                       <Img
                         style={{ objectFit: "cover" }}
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.img, fallback]}
+                        src={[product.imgUrl, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
@@ -218,7 +218,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Link to={`/products/${product.name}`}>
                       <Img
                         onMouseEnter={() => setIsHover(product.name)}
-                        src={[product.img, fallback]}
+                        src={[product.imgUrl, fallback]}
                         className={classes.customCursor}
                         draggable={false}
                         alt="Bags from Pialetti"
