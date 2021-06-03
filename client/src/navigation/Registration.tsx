@@ -6,6 +6,7 @@ import alternativeCursor from "../assets/alternativeCursor.png";
 //icons
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import RegistrationForm from "../components/RegistrationForm";
+import Section from "../components/Section";
 
 function Registration() {
   const classes = useStyles();
@@ -15,23 +16,24 @@ function Registration() {
   }, []);
 
   return (
-    <Box className={classes.catalogueStyles}>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Register
-        </Typography>
-        <RegistrationForm />
-      </div>
-    </Box>
+    <Section>
+      <Box className={classes.catalogueStyles}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Register
+          </Typography>
+          <RegistrationForm />
+        </div>
+      </Box>
+    </Section>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
   catalogueStyles: {
-    marginTop: "8.5rem",
     marginBottom: "3rem",
   },
   landingContainer: {

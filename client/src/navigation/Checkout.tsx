@@ -259,7 +259,7 @@ function Checkout() {
     <Section>
       <Box mb={10}>
         <Box className={classes.root}>
-          <Hidden only={"xs"}>
+          <Hidden xsDown>
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>

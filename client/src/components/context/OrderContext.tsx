@@ -59,8 +59,6 @@ const OrderProvider: FC<{}> = ({ children }) => {
     }
   };
 
-  console.log({ addressDetails });
-
   useEffect(() => {
     getAllOrders();
   }, []);

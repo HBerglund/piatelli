@@ -10,10 +10,18 @@ function FooterSection() {
           Collection
         </Typography>
         <Typography variant="subtitle2" className={classes.textColor}>
-          <Link>The Softy Basic</Link>
-          <Link>Le Scandinive</Link>
-          <Link>Mona-Lisa Piattelli</Link>
-          <Link>Rinacimento</Link>
+          <Typography variant="subtitle1" style={{ color: "white" }}>
+            The Softy Basic
+          </Typography>
+          <Typography variant="subtitle1" style={{ color: "white" }}>
+            Le Scandinive
+          </Typography>
+          <Typography variant="subtitle1" style={{ color: "white" }}>
+            Mona-Lisa Piattelli
+          </Typography>
+          <Typography variant="subtitle1" style={{ color: "white" }}>
+            Rinacimento
+          </Typography>
         </Typography>
       </Hidden>
     </Box>

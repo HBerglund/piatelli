@@ -14,6 +14,8 @@ import alternativeCursor from "../assets/alternativeCursor.png";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router";
 import { UsersContext } from "../components/context/UsersContext";
+import { Link } from "react-router-dom";
+import Section from "../components/Section";
 
 function LoginPage() {
   const classes = useStyles();
@@ -64,67 +66,77 @@ function LoginPage() {
     return <div>loading</div>;
   }
   return (
-    <Box className={classes.catalogueStyles}>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={handleUserInputs}
-            value={loginInput.email}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={loginInput.password}
-            onChange={handleUserInputs}
-          />
-          {/* {logInProgress === "failure" ? (
-            <Typography className={classes.errorText}>
-              Wrong username or password
-            </Typography>
-          ) : (
-            <div></div>
-          )} */}
+    <Section>
+      <Box className={classes.catalogueStyles}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={handleUserInputs}
+              value={loginInput.email}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={loginInput.password}
+              onChange={handleUserInputs}
+            />
+
+            <Button
+              onClick={handleLoginClick}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              size="large"
+            >
+              Sign In
+            </Button>
+          </form>
 
           <Button
-            onClick={handleLoginClick}
-            fullWidth
-            variant="contained"
+            size="large"
+            variant="outlined"
             color="primary"
-            className={classes.submit}
+            component={Link}
+            to="/registration"
           >
-            Sign In
+            Register
           </Button>
-        </form>
-      </div>
-    </Box>
+        </div>
+      </Box>
+    </Section>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
   catalogueStyles: {
-    marginTop: "8.5rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    margin: "2rem 0",
   },
   landingContainer: {
     width: "50vw",

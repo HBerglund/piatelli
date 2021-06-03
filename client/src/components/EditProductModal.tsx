@@ -7,8 +7,9 @@ import {
   Hidden,
   InputAdornment,
   IconButton,
+  useMediaQuery,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { ProductsContext } from "./context/ProductsContext";
 import fallback from "../assets/bags/fallback.png";
@@ -161,6 +162,10 @@ function EditProductModal(props: IProps) {
     );
   };
 
+  const theme = useTheme();
+
+  const matchesSm = useMediaQuery(theme.breakpoints.up("sm"));
+
   if (!props.product) return null;
 
   return (
@@ -187,6 +192,7 @@ function EditProductModal(props: IProps) {
             <Box className={classes.smallerForms}>
               <Box mb={5} mt={5}>
                 <TextField
+                  fullWidth={matchesSm ? false : true}
                   className={classes.formWidth}
                   required
                   name="name"
@@ -408,9 +414,9 @@ const useStyles = makeStyles((theme) => ({
     outline: "0",
     padding: "2rem 2rem 0 2rem",
     [theme.breakpoints.down("md")]: {
-      height: "100vh",
+      height: "90vh",
       marginTop: "2rem",
-      width: "100%",
+      width: "90%",
     },
   },
   formWidth: {
@@ -455,11 +461,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
-      minWidth: "10rem",
     },
     [theme.breakpoints.only("md")]: {
       flexDirection: "column",
-      minWidth: "10rem",
     },
   },
   largerForms: {
