@@ -64,4 +64,5 @@ export interface Product {
   care: string;
   stock: number;
   quantity?: number;
+  imgUrl: string;
 }

@@ -53,7 +53,7 @@ function ProductGrid(props: IProps, id: string) {
                     <Img
                       style={{ objectFit: "cover" }}
                       onMouseEnter={() => setIsHover(product.name)}
-                      src={[product.img, fallback]}
+                      src={product.imgUrl}
                       className={classes.customCursor}
                       draggable={false}
                       alt="Bags from Pialetti"
