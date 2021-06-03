@@ -13,6 +13,7 @@ function AdminUsers() {
 
   useEffect(() => {
     usersContext.getAllUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const classes = useStyles();

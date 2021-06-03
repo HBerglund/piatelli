@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@material-ui/core";
-import React, { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { CSSProperties } from "react";

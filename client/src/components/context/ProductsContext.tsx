@@ -1,4 +1,3 @@
-import { RestoreOutlined } from "@material-ui/icons";
 import { createContext, useEffect, useState } from "react";
 import { Product } from "../../helpers/typings";
 
@@ -32,6 +31,7 @@ function ProductProvider(props: IProps) {
 
   useEffect(() => {
     getAllProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getAllCategories = (products: Product[]) => {

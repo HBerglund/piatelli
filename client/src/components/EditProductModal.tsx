@@ -7,7 +7,6 @@ import {
   Hidden,
   InputAdornment,
   IconButton,
-  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ChangeEvent, useContext, useEffect, useState } from "react";

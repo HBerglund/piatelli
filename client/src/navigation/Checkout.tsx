@@ -13,7 +13,7 @@ import PersonalDetails from "../components/PersonalDetails";
 import DeliveryOptions from "../components/DeliveryOptions";
 import PaymentMethod from "../components/PaymentMethod";
 import { CartContext, CartItem } from "../components/context/CartContext";
-import OrderComfirmation from "../components/OrderComfirmation";
+import OrderConfirmation from "../components/OrderComfirmation";
 import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
@@ -22,7 +22,6 @@ import { Address, Delivery } from "../helpers/typings";
 import { UsersContext } from "../components/context/UsersContext";
 import Section from "../components/Section";
 import { OrderContext } from "../components/context/OrderContext";
-import { Order } from "../helpers/typings";
 import { Link } from "react-router-dom";
 
 function getSteps() {
@@ -245,7 +244,7 @@ function Checkout() {
       case 3:
         return (
           <Box mb={10}>
-            <OrderComfirmation />
+            <OrderConfirmation />
           </Box>
         );
       default:
