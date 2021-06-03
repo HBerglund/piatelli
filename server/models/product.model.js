@@ -56,8 +56,8 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-productSchema.virtual("imgUrl").get(function (doc) {
-  return "/image/" + doc.img.toString();
+productSchema.virtual("imgUrl").get(function () {
+  return "/image/" + this.img.toString();
 });
 
 const ProductModel = mongoose.model("product", productSchema);

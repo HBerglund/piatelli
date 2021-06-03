@@ -1,5 +1,5 @@
 ### GET ONE
-GET http://localhost:4000/image/60b77a06262bfd7e918b108b
+GET http://localhost:4000/image/60b7a9add889b54ac45a863c
 
 ### POST ONE
 
