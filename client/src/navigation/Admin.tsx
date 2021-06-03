@@ -64,7 +64,7 @@ function Admin() {
     return (
       <Section>
         <div className={classes.root}>
-          <AppBar position="static">
+          <AppBar style={{ backgroundColor: "#333333" }} position="static">
             <Tabs
               value={value}
               onChange={handleChange}

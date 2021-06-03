@@ -18,7 +18,7 @@ app.use(
     name: "session",
     secret: "sdg7df7gdiufgdg",
     secure: false,
-    maxAge: 1000 * 1000,
+    maxAge: 1000 * 1000000,
     httpOnly: true,
   })
 );
