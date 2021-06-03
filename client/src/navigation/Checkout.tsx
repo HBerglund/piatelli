@@ -139,8 +139,10 @@ function Checkout() {
     setActiveStep(0);
   };
 
+  const missingInfo = !deliveryOption || !addressDetails || !paymentOption;
+
   const checkMissingOption = () => {
-    if (!deliveryOption || !addressDetails) {
+    if (missingInfo) {
       return true;
     }
     return false;
@@ -154,8 +156,6 @@ function Checkout() {
     clearCart();
     handleNext();
   }
-
-  console.log({ addressDetails });
 
   //Cases for stepper
   //Each case is one step on the stepper
@@ -212,7 +212,7 @@ function Checkout() {
               />
               <Box>
                 <DeliveryOptions
-                  personalDetailsIsMissing={checkMissingOption}
+                  detailsAreMissing={checkMissingOption}
                   setError={setHasError}
                   deliveryOption={deliveryOption}
                   setDeliveryOption={setDeliveryOption}
@@ -225,6 +225,8 @@ function Checkout() {
         return (
           <Box mb={10}>
             <PaymentMethod
+              detailsAreMissing={checkMissingOption}
+              setError={setHasError}
               deliveryOption={deliveryOption}
               setPaymentOption={setPaymentOption}
               setSwishNumber={setSwishNumber}
@@ -233,8 +235,6 @@ function Checkout() {
               setCvcNumber={setCvcNumber}
               setGiftCard={setGiftCard}
               paymentOption={paymentOption}
-              phoneNumber={phoneNumber}
-              fullName={fullName}
               total={total}
               clearValues={clearValues}
               isLoading={isLoading}
