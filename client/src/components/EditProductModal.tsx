@@ -47,7 +47,7 @@ function EditProductModal(props: IProps) {
 
   useEffect(() => {
     if (props.product) {
-      setProduct({ ...props.product });
+      setProduct(props.product);
       setCategories(props.product.category);
     }
   }, [props.product]);
@@ -238,7 +238,6 @@ function EditProductModal(props: IProps) {
                   type="file"
                   className={classes.formWidth}
                   variant={"outlined"}
-                  required
                   name="img"
                   InputProps={{
                     startAdornment: (
@@ -248,19 +247,20 @@ function EditProductModal(props: IProps) {
                     ),
                   }}
                   onChange={uploadImage}
-                  id="product-Picture"
                   label="Image"
-                  defaultValue={props.product.imgUrl}
-                ></TextField>
+                />
               </Box>
               <Typography variant="subtitle1">Categories</Typography>
               <Box className={classes.categoriesContainer} mb={5}>
-                {categories.map((categoryName) => (
-                  <EditableCategoryItem
-                    deleteCategory={() => onDeleteCategory(categoryName)}
-                    name={categoryName}
-                  />
-                ))}
+                {!props.newProduct
+                  ? categories.map((categoryName, i) => (
+                      <EditableCategoryItem
+                        deleteCategory={() => onDeleteCategory(categoryName)}
+                        name={categoryName}
+                        key={i}
+                      />
+                    ))
+                  : []}
                 <TextField
                   name="category"
                   error={getError("category")}

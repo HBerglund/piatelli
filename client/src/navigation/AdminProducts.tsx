@@ -16,6 +16,8 @@ function AdminProducts() {
   const [newProduct, setNewProduct] = useState(false);
   const [products, setProducts] = useState<Product[]>(productsContext.products);
 
+  console.log({ editingProduct });
+
   useEffect(() => {
     setProducts(productsContext.products);
   }, [productsContext.products]);
@@ -36,7 +38,7 @@ function AdminProducts() {
               <EditableProductItem
                 setEditingProduct={() => setEditingProduct(product)}
                 product={product}
-                i={i}
+                key={i}
               />
             );
           })}
