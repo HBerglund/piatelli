@@ -16,20 +16,17 @@ import { Product } from "../helpers/typings";
 
 interface Props {
   product: Product;
-  i: number;
   setEditingProduct: (product: Product) => void;
 }
 
 function EditableProductItem(props: Props) {
   const classes = useStyles();
-  const { product, i } = props;
-
-  console.log(product);
+  const { product } = props;
 
   const { removeProduct } = useContext(ProductsContext);
   return (
-    <div className={classes.root} key={i}>
-      <Box key={i} className={classes.productCard}>
+    <div className={classes.root}>
+      <Box className={classes.productCard}>
         <Hidden only={"xs"}>
           <Img
             src={[product.imgUrl, fallback]}
