@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { OrderContext } from "./context/OrderContext";
 import { UsersContext } from "./context/UsersContext";
 import runRegExValidation from "../helpers/validation";
 import { Address } from "../helpers/typings";
@@ -23,7 +22,6 @@ interface Props {
 function PersonalDetails(props: Props) {
   const classes = useStyles();
   const usersContext = useContext(UsersContext);
-  const orderContext = useContext(OrderContext);
   const history = useHistory();
 
   const { user } = usersContext;
@@ -51,14 +49,17 @@ function PersonalDetails(props: Props) {
       props.setError(false);
       props.setAddressDetails(addressDetails);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressDetails, addressState]);
 
   useEffect(() => {
     props.setError(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     props.setAddressDetails(addressDetails);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressDetails]);
 
   const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +85,7 @@ function PersonalDetails(props: Props) {
         setFieldErr([]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState]);
 
   const handleInputChange = (
@@ -100,6 +102,7 @@ function PersonalDetails(props: Props) {
     if (!usersContext.user) {
       history.replace("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersContext]);
 
   const removeFieldErr = (name: string) => {

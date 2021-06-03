@@ -62,9 +62,14 @@ function Cart(props: IProps) {
                 variant="contained"
                 size={"small"}
               >
-                <Link to="/checkout" color="inherit">
+                <Button
+                  component={Link}
+                  onClick={props.onHide}
+                  to="/checkout"
+                  color="inherit"
+                >
                   Checkout
-                </Link>
+                </Button>
               </Button>
             </Box>
           </Box>

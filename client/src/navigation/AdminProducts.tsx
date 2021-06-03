@@ -1,4 +1,4 @@
-import { Typography, Box, Button, Grid, Tooltip } from "@material-ui/core";
+import { Typography, Box, Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../components/context/ProductsContext";

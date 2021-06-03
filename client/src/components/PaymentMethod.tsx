@@ -8,9 +8,11 @@ import {
 import swishLogo from "../assets/swish.png";
 import cardLogo from "../assets/card.png";
 import { Delivery } from "../helpers/typings";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersContext } from "./context/UsersContext";
+import runRegExValidation from "../helpers/validation";
 interface IProps {
+  setError: (err: boolean) => void;
   deliveryOption: Delivery | undefined;
   setPaymentOption: (value: string) => void;
   setSwishNumber: (value: string) => void;
@@ -19,8 +21,8 @@ interface IProps {
   setCvcNumber: (value: string) => void;
   setGiftCard: (value: string) => void;
   paymentOption: string | undefined;
-  phoneNumber: string | undefined;
-  fullName: string | undefined;
+  detailsAreMissing: () => boolean;
+
   total: number;
   clearValues: () => void;
   isLoading: boolean;
@@ -29,6 +31,75 @@ interface IProps {
 function PaymentMethod(props: IProps) {
   const classes = useStyles();
   const usersContext = useContext(UsersContext);
+
+  const [fieldErr, setFieldErr] = useState<string[]>([]);
+
+  useEffect(() => {
+    props.setError(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const shouldHaveError = fieldErr.length || !props.paymentOption;
+
+  useEffect(() => {
+    if (shouldHaveError) {
+      props.setError(true);
+    } else {
+      props.setError(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.paymentOption]);
+
+  const removeFieldErr = (name: string) => {
+    setFieldErr((prev) =>
+      prev.reduce((ack, item) => {
+        if (item === name) {
+          return ack;
+        } else {
+          return [...ack, item];
+        }
+      }, [] as string[])
+    );
+  };
+
+  const getErrorMsg = (name: string) => {
+    let errMsg: string | null = null;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        name === "fullName"
+          ? (errMsg = "Please enter a valid full name")
+          : (errMsg = "Please enter a valid " + name);
+        name === "password"
+          ? (errMsg = "Password needs to contain atleast 6 characters")
+          : (errMsg = "Please enter a valid " + name);
+      } else {
+        errMsg = null;
+      }
+    });
+    return errMsg;
+  };
+
+  const getError = (name: string) => {
+    let err = false;
+    fieldErr.forEach((fieldName) => {
+      if (fieldName === name) {
+        err = true;
+      } else {
+        err = false;
+      }
+    });
+    return err;
+  };
+
+  const validateInput = (name: string, value: string) => {
+    if (!runRegExValidation(name, value) || !value.length) {
+      if (!fieldErr.includes(name)) {
+        setFieldErr([...fieldErr, name]);
+      }
+    } else {
+      removeFieldErr(name);
+    }
+  };
 
   return (
     <>
@@ -99,17 +170,15 @@ function PaymentMethod(props: IProps) {
             >
               <TextField
                 className={classes.textFields}
-                required
                 autoFocus
-                id="standard-required"
                 label="Phone number for swish"
                 defaultValue={usersContext.user?.phone}
                 onChange={(event) => {
                   props.setSwishNumber(event.target.value);
                 }}
-                onBlur={(event) => {
-                  props.setSwishNumber(event.target.value);
-                }}
+                error={getError("phone")}
+                helperText={getErrorMsg("phone")}
+                onBlur={(e) => validateInput("phone", e.target.value)}
               />
             </Box>
           ) : null}
@@ -120,35 +189,33 @@ function PaymentMethod(props: IProps) {
               <TextField
                 className={classes.textFields}
                 autoFocus
-                required
-                id="standard-required"
                 label="Name on card"
-                defaultValue={props.fullName}
                 onChange={(event) => {
                   props.setNameOnCard(event.target.value);
                 }}
-                onBlur={(event) => {
-                  props.setNameOnCard(event.target.value);
-                }}
+                error={getError("fullName")}
+                helperText={getErrorMsg("fullName")}
+                onBlur={(e) => validateInput("fullName", e.target.value)}
               />
               <TextField
                 className={classes.textFields}
-                required
-                id="standard-required"
                 label="Card number"
                 onChange={(event) => {
                   props.setCardNumber(event.target.value);
                 }}
-                // defaultValue="Email"
+                error={getError("card number")}
+                helperText={getErrorMsg("card number")}
+                onBlur={(e) => validateInput("card number", e.target.value)}
               />
               <TextField
                 className={classes.textFields}
-                required
-                id="standard-required"
                 label="CVC"
                 onChange={(event) => {
                   props.setCvcNumber(event.target.value);
                 }}
+                error={getError("cvc")}
+                helperText={getErrorMsg("cvc")}
+                onBlur={(e) => validateInput("cvc", e.target.value)}
               />
             </Box>
           ) : null}
@@ -158,8 +225,6 @@ function PaymentMethod(props: IProps) {
             >
               <TextField
                 className={classes.textFields}
-                required
-                id="standard-required"
                 label="Giftcard number"
                 onChange={(event) => {
                   props.setGiftCard(event.target.value);

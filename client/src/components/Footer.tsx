@@ -1,4 +1,11 @@
-import { Box, Container, Typography, Link, Hidden } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Typography,
+  Link,
+  Hidden,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useContext } from "react";
 import { useHistory } from "react-router";
@@ -27,56 +34,71 @@ function Footer() {
           </Hidden>
         </Box>
       </Hidden>
-      {usersContext.user ? (
-        <Link>
-          <Typography onClick={handleLogOutClick}>Log out</Typography>
-        </Link>
-      ) : (
-        <>
-          <Link href="/login">
-            <Typography>Log in</Typography>
-          </Link>
-
-          <Link href="/registration">
-            <Typography>or Register here</Typography>
-          </Link>
-        </>
-      )}
-      {usersContext.user?.authorizedAdmin ? (
-        <Link href="/admin">
-          <Typography>Admin CMS</Typography>
-        </Link>
-      ) : null}
       <Box>
         <Box className={classes.footerLogo}>
-          <Typography variant="h4">PIATTELLI</Typography>
+          <Typography color="secondary" variant="h4">
+            PIATTELLI
+          </Typography>
         </Box>
       </Box>
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {usersContext.user ? (
+          <Link>
+            <Typography style={{ color: "white" }} onClick={handleLogOutClick}>
+              Log out
+            </Typography>
+          </Link>
+        ) : (
+          <>
+            <Link href="/login">
+              <Typography style={{ color: "white" }}>Log in</Typography>
+            </Link>
+
+            <Link href="/registration">
+              <Typography style={{ color: "white" }}>
+                or Register here
+              </Typography>
+            </Link>
+          </>
+        )}
+        {usersContext.user?.authorizedAdmin ? (
+          <Link href="/admin">
+            <Typography style={{ color: "white" }}>Admin CMS</Typography>
+          </Link>
+        ) : null}
+      </Box>
+
       <Hidden smUp>
         <Box className={classes.mobileFooterContainer}>
           <Box className={classes.mobileFooterContent}>
             <Box>
               <Typography variant="subtitle2">
-                <Link>Collections</Link>
+                <Button color="inherit">Collections</Button>
               </Typography>
             </Box>
             <br />
             <Box>
               <Typography variant="subtitle2">
-                <Link>Help</Link>
+                <Button color="inherit">Help</Button>
               </Typography>
             </Box>
           </Box>
           <Box className={classes.mobileFooterContent}>
             <Box>
               <Typography variant="subtitle2">
-                <Link>Company</Link>
+                <Button color="inherit">Company</Button>
               </Typography>
             </Box>
             <br />
             <Box>
               <Typography variant="subtitle2">
-                <Link>Follow Us</Link>
+                <Button color="inherit">Follow Us</Button>
               </Typography>
             </Box>
           </Box>
@@ -87,6 +109,7 @@ function Footer() {
 }
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
+    padding: "2rem 0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -94,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   rootStyle: {
+    color: "white",
     width: "60%",
     display: "flex",
     justifyContent: "space-around",
@@ -105,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mobileFooterContainer: {
     width: "100%",
-    height: "10rem",
+    padding: "2rem 0",
     display: "flex",
     justifyContent: "center",
     [theme.breakpoints.down("xs")]: {
@@ -113,6 +137,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mobileFooterContent: {
+    color: "white",
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",

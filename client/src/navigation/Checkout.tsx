@@ -13,7 +13,7 @@ import PersonalDetails from "../components/PersonalDetails";
 import DeliveryOptions from "../components/DeliveryOptions";
 import PaymentMethod from "../components/PaymentMethod";
 import { CartContext, CartItem } from "../components/context/CartContext";
-import OrderComfirmation from "../components/OrderComfirmation";
+import OrderConfirmation from "../components/OrderComfirmation";
 import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
@@ -22,7 +22,6 @@ import { Address, Delivery } from "../helpers/typings";
 import { UsersContext } from "../components/context/UsersContext";
 import Section from "../components/Section";
 import { OrderContext } from "../components/context/OrderContext";
-import { Order } from "../helpers/typings";
 import { Link } from "react-router-dom";
 
 function getSteps() {
@@ -140,8 +139,10 @@ function Checkout() {
     setActiveStep(0);
   };
 
+  const missingInfo = !deliveryOption || !addressDetails || !paymentOption;
+
   const checkMissingOption = () => {
-    if (!deliveryOption || !addressDetails) {
+    if (missingInfo) {
       return true;
     }
     return false;
@@ -155,8 +156,6 @@ function Checkout() {
     clearCart();
     handleNext();
   }
-
-  console.log({ addressDetails });
 
   //Cases for stepper
   //Each case is one step on the stepper
@@ -213,7 +212,7 @@ function Checkout() {
               />
               <Box>
                 <DeliveryOptions
-                  personalDetailsIsMissing={checkMissingOption}
+                  detailsAreMissing={checkMissingOption}
                   setError={setHasError}
                   deliveryOption={deliveryOption}
                   setDeliveryOption={setDeliveryOption}
@@ -226,6 +225,8 @@ function Checkout() {
         return (
           <Box mb={10}>
             <PaymentMethod
+              detailsAreMissing={checkMissingOption}
+              setError={setHasError}
               deliveryOption={deliveryOption}
               setPaymentOption={setPaymentOption}
               setSwishNumber={setSwishNumber}
@@ -234,8 +235,6 @@ function Checkout() {
               setCvcNumber={setCvcNumber}
               setGiftCard={setGiftCard}
               paymentOption={paymentOption}
-              phoneNumber={phoneNumber}
-              fullName={fullName}
               total={total}
               clearValues={clearValues}
               isLoading={isLoading}
@@ -245,7 +244,7 @@ function Checkout() {
       case 3:
         return (
           <Box mb={10}>
-            <OrderComfirmation />
+            <OrderConfirmation />
           </Box>
         );
       default:
@@ -260,7 +259,7 @@ function Checkout() {
     <Section>
       <Box mb={10}>
         <Box className={classes.root}>
-          <Hidden only={"xs"}>
+          <Hidden xsDown>
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>

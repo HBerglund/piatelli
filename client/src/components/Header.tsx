@@ -42,7 +42,9 @@ function Header() {
     <Box className={classes.rootStyle}>
       <Hidden only={"xs"}>
         <Link to="/" color="inherit">
-          <Typography variant="h1">PIATTELLI</Typography>
+          <Typography color="secondary" variant="h1">
+            PIATTELLI
+          </Typography>
         </Link>
       </Hidden>
       <Hidden smDown>
@@ -58,7 +60,9 @@ function Header() {
         {!searchClicked ? (
           <Box className="animate__animated animate__fadeIn">
             <Link to="/" color="inherit">
-              <Typography variant="h1">PIATTELLI</Typography>
+              <Typography color="secondary" variant="h4">
+                PIATTELLI
+              </Typography>
             </Link>
           </Box>
         ) : null}
@@ -73,7 +77,9 @@ function Header() {
         {usersContext.user ? (
           <Box style={{ display: "flex" }}>
             <PersonIcon style={{ marginRight: "0.5rem" }} />
-            <Typography>{usersContext.user?.fullName}</Typography>
+            <Hidden xsDown>
+              <Typography>{usersContext.user?.fullName}</Typography>
+            </Hidden>
           </Box>
         ) : (
           <IconButton onClick={() => history.push("/login")}>

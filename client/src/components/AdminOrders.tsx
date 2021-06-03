@@ -1,5 +1,5 @@
 import { Box, createStyles, makeStyles, Typography } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Order } from "../helpers/typings";
 import AdminOrderItem from "./AdminOrderItem";
 import { OrderContext } from "./context/OrderContext";

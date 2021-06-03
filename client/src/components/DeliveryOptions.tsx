@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, makeStyles, Portal, Typography } from "@material-ui/core";
+import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
 import { Delivery } from "../helpers/typings";
 
@@ -7,7 +7,7 @@ interface IProps {
   deliveryOption: Delivery | undefined;
   setDeliveryOption: (value: any) => void;
   setError: (err: boolean) => void;
-  personalDetailsIsMissing: () => boolean;
+  detailsAreMissing: () => boolean;
 }
 
 function DeliveryOptions(props: IProps) {
@@ -40,7 +40,7 @@ function DeliveryOptions(props: IProps) {
   }, []);
 
   const handleDeliveryClick = (deliveryOption: Delivery) => {
-    if (!props.personalDetailsIsMissing) {
+    if (!props.detailsAreMissing) {
       props.setError(true);
     } else {
       props.setError(false);

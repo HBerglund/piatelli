@@ -1,13 +1,13 @@
 import { Box, Typography, makeStyles } from "@material-ui/core";
 import fallback from "../assets/bags/fallback.png";
 import { Img } from "react-image";
-import { CartItem } from "./context/CartContext";
-import { Delivery, Order, Product } from "../helpers/typings";
-import { Children, useContext, useEffect, useState } from "react";
+
+import { Order, Product } from "../helpers/typings";
+import { useContext, useEffect, useState } from "react";
 import { OrderContext } from "./context/OrderContext";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-function OrderComfirmation() {
+function OrderConfirmation() {
   const classes = useStyles();
   const orderContext = useContext(OrderContext);
 
@@ -15,6 +15,7 @@ function OrderComfirmation() {
 
   useEffect(() => {
     fetchLatestOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderContext.latestOrderId]);
 
   const fetchLatestOrder = () => {
@@ -154,4 +155,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default OrderComfirmation;
+export default OrderConfirmation;
