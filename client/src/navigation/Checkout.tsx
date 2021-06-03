@@ -126,7 +126,7 @@ function Checkout() {
 
   useEffect(() => {
     orderContext.saveTotalSum(total);
-  }, [total]);
+  }, [paymentOption]);
 
   // changes to the stepper
   const handleNext = () => {

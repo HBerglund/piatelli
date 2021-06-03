@@ -79,6 +79,7 @@ const OrderProvider: FC<{}> = ({ children }) => {
   };
 
   const saveOrderToDB = () => {
+    console.log(totalSum);
     const orderToSave: Order = {
       customer: usersContext.user ? usersContext.user : ({} as User),
       address: addressDetails ? addressDetails : ({} as Address),
