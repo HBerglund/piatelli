@@ -59,6 +59,8 @@ const OrderProvider: FC<{}> = ({ children }) => {
     }
   };
 
+  console.log({ addressDetails });
+
   useEffect(() => {
     getAllOrders();
   }, []);
@@ -87,6 +89,9 @@ const OrderProvider: FC<{}> = ({ children }) => {
       delivery: deliveryDetails ? deliveryDetails : ({} as Delivery),
       sum: totalSum ? totalSum : 0,
     };
+
+    console.log({ orderToSave });
+
     fetch("/orders", {
       method: "POST",
       credentials: "include",

@@ -14,24 +14,13 @@ import { UsersContext } from "./context/UsersContext";
 import runRegExValidation from "../helpers/validation";
 import { Address } from "../helpers/typings";
 
-interface IProps {
-  fullName: string | undefined;
-  setFullName: (event: string) => void;
-  email: string | undefined;
-  setEmail: (event: string) => void;
-  adress: string | undefined;
-  setAdress: (event: string) => void;
-  phoneNumber: string | undefined;
-  setPhoneNumber: (event: string) => void;
-  zipCode: string | undefined;
-  setZipCode: (event: string) => void;
-  country: string | undefined;
-  setCountry: (event: string) => void;
-  city: string | undefined;
-  setCity: (event: string) => void;
+interface Props {
+  setError: (err: boolean) => void;
+  setAddressDetails: (value: any) => void;
+  deliveryIsMissing: () => boolean;
 }
 
-function PersonalDetails(props: IProps) {
+function PersonalDetails(props: Props) {
   const classes = useStyles();
   const usersContext = useContext(UsersContext);
   const orderContext = useContext(OrderContext);
@@ -39,7 +28,9 @@ function PersonalDetails(props: IProps) {
 
   const { user } = usersContext;
 
-  // THIS IS THE STATE THAT WE WANT TO SEND TO THE ORDER!!
+  const [addressState, setAddressState] = useState<string>("savedAddress");
+  const [fieldErr, setFieldErr] = useState<string[]>([]);
+
   const [addressDetails, setAddressDetails] = useState<Address>({
     street: user?.address.street ? user?.address.street : "",
     zipcode: user?.address.zipcode ? user?.address.zipcode : "",
@@ -47,15 +38,28 @@ function PersonalDetails(props: IProps) {
     country: user?.address.country ? user?.address.country : "",
   });
 
+  const hasMissingFields =
+    !addressDetails.street ||
+    !addressDetails.zipcode ||
+    !addressDetails.city ||
+    !addressDetails.country;
+
   useEffect(() => {
-    if (addressDetails) {
-      orderContext.saveAddressDetails(addressDetails);
+    if (fieldErr.length || hasMissingFields || props.deliveryIsMissing) {
+      props.setError(true);
+    } else {
+      props.setError(false);
+      props.setAddressDetails(addressDetails);
     }
+  }, [addressDetails, addressState]);
+
+  useEffect(() => {
+    props.setError(true);
+  }, []);
+
+  useEffect(() => {
+    props.setAddressDetails(addressDetails);
   }, [addressDetails]);
-
-  const [addressState, setAddressState] = useState<string>("savedAddress");
-
-  const [fieldErr, setFieldErr] = useState<string[]>([]);
 
   const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddressState((e.target as HTMLInputElement).value);
@@ -70,7 +74,6 @@ function PersonalDetails(props: IProps) {
         country: "",
       });
     } else {
-      setFieldErr([]);
       if (user) {
         setAddressDetails({
           street: user?.address.street,
@@ -78,6 +81,7 @@ function PersonalDetails(props: IProps) {
           city: user?.address.city,
           country: user?.address.country,
         });
+        setFieldErr([]);
       }
     }
   }, [addressState]);
@@ -174,60 +178,57 @@ function PersonalDetails(props: IProps) {
       <Box>
         <Box>
           <Box className={classes.formContainer}>
-            <form className={classes.contentWrapper} autoComplete="off">
-              <Box className={classes.flexColumn}>
-                <TextField
-                  variant={"outlined"}
-                  className={classes.textField}
-                  label="Street"
-                  name="street"
-                  error={getError("street")}
-                  helperText={getErrorMsg("street")}
-                  onBlur={(e) => validateInput("street", e.target.value)}
-                  onChange={handleInputChange}
-                  value={addressDetails.street}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-              </Box>
-              <Box className={classes.flexColumn}>
-                <TextField
-                  className={classes.textField}
-                  variant={"outlined"}
-                  name="zipcode"
-                  label="Zipcode"
-                  error={getError("zipcode")}
-                  helperText={getErrorMsg("zipcode")}
-                  onBlur={(e) => validateInput("zipcode", e.target.value)}
-                  onChange={handleInputChange}
-                  value={addressDetails.zipcode}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-                <TextField
-                  className={classes.textField}
-                  variant={"outlined"}
-                  label="City"
-                  name="city"
-                  error={getError("city")}
-                  helperText={getErrorMsg("city")}
-                  onBlur={(e) => validateInput("city", e.target.value)}
-                  onChange={handleInputChange}
-                  value={addressDetails.city}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-                <TextField
-                  className={classes.textField}
-                  variant={"outlined"}
-                  id="standard-required"
-                  name="country"
-                  label="Country"
-                  error={getError("country")}
-                  helperText={getErrorMsg("country")}
-                  onBlur={(e) => validateInput("country", e.target.value)}
-                  onChange={handleInputChange}
-                  value={addressDetails.country}
-                  disabled={addressState === "savedAddress" ? true : false}
-                />
-              </Box>
+            <form autoComplete="off">
+              <TextField
+                variant={"outlined"}
+                className={classes.textField}
+                label="Street"
+                name="street"
+                error={getError("street")}
+                helperText={getErrorMsg("street")}
+                onBlur={(e) => validateInput("street", e.target.value)}
+                onChange={handleInputChange}
+                value={addressDetails.street}
+                disabled={addressState === "savedAddress" ? true : false}
+              />
+
+              <TextField
+                className={classes.textField}
+                variant={"outlined"}
+                name="zipcode"
+                label="Zipcode"
+                error={getError("zipcode")}
+                helperText={getErrorMsg("zipcode")}
+                onBlur={(e) => validateInput("zipcode", e.target.value)}
+                onChange={handleInputChange}
+                value={addressDetails.zipcode}
+                disabled={addressState === "savedAddress" ? true : false}
+              />
+              <TextField
+                className={classes.textField}
+                variant={"outlined"}
+                label="City"
+                name="city"
+                error={getError("city")}
+                helperText={getErrorMsg("city")}
+                onBlur={(e) => validateInput("city", e.target.value)}
+                onChange={handleInputChange}
+                value={addressDetails.city}
+                disabled={addressState === "savedAddress" ? true : false}
+              />
+              <TextField
+                className={classes.textField}
+                variant={"outlined"}
+                id="standard-required"
+                name="country"
+                label="Country"
+                error={getError("country")}
+                helperText={getErrorMsg("country")}
+                onBlur={(e) => validateInput("country", e.target.value)}
+                onChange={handleInputChange}
+                value={addressDetails.country}
+                disabled={addressState === "savedAddress" ? true : false}
+              />
             </form>
           </Box>
         </Box>
@@ -290,11 +291,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   formContainer: {
-    width: "100%",
     display: "flex",
-    flexDirection: "row",
     justifyContent: "center",
-    overflow: "auto",
+    margin: "auto",
+    maxWidth: "800px",
+    flexWrap: "wrap",
     [theme.breakpoints.down("md")]: {
       width: "100%",
       overflow: "auto",

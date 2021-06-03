@@ -57,11 +57,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: "String",
     required: true,
-    // validate: {
-    //   validator: (v) => runRegExValidation("password", v),
-    //   message: "Password must be at least 6 characters",
-    // },
-    // minLength: [5, "password must be at least 6 characters"],
+    minLength: [5, "password must be at least 6 characters"],
   },
   role: {
     type: "String",
@@ -93,4 +89,4 @@ const userSchema = new mongoose.Schema({
 
 const UserModel = mongoose.model("user", userSchema);
 
-module.exports = UserModel;
+module.exports = { UserModel, addressSchema };
