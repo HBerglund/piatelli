@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import LoginPage from "./LoginPage";
 import Registration from "./Registration";
 import Admin from "./Admin";
+import PageNotFound from "../components/PageNotFound";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/admin" component={Admin} />
         <Route path="/login" component={LoginPage} />
         <Route path="/registration" component={Registration} />
+        <Route component={PageNotFound} />
       </Switch>
       <Footer />
     </BrowserRouter>
