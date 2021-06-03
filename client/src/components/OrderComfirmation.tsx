@@ -51,7 +51,7 @@ function OrderComfirmation() {
               {latestOrder.items.map((product: Product, i) => (
                 <Box key={i} className={`${classes.cartContent}`}>
                   <Img
-                    src={[product.img, fallback]}
+                    src={[product.imgUrl, fallback]}
                     width="100rem"
                     height="100rem"
                   />

@@ -39,7 +39,7 @@ function Cart(props: IProps) {
               <Box key={i} className={classes.cartItems}>
                 <Link to={`/producimgoduct.name}`}>
                   <Img
-                    src={[product.img, fallback]}
+                    src={[product.imgUrl, fallback]}
                     width="100rem"
                     height="100rem"
                   />
