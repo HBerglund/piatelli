@@ -120,7 +120,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          setAllUsers({ ...allUsers });
+          getAllUsers();
         }
       });
   };
@@ -135,7 +135,7 @@ const UsersProvider: FC<{}> = ({ children }) => {
         if (result.errorCode) {
           console.log({ result });
         } else {
-          setAllUsers({ ...allUsers });
+          getAllUsers();
         }
       });
   };

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Button, makeStyles, Typography } from "@material-ui/core";
+import { Box, Button, makeStyles, Portal, Typography } from "@material-ui/core";
 import moment from "moment";
 import { Delivery } from "../helpers/typings";
 
 interface IProps {
   deliveryOption: Delivery | undefined;
   setDeliveryOption: (value: any) => void;
+  setError: (err: boolean) => void;
+  personalDetailsIsMissing: () => boolean;
 }
 
 function DeliveryOptions(props: IProps) {
@@ -23,6 +25,8 @@ function DeliveryOptions(props: IProps) {
   let budbeeDel = today2.add(2, "d").format("dddd, MMMM Do");
   let instaDel = today3.add(1, "d").format("dddd, MMMM Do");
 
+  console.log("delivery render");
+
   useEffect(() => {
     fetch("/delivery")
       .then((res) => res.json())
@@ -36,13 +40,20 @@ function DeliveryOptions(props: IProps) {
   }, []);
 
   const handleDeliveryClick = (deliveryOption: Delivery) => {
+    if (!props.personalDetailsIsMissing) {
+      props.setError(true);
+    } else {
+      props.setError(false);
+    }
     props.setDeliveryOption(deliveryOption);
     setChosenDeliveryOption(deliveryOption);
   };
 
   return (
-    <>
-      <h5 className={classes.centerFlex}>Delivery Options</h5>
+    <Box className={classes.root}>
+      <Typography component="h5" className={classes.centerFlex}>
+        Delivery Options
+      </Typography>
       <Box className={classes.marginBottom}>
         <Box className={`${classes.centerFlex}`}>
           {deliveryOptions.map((option) => (
@@ -83,13 +94,14 @@ function DeliveryOptions(props: IProps) {
           </Box>
         ) : null}
       </Box>
-    </>
+    </Box>
   );
 }
 
 export default DeliveryOptions;
 
 const useStyles = makeStyles((theme) => ({
+  root: { margin: "4rem 0" },
   flexColumn: {
     flexDirection: "column",
     display: "flex",

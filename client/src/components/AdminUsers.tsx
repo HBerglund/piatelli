@@ -13,7 +13,7 @@ function AdminUsers() {
 
   useEffect(() => {
     usersContext.getAllUsers();
-  }, [usersContext]);
+  }, []);
 
   const classes = useStyles();
 

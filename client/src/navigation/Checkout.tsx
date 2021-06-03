@@ -18,7 +18,7 @@ import GroupedButtons from "../components/CartIncrementer";
 import { Img } from "react-image";
 import fallback from "../assets/bags/fallback.png";
 import { useHistory } from "react-router";
-import { Delivery } from "../helpers/typings";
+import { Address, Delivery } from "../helpers/typings";
 import { UsersContext } from "../components/context/UsersContext";
 import Section from "../components/Section";
 import { OrderContext } from "../components/context/OrderContext";
@@ -48,39 +48,27 @@ function Checkout() {
     // eslint-disable-next-line
   }, [usersContext.user]);
 
-  //Step counter
+  const [hasError, setHasError] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const steps = getSteps();
 
-  //Form states (cst details)
   const [fullName, setFullName] = useState<string>();
   const [phoneNumber, setPhoneNumber] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [adress, setAdress] = useState<string>();
-  const [zipCode, setZipCode] = useState<string>();
-  const [country, setCountry] = useState<string>();
-  const [city, setCity] = useState<string>();
-  const [deliveryOption, setDeliveryOption] = useState<Delivery>();
+  const [payedProducts, setPayedProducts] = useState<CartItem[]>();
+  const [totalPayed, setTotalPayed] = useState<number>();
+  const [deliveryOption, setDeliveryOption] =
+    useState<Delivery | undefined>(undefined);
+  const [addressDetails, setAddressDetails] =
+    useState<Address | undefined>(undefined);
 
+  console.log({ hasError });
+
+  const steps = getSteps();
   function validation(value: number | string, pattern: RegExp) {
     const charPattern = pattern;
     return charPattern.test(String(value));
   }
 
-  const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const noSpecialCharsRegEx = /^[A-Öa-ö0-9'.-\s,]{1,50}$/;
-  const phoneRegEx = /^[0-9]{2,4}[0-9]{2,3}[0-9]{2,3}[0-9]{2,3}$/;
-  const zipCodeRegEx = /^[0-9]{5,5}$/;
-
-  const isFormValid =
-    validation(fullName!, noSpecialCharsRegEx) &&
-    validation(parseInt(phoneNumber!), phoneRegEx) &&
-    deliveryOption &&
-    validation(email!, emailRegEx) &&
-    validation(adress!, noSpecialCharsRegEx) &&
-    validation(zipCode!, zipCodeRegEx) &&
-    validation(country!, noSpecialCharsRegEx) &&
-    validation(city!, noSpecialCharsRegEx);
 
   // Payment state
   const [paymentOption, setPaymentOption] = useState<string>();
@@ -118,9 +106,12 @@ function Checkout() {
     (ack: number, item) => ack + item.quantity * item.price,
     0
   );
-  const [payedProducts, setPayedProducts] = useState<CartItem[]>();
-  const [totalPayed, setTotalPayed] = useState<number>();
-  // let payedProducts = [''];
+
+  useEffect(() => {
+    if (addressDetails) {
+      orderContext.saveAddressDetails(addressDetails);
+    }
+  }, [addressDetails]);
 
   useEffect(() => {
     if (paymentOption) {
@@ -136,7 +127,7 @@ function Checkout() {
 
   useEffect(() => {
     orderContext.saveTotalSum(total);
-  }, [paymentOption]);
+  }, [total]);
 
   // changes to the stepper
   const handleNext = () => {
@@ -149,6 +140,13 @@ function Checkout() {
     setActiveStep(0);
   };
 
+  const checkMissingOption = () => {
+    if (!deliveryOption || !addressDetails) {
+      return true;
+    }
+    return false;
+  };
+
   async function placeOrder() {
     setIsLoading(true);
     setPayedProducts(cart);
@@ -157,6 +155,8 @@ function Checkout() {
     clearCart();
     handleNext();
   }
+
+  console.log({ addressDetails });
 
   //Cases for stepper
   //Each case is one step on the stepper
@@ -207,23 +207,14 @@ function Checkout() {
           <Box mb={10}>
             <Box>
               <PersonalDetails
-                fullName={fullName}
-                setFullName={setFullName}
-                email={email}
-                setEmail={setEmail}
-                adress={adress}
-                setAdress={setAdress}
-                phoneNumber={phoneNumber}
-                setPhoneNumber={setPhoneNumber}
-                zipCode={zipCode}
-                setZipCode={setZipCode}
-                country={country}
-                setCountry={setCountry}
-                city={city}
-                setCity={setCity}
+                setError={setHasError}
+                setAddressDetails={setAddressDetails}
+                deliveryIsMissing={checkMissingOption}
               />
               <Box>
                 <DeliveryOptions
+                  personalDetailsIsMissing={checkMissingOption}
+                  setError={setHasError}
                   deliveryOption={deliveryOption}
                   setDeliveryOption={setDeliveryOption}
                 />
@@ -310,7 +301,7 @@ function Checkout() {
                     <Button
                       variant="contained"
                       onClick={handleNext}
-                      // disabled={!isFormValid}
+                      disabled={hasError}
                     >
                       {activeStep === steps.length - 1 ? "Error" : "Next"}
                     </Button>
@@ -319,7 +310,7 @@ function Checkout() {
                     <Button
                       variant="contained"
                       onClick={placeOrder}
-                      // disabled={!isPaymentValid}
+                      disabled={hasError}
                     >
                       {activeStep === steps.length - 1
                         ? "Error"
@@ -347,8 +338,10 @@ function Checkout() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "0 10rem",
-    // border: "solid 2px black",
+    display: "flex",
+    flexDirection: "column",
+
+    justifyContent: "center",
     position: "relative",
     [theme.breakpoints.down("md")]: {
       padding: 0,
@@ -362,8 +355,7 @@ const useStyles = makeStyles((theme) => ({
   buttonWrapper: {
     position: "absolute",
     display: "flex",
-    bottom: "-2rem",
-    width: "80%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     [theme.breakpoints.down("md")]: {
@@ -399,6 +391,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cartContentWrapper: {
     overflow: "auto",
+
     paddingBottom: "4rem",
     "&::-webkit-scrollbar": {
       width: "0.4em",
