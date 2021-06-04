@@ -67,6 +67,8 @@ function AdminOrderItem(props: Props) {
   const { _id, customer, address, items, payment, delivery, sum, createdAt } =
     props.order;
 
+  console.log(props.order);
+
   console.log(items);
 
   const classes = useStyles();
